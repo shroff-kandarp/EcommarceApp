@@ -8,4 +8,27 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="AppCompatTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorAccent">@color/appThemeColor_1</item>
+    </style>
+
+    <style name="theme_my_progress_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="bg_materialEditText" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/editBox_primary</item>
+        <item name="colorPrimaryDark">@color/editBox_primary_dark</item>
+        <item name="colorAccent">@color/editBox_accent</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
 </resources>

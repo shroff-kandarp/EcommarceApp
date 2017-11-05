@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">EcommarceApp</string>
+    <string name="defaultFont">fonts/Raleway-Medium.ttf</string>
+
+    <color name="search_layover_bg">@color/gray</color>
+    <color name="search_field_bg">@color/white_ish</color>
+
+
+    <string name="search_hint">Search&#8230;</string>
+    <string name="hint_prompt">Speak an item name</string>
+
+    <string name="cd_up_button">Up navigation button</string>
+    <string name="cd_voice_search">Voice search</string>
+    <string name="cd_clear_button">Clear field</string>
+    <string name="cd_suggestion_icon">List item icon</string>
+
 </resources>

@@ -3,4 +3,52 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+
+    <color name="card_background">#ffffff</color>
+    <color name="card_shadow">#10000000</color>
+
+
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="gray">#ff888888</color>
+
+    <color name="white_50">#88ffffff</color>
+    <color name="black_50">#88000000</color>
+    <color name="gray_50">#88888888</color>
+
+    <color name="white_ish">#fffefefe</color>
+
+    <!-- Theme configuration -->
+    <color name="appThemeColor_1">#008cb1</color> <!--used for bg-->
+    <color name="appThemeColor_Dark_1">#017796</color> <!--used for Border OR Others-->
+    <color name="appThemeColor_hover_1">#00b4e3</color> <!--used for hover-->
+    <color name="appThemeColor_TXT_1">#FFFFFF</color> <!--used for text color-->
+    <color name="appThemeColor_bg_parent_1">@android:color/transparent
+    </color> <!--used for parent bg color if applies-->
+
+    <color name="appThemeColor_2">#5aa663</color> <!--used for bg-->
+    <color name="appThemeColor_hover_2">#74d67f</color> <!--used for hover-->
+    <color name="appThemeColor_TXT_2">#FFFFFF</color> <!--used for text color-->
+    <color name="appThemeColor_bg_parent_2">#192635
+    </color> <!--used for parent bg color if applies-->
+    <!-- Theme configuration End-->
+
+    <!-- EditBox configuration Start-->
+    <color name="editBox_primary">#5aa663</color> <!--used for EditBox-->
+    <color name="editBox_primary_dark">#407747</color> <!--used for EditBox-->
+    <color name="editBox_accent">#5aa663</color> <!--used for EditBox-->
+    <!-- EditBox configuration End-->
+
+
+    <!--errorView colors-->
+    <color name="error_view_retry_btn_txt_color">#bc4100</color>
+    <color name="error_view_text">#656565</color>
+    <color name="error_view_text_dark">#CC000000</color>
+    <color name="error_view_text_light">#858585</color>
+
+    <color name="error_view_retry_button_background">#30000000</color>
+    <color name="error_view_retry_button_background_stroke">#50000000</color>
+    <!--error view colors finished-->
+
 </resources>
