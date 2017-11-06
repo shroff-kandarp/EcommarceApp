@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Base64;
 import android.view.View;
 
 import com.ecommarceapp.LauncherActivity;
@@ -22,8 +21,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,23 +65,17 @@ public class GeneralFunctions {
         return false;
     }
 
-    public void setMemberData(HashMap<String, String> data) {
+    public void storeUserData(String memberId) {
+        storedata(Utils.iMemberId_KEY, memberId);
         storedata(Utils.userLoggedIn_key, "1");
-        storedata(Utils.MEMBER_DETAILS_USER_key, data.get(Utils.MEMBER_DETAILS_USER_key));
-        storedata(Utils.MEMBER_DETAILS_PASS_key, data.get(Utils.MEMBER_DETAILS_PASS_key));
     }
 
-    public HashMap<String, String> getMemberData() {
-        HashMap<String, String> map = new HashMap<>();
-        try {
-            map.put(Utils.MEMBER_DETAILS_USER_key, new String(Base64.decode(retriveValue(Utils.MEMBER_DETAILS_USER_key), Base64.DEFAULT), "UTF-8"));
-            map.put(Utils.MEMBER_DETAILS_PASS_key, new String(Base64.decode(retriveValue(Utils.MEMBER_DETAILS_PASS_key), Base64.DEFAULT), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            map.put(Utils.MEMBER_DETAILS_USER_key, "");
-            map.put(Utils.MEMBER_DETAILS_PASS_key, "");
+    public String getMemberId() {
+        if (isUserLoggedIn() == true) {
+            return retriveValue(Utils.iMemberId_KEY);
+        } else {
+            return "";
         }
-        return map;
     }
 
     public void signOut() {

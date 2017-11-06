@@ -1,5 +1,6 @@
 package com.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +37,7 @@ public class Utils {
 
     public static int minPasswordLength = 2;
     public static String isFirstLaunchFinished = "isFirstLaunchFinished";
+    public static String iMemberId_KEY = "iMemberId";
     public static String userLoggedIn_key = "isUserLoggedIn";
 
     public static String device_type = "android";
@@ -80,6 +83,11 @@ public class Utils {
             isValid = true;
         }
         return isValid;
+    }
+
+    public static void hideKeyboard(Context context) {
+        ((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE))
+                .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 
     public static int dipToPixels(Context context, float dipValue) {

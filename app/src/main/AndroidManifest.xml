@@ -25,13 +25,7 @@
             android:name="io.fabric.ApiKey"
             android:value="876170062d45f901d55c928d67ee1b8a5fe2d4b9" />
 
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".BaseActivity" />
         <activity android:name=".LauncherActivity">
             <intent-filter>
@@ -40,6 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AppLoginActivity" />
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>

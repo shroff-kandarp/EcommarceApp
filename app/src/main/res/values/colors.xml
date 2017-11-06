@@ -20,24 +20,24 @@
     <color name="white_ish">#fffefefe</color>
 
     <!-- Theme configuration -->
-    <color name="appThemeColor_1">#008cb1</color> <!--used for bg-->
-    <color name="appThemeColor_Dark_1">#017796</color> <!--used for Border OR Others-->
-    <color name="appThemeColor_hover_1">#00b4e3</color> <!--used for hover-->
+    <color name="appThemeColor_1">#FF5E00</color> <!--used for bg-->
+    <color name="appThemeColor_Dark_1">#d95204</color> <!--used for Border OR Others-->
+    <color name="appThemeColor_hover_1">#fc782c</color> <!--used for hover-->
     <color name="appThemeColor_TXT_1">#FFFFFF</color> <!--used for text color-->
     <color name="appThemeColor_bg_parent_1">@android:color/transparent
     </color> <!--used for parent bg color if applies-->
 
-    <color name="appThemeColor_2">#5aa663</color> <!--used for bg-->
-    <color name="appThemeColor_hover_2">#74d67f</color> <!--used for hover-->
+    <color name="appThemeColor_2">#2d2d2d</color> <!--used for bg-->
+    <color name="appThemeColor_hover_2">#4c4c4c</color> <!--used for hover-->
     <color name="appThemeColor_TXT_2">#FFFFFF</color> <!--used for text color-->
-    <color name="appThemeColor_bg_parent_2">#192635
+    <color name="appThemeColor_bg_parent_2">#2d2d2d
     </color> <!--used for parent bg color if applies-->
     <!-- Theme configuration End-->
 
     <!-- EditBox configuration Start-->
-    <color name="editBox_primary">#5aa663</color> <!--used for EditBox-->
-    <color name="editBox_primary_dark">#407747</color> <!--used for EditBox-->
-    <color name="editBox_accent">#5aa663</color> <!--used for EditBox-->
+    <color name="editBox_primary">#FF5E00</color> <!--used for EditBox-->
+    <color name="editBox_primary_dark">#d95204</color> <!--used for EditBox-->
+    <color name="editBox_accent">#FF5E00</color> <!--used for EditBox-->
     <!-- EditBox configuration End-->
 
 
@@ -50,5 +50,8 @@
     <color name="error_view_retry_button_background">#30000000</color>
     <color name="error_view_retry_button_background_stroke">#50000000</color>
     <!--error view colors finished-->
+
+    <color name="default_indicator_color_selected">#eeeeee</color>
+    <color name="default_indicator_color_unselected">#66eeeeee</color>
 
 </resources>
