@@ -160,6 +160,25 @@ public class GeneralFunctions {
         return "";
     }
 
+    public String getJsonValue(String key, JSONObject obj) {
+
+        try {
+
+            String value_str = obj.getString(key);
+
+            if (value_str != null && !value_str.equals("null") && !value_str.equals("")) {
+                return value_str;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+            return "";
+        }
+
+        return "";
+    }
+
     public JSONArray getJsonArray(String key, String response) {
         try {
             JSONObject obj_temp = new JSONObject(response);
@@ -172,7 +191,19 @@ public class GeneralFunctions {
 
             return null;
         }
+    }
 
+    public JSONArray getJsonArray(String key, JSONObject obj) {
+        try {
+            JSONArray obj_temp_arr = obj.getJSONArray(key);
+
+            return obj_temp_arr;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
     public JSONArray getJsonArray(String response) {

@@ -7,9 +7,14 @@ import com.squareup.okhttp.Response;
 import com.utils.CommonUtilities;
 
 import java.io.IOException;
+import java.util.Map;
 
+import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
+import retrofit.http.FieldMap;
+import retrofit.http.FormUrlEncoded;
+import retrofit.http.POST;
 
 /**
  * Created by Ashiq Uz Zoha on 9/13/15.
@@ -87,6 +92,9 @@ public class RestClient {
 //        @GET("/reverse")
 //        Call<Object> getAddressResult(@Query("format") String format, @Query("lat") String lat, @Query("lon") String lon, @Query("zoom") String zoom, @Query("addressdetails") String addressdetails);
 
+        @FormUrlEncoded
+        @POST("/webservice/webservices.php")
+        Call<Object> getResponse(@FieldMap Map<String, String> params);
     }
 
 }

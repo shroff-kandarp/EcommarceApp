@@ -41,8 +41,8 @@ public class Utils {
     public static String userLoggedIn_key = "isUserLoggedIn";
 
     public static String device_type = "android";
-    public static String MEMBER_DETAILS_USER_key = "MEMBER_DETAILS_USER";
-    public static String MEMBER_DETAILS_PASS_key = "MEMBER_DETAILS_PASS";
+    public static String action_str = "Action";
+    public static String message_str = "message";
 
     public static final int MENU_ABOUT_US = 0;
     public static final int MENU_BLOG = 1;

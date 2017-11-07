@@ -1,17 +1,21 @@
 package com.general.files;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
-import com.utils.CommonUtilities;
+import com.google.gson.Gson;
+import com.rest.RestClient;
 import com.view.MyProgressDialog;
 
 import java.util.HashMap;
 
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+
 /**
  * Created by Admin on 22-02-2016.
  */
-public class ExecuteWebServerUrl extends AsyncTask<String, String, String> {
+public class ExecuteWebServerUrl/* extends AsyncTask<String, String, String>*/ {
 
     SetDataResponse setDataRes;
 
@@ -52,7 +56,71 @@ public class ExecuteWebServerUrl extends AsyncTask<String, String, String> {
         this.key_DeviceToken_param = key_DeviceToken_param;
     }
 
-    @Override
+    public void execute() {
+
+        if (isLoaderShown == true) {
+            myPDialog = new MyProgressDialog(mContext, true, "Loading");
+            myPDialog.show();
+        }
+        /*if (isGenerateDeviceToken == true && generalFunc != null) {
+
+            String vDeviceToken = generalFunc.generateDeviceToken();
+
+            if (vDeviceToken.equals("")) {
+                return "";
+            }
+
+            if (parameters != null) {
+                parameters.put(key_DeviceToken_param, "" + vDeviceToken);
+            }
+        }*/
+
+        if (directUrl_value == false) {
+//            responseString = OutputStreamReader.performPostCall(CommonUtilities.SERVER_URL_WEBSERVICE_API, parameters);
+            performPostCall();
+        } else {
+            responseString = new ExecuteResponse().getResponse(directUrl);
+        }
+    }
+
+    public void performPostCall() {
+        Call<Object> call = RestClient.getClient().getResponse(parameters);
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Response<Object> response) {
+                if (response.isSuccess()) {
+                    // request successful (status code 200, 201)
+
+//                    Utils.printLog("Data", "response = " + new Gson().toJson(response.body()));
+
+                    responseString = new Gson().toJson(response.body());
+
+                    fireResponse();
+                } else {
+                    responseString = "";
+                    fireResponse();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                responseString = "";
+                fireResponse();
+            }
+        });
+    }
+
+    public void fireResponse() {
+        if (myPDialog != null) {
+            myPDialog.close();
+        }
+
+        if (setDataRes != null) {
+            setDataRes.setResponse(responseString);
+        }
+    }
+
+    /*@Override
     protected void onPreExecute() {
         super.onPreExecute();
 
@@ -77,12 +145,37 @@ public class ExecuteWebServerUrl extends AsyncTask<String, String, String> {
             }
         }
         if (directUrl_value == false) {
-            responseString = OutputStreamReader.performPostCall(CommonUtilities.SERVER_URL_WEBSERVICE_API, parameters);
+//            responseString = OutputStreamReader.performPostCall(CommonUtilities.SERVER_URL_WEBSERVICE_API, parameters);
+            performPostCall();
         } else {
             responseString = new ExecuteResponse().getResponse(directUrl);
         }
 
         return null;
+    }
+
+    public void performPostCall() {
+        Call<Object> call = RestClient.getClient().getResponse(parameters);
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Response<Object> response) {
+                if (response.isSuccess()) {
+                    // request successful (status code 200, 201)
+
+                    Utils.printLog("Data", "response = " + new Gson().toJson(response.body()));
+
+                    responseString = new Gson().toJson(response.body());
+
+                } else {
+                    responseString = "";
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                responseString = "";
+            }
+        });
     }
 
     @Override
@@ -96,7 +189,7 @@ public class ExecuteWebServerUrl extends AsyncTask<String, String, String> {
         if (setDataRes != null) {
             setDataRes.setResponse(responseString);
         }
-    }
+    }*/
 
     public interface SetDataResponse {
         void setResponse(String responseString);
