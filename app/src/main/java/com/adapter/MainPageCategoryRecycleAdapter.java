@@ -3,6 +3,7 @@ package com.adapter;
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,7 +94,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
         } else if (holder instanceof HeaderViewHolder) {
             final HashMap<String, String> item = list.get(position);
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.categoryNameTxtView.setText(item.get("name"));
+            headerHolder.categoryNameTxtView.setText(Html.fromHtml(item.get("name")));
 //            Utils.printLog("CCN","::"+item.get("name"));
         } else {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;

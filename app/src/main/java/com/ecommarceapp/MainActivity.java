@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.adapter.MainPageCategoryRecycleAdapter;
@@ -223,6 +224,7 @@ public class MainActivity extends BaseActivity {
                                 }
                             }
 
+                            loading_category.setVisibility(View.GONE);
                             adapter.notifyDataSetChanged();
                         }
                     } else {
