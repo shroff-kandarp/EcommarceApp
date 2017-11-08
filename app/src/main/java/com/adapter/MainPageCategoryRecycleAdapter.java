@@ -149,7 +149,6 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
         if (isPositionFooter(position) && isFooterEnabled == true) {
             return TYPE_FOOTER;
         } else if (isPositionHeader(position)) {
-
             return TYPE_HEADER;
         }
         return TYPE_ITEM;

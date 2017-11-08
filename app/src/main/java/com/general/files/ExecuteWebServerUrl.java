@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.rest.RestClient;
+import com.utils.Utils;
 import com.view.MyProgressDialog;
 
 import java.util.HashMap;
@@ -92,6 +93,7 @@ public class ExecuteWebServerUrl/* extends AsyncTask<String, String, String>*/ {
                     // request successful (status code 200, 201)
 
 //                    Utils.printLog("Data", "response = " + new Gson().toJson(response.body()));
+                    Utils.printLog("ResponseData", "response = " + new Gson().toJson(response.body()));
 
                     responseString = new Gson().toJson(response.body());
 
@@ -104,6 +106,7 @@ public class ExecuteWebServerUrl/* extends AsyncTask<String, String, String>*/ {
 
             @Override
             public void onFailure(Throwable t) {
+                Utils.printLog("ResponseData", "Error::" + t.toString());
                 responseString = "";
                 fireResponse();
             }

@@ -2,6 +2,7 @@ package com.ecommarceapp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ProgressBar;
 
@@ -29,6 +30,8 @@ public class MainActivity extends BaseActivity {
     BannerSlider bannerSlider;
     RecyclerView categoryRecyclerView;
     ProgressBar loading_category;
+    MainPageCategoryRecycleAdapter adapter;
+    ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,33 @@ public class MainActivity extends BaseActivity {
         categoryRecyclerView = (RecyclerView) findViewById(R.id.categoryRecyclerView);
         loading_category = (ProgressBar) findViewById(R.id.loading_category);
 
+        adapter = new MainPageCategoryRecycleAdapter(getActContext(), dataList, generalFunc, false);
+
+        categoryRecyclerView.setAdapter(adapter);
+
         new CreateRoundedView(getResources().getColor(android.R.color.transparent), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), getResources().getColor(R.color.appThemeColor_TXT_1), findViewById(R.id.searchArea));
+
+
+        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch (adapter.getItemViewType(position)) {
+                    case MainPageCategoryRecycleAdapter.TYPE_HEADER:
+                        return 2;
+                    case MainPageCategoryRecycleAdapter.TYPE_FOOTER:
+                        return 2;
+
+                    case MainPageCategoryRecycleAdapter.TYPE_ITEM:
+                        return 1;
+
+                    default:
+                        return 1;
+                }
+            }
+        });
+
+        categoryRecyclerView.setLayoutManager(mLayoutManager);
 
         getBanners();
 
@@ -161,13 +190,13 @@ public class MainActivity extends BaseActivity {
                         JSONArray msgArr = generalFunc.getJsonArray(Utils.message_str, responseString);
 
                         if (msgArr != null) {
-                            ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
 
                             for (int i = 0; i < msgArr.length(); i++) {
                                 JSONObject obj_cat = generalFunc.getJsonObject(msgArr, i);
                                 String name = generalFunc.getJsonValue("name", obj_cat);
                                 String category_id = generalFunc.getJsonValue("category_id", obj_cat);
 
+//                                Utils.printLog("CatName","::name::"+name);
                                 HashMap<String, String> dataMap_cat = new HashMap<>();
                                 dataMap_cat.put("name", name);
                                 dataMap_cat.put("category_id", category_id);
@@ -194,9 +223,7 @@ public class MainActivity extends BaseActivity {
                                 }
                             }
 
-                            MainPageCategoryRecycleAdapter adpter = new MainPageCategoryRecycleAdapter(getActContext(), dataList, generalFunc, false);
-                            categoryRecyclerView.setAdapter(adpter);
-                            adpter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
                         }
                     } else {
 

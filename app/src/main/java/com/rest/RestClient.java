@@ -8,6 +8,7 @@ import com.utils.CommonUtilities;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
@@ -30,6 +31,8 @@ public class RestClient {
 //        if (apiInterface == null) {
 
         OkHttpClient okClient = new OkHttpClient();
+        okClient.setConnectTimeout(55, TimeUnit.SECONDS);
+        okClient.setReadTimeout(55, TimeUnit.SECONDS);
         okClient.interceptors().add(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
@@ -54,6 +57,9 @@ public class RestClient {
 
 
         OkHttpClient okClient = new OkHttpClient();
+        okClient.setConnectTimeout(25, TimeUnit.SECONDS);
+        okClient.setReadTimeout(30, TimeUnit.SECONDS);
+
         okClient.interceptors().add(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
