@@ -20,8 +20,8 @@
         android:textSize="@dimen/txt_size_18" />
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:src="@mipmap/ic_right_arrow"
         android:layout_gravity="center_vertical|end" />
 </LinearLayout>
