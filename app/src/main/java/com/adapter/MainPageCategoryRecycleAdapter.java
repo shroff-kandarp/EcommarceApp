@@ -60,7 +60,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             return new FooterViewHolder(v);
         } else if (viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_name, parent, false);
-            return new FooterViewHolder(v);
+            return new HeaderViewHolder(v);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_design, parent, false);
             return new ViewHolder(view);
@@ -94,6 +94,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             final HashMap<String, String> item = list.get(position);
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             headerHolder.categoryNameTxtView.setText(item.get("name"));
+//            Utils.printLog("CCN","::"+item.get("name"));
         } else {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
             this.footerHolder = footerHolder;
