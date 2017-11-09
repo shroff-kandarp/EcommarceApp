@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_item1"
+            android:icon="@mipmap/ic_menu_home"
+            android:title="@string/item_1" />
+        <item
+            android:id="@+id/nav_item2"
+            android:icon="@mipmap/ic_menu_all_categories"
+            android:title="@string/item_2" />
+
+    </group>
+
+    <item android:title="@string/my_profile">
+        <menu>
+            <item
+                android:id="@+id/my_account"
+                android:icon="@mipmap/ic_menu_my_acc"
+                android:title="@string/my_account" />
+            <item
+                android:id="@+id/my_orders"
+                android:icon="@mipmap/ic_menu_orders"
+                android:title="@string/my_orders" />
+            <item
+                android:id="@+id/my_cart"
+                android:icon="@mipmap/ic_cart"
+                android:title="@string/my_cart" />
+            <item
+                android:id="@+id/my_wishlist"
+                android:icon="@mipmap/ic_favorite_black_24dp"
+                android:title="@string/my_wishlist" />
+
+        </menu>
+    </item>
+
+    <item android:title="@string/help_support">
+        <menu>
+            <item
+                android:id="@+id/contact_us"
+                android:title="@string/contact_us" />
+            <item
+                android:id="@+id/terms_conditions"
+                android:title="@string/terms_conditions" />
+            <item
+                android:id="@+id/help_center"
+                android:title="@string/help_center" />
+        </menu>
+    </item>
+
+</menu>

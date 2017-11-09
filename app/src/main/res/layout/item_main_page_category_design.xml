@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/image1"
+                android:id="@+id/itemImgView"
                 android:layout_width="match_parent"
                 android:layout_height="200.0dp" />
 
@@ -53,6 +53,7 @@
                         android:id="@+id/itemDescTxtView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
                         android:text="Item descriptions"
                         android:textSize="10dp" />
 

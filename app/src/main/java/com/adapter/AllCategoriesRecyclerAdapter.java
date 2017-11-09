@@ -19,9 +19,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Admin on 09-07-2016.
+ * Created by Shroff on 09-Nov-17.
  */
-public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+public class AllCategoriesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ArrayList<HashMap<String, String>> list;
     Context mContext;
@@ -38,7 +39,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
 
     FooterViewHolder footerHolder;
 
-    public MainPageCategoryRecycleAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
+    public AllCategoriesRecyclerAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
         this.mContext = mContext;
         this.list = list;
         this.generalFunc = generalFunc;
@@ -62,6 +63,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             return new FooterViewHolder(v);
         } else if (viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_name, parent, false);
+            v.setBackgroundColor(mContext.getResources().getColor(android.R.color.transparent));
             return new HeaderViewHolder(v);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_design, parent, false);

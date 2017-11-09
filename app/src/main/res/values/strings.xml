@@ -14,4 +14,19 @@
     <string name="cd_clear_button">Clear field</string>
     <string name="cd_suggestion_icon">List item icon</string>
 
+
+    <string name="item_1">Home</string>
+    <string name="item_2">All Categories</string>
+
+    <string name="my_profile">My Profile</string>
+    <string name="my_rewards">My Rewards</string>
+    <string name="my_orders">My Orders</string>
+    <string name="my_cart">My Cart</string>
+    <string name="my_wishlist">My Wishlist</string>
+    <string name="my_account">My Account</string>
+
+    <string name="help_support">Help \u0026 Support</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="terms_conditions">Terms \u0026 Conditions</string>
+    <string name="help_center">Help Center</string>
 </resources>

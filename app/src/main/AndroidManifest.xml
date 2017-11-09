@@ -36,7 +36,8 @@
         </activity>
         <activity android:name=".AppLoginActivity" />
         <activity android:name=".SignInActivity" />
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".AllCategoriesActivity"></activity>
     </application>
 
 </manifest>

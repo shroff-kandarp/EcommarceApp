@@ -8,10 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ecommarceapp.R;
 import com.general.files.GeneralFunctions;
-import com.squareup.picasso.Picasso;
 import com.utils.Utils;
 import com.view.MTextView;
 
@@ -19,9 +19,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Admin on 09-07-2016.
+ * Created by Shroff on 09-Nov-17.
  */
-public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+public class DrawerMenuRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ArrayList<HashMap<String, String>> list;
     Context mContext;
@@ -38,7 +39,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
 
     FooterViewHolder footerHolder;
 
-    public MainPageCategoryRecycleAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
+    public DrawerMenuRecycleAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
         this.mContext = mContext;
         this.list = list;
         this.generalFunc = generalFunc;
@@ -61,10 +62,10 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             this.footerView = v;
             return new FooterViewHolder(v);
         } else if (viewType == TYPE_HEADER) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_name, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_manu_category_design, parent, false);
             return new HeaderViewHolder(v);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_design, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_manu_design, parent, false);
             return new ViewHolder(view);
         }
 
@@ -80,14 +81,9 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             final ViewHolder viewHolder = (ViewHolder) holder;
 
 
-            viewHolder.itemNameTxtView.setText(Html.fromHtml(item.get("name")));
-            viewHolder.itemPriceTxtView.setText(item.get("price"));
-            viewHolder.itemDescTxtView.setText(Html.fromHtml(item.get("description")));
+            viewHolder.menuTitleTxt.setText(Html.fromHtml(item.get("name")));
 
-            Picasso.with(mContext)
-                    .load(item.get("image"))
-                    .into(viewHolder.itemImgView);
-
+            viewHolder.menuIcon.setImageResource(generalFunc.parseInt(0, item.get("Icon")));
 
             viewHolder.contentArea.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -100,7 +96,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
         } else if (holder instanceof HeaderViewHolder) {
             final HashMap<String, String> item = list.get(position);
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.categoryNameTxtView.setText(Html.fromHtml(item.get("name")));
+            headerHolder.headerTxtView.setText(Html.fromHtml(item.get("name")));
 //            Utils.printLog("CCN","::"+item.get("name"));
         } else {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
@@ -113,22 +109,16 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
     // inner class to hold a reference to each item of RecyclerView
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public MTextView itemNameTxtView;
-        public MTextView itemDescTxtView;
-        public MTextView itemPriceTxtView;
-        public AppCompatImageView wishlistImgView;
-        public AppCompatImageView itemImgView;
+        public TextView menuTitleTxt;
+        public AppCompatImageView menuIcon;
         public View contentArea;
 
         public ViewHolder(View view) {
             super(view);
 
-            itemNameTxtView = (MTextView) view.findViewById(R.id.itemNameTxtView);
-            itemDescTxtView = (MTextView) view.findViewById(R.id.itemDescTxtView);
-            itemPriceTxtView = (MTextView) view.findViewById(R.id.itemPriceTxtView);
-            itemImgView = (AppCompatImageView) view.findViewById(R.id.itemImgView);
-            wishlistImgView = (AppCompatImageView) view.findViewById(R.id.wishlistImgView);
-            contentArea = view.findViewById(R.id.cardview);
+            menuTitleTxt = (TextView) view.findViewById(R.id.menuTitleTxt);
+            menuIcon = (AppCompatImageView) view.findViewById(R.id.menuIcon);
+            contentArea = view;
         }
     }
 
@@ -144,12 +134,12 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
-        MTextView categoryNameTxtView;
+        MTextView headerTxtView;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
-            categoryNameTxtView = (MTextView) itemView.findViewById(R.id.categoryNameTxtView);
+            headerTxtView = (MTextView) itemView.findViewById(R.id.headerTxtView);
 
         }
     }

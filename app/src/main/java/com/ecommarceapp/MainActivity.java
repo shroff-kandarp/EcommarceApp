@@ -2,11 +2,15 @@ package com.ecommarceapp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.adapter.DrawerMenuRecycleAdapter;
 import com.adapter.MainPageCategoryRecycleAdapter;
 import com.bannerslider.banners.Banner;
 import com.bannerslider.banners.RemoteBanner;
@@ -14,8 +18,8 @@ import com.bannerslider.events.OnBannerClickListener;
 import com.bannerslider.views.BannerSlider;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
+import com.general.files.StartActProcess;
 import com.utils.Utils;
-import com.view.CreateRoundedView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,9 +34,15 @@ public class MainActivity extends BaseActivity {
 
     BannerSlider bannerSlider;
     RecyclerView categoryRecyclerView;
+    RecyclerView menuRecyclerView;
     ProgressBar loading_category;
     MainPageCategoryRecycleAdapter adapter;
+    DrawerMenuRecycleAdapter drawerAdapter;
     ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
+    ArrayList<HashMap<String, String>> menuDataList = new ArrayList<>();
+
+    ImageView menuImgView;
+    public DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +51,20 @@ public class MainActivity extends BaseActivity {
 
         generalFunc = new GeneralFunctions(getActContext());
 
+        menuImgView = (ImageView) findViewById(R.id.menuImgView);
         bannerSlider = (BannerSlider) findViewById(R.id.bannerSlider);
         categoryRecyclerView = (RecyclerView) findViewById(R.id.categoryRecyclerView);
+        menuRecyclerView = (RecyclerView) findViewById(R.id.menuRecyclerView);
         loading_category = (ProgressBar) findViewById(R.id.loading_category);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         adapter = new MainPageCategoryRecycleAdapter(getActContext(), dataList, generalFunc, false);
+        drawerAdapter = new DrawerMenuRecycleAdapter(getActContext(), menuDataList, generalFunc, false);
 
         categoryRecyclerView.setAdapter(adapter);
-
-        new CreateRoundedView(getResources().getColor(android.R.color.transparent), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), getResources().getColor(R.color.appThemeColor_TXT_1), findViewById(R.id.searchArea));
-
+        menuRecyclerView.setAdapter(drawerAdapter);
+        categoryRecyclerView.setNestedScrollingEnabled(false);
+        menuRecyclerView.setNestedScrollingEnabled(false);
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -76,6 +90,67 @@ public class MainActivity extends BaseActivity {
         getBanners();
 
         generateCategories();
+
+        buildMenu();
+    }
+
+    public void checkDrawerState() {
+        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT) == true) {
+            closeDrawer();
+        } else {
+            openDrawer();
+        }
+    }
+
+    public void closeDrawer() {
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    public void openDrawer() {
+        mDrawerLayout.openDrawer(Gravity.LEFT);
+    }
+
+    public void buildMenu() {
+        menuDataList.add(getMenuItem("Home", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        menuDataList.add(getMenuItem("All Categories", "" + R.mipmap.ic_menu_all_categories, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+
+        menuDataList.add(getMenuItem("My Profile", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_HEADER));
+
+        menuDataList.add(getMenuItem("My Account", "" + R.mipmap.ic_menu_my_acc, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        menuDataList.add(getMenuItem("My Orders", "" + R.mipmap.ic_menu_orders, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        menuDataList.add(getMenuItem("My Cart", "" + R.mipmap.ic_cart, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        menuDataList.add(getMenuItem("My Wishlist", "" + R.mipmap.ic_favorite_black_24dp, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+
+        menuDataList.add(getMenuItem("Help & Support", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_HEADER));
+        menuDataList.add(getMenuItem("Contact Us", "" + R.mipmap.ic_contact_us, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        menuDataList.add(getMenuItem("Terms & Conditions", "" + R.mipmap.ic_contact_us, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        menuDataList.add(getMenuItem("Help Center", "" + R.mipmap.ic_contact_us, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        drawerAdapter.notifyDataSetChanged();
+
+        drawerAdapter.setOnItemClickListener(new DrawerMenuRecycleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClickList(View v, int position) {
+                if (position == 1) {
+                    (new StartActProcess(getActContext())).startAct(AllCategoriesActivity.class);
+                }
+            }
+        });
+
+        menuImgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkDrawerState();
+            }
+        });
+    }
+
+    public HashMap<String, String> getMenuItem(String name, String imgRes, String itemType) {
+        HashMap<String, String> data = new HashMap<>();
+        data.put("name", name);
+        data.put("Icon", imgRes);
+        data.put("TYPE", itemType);
+
+        return data;
     }
 
     public void getBanners() {
