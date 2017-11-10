@@ -234,6 +234,20 @@ public class GeneralFunctions {
 
     }
 
+    public JSONObject getJsonObject(String key, String responseString) {
+        try {
+            JSONObject obj_temp = new JSONObject(responseString);
+            JSONObject obj = obj_temp.getJSONObject(key);
+            return obj;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+
+    }
+
     public boolean isJSONkeyAvail(String key, String response) {
         try {
             JSONObject json_obj = new JSONObject(response);

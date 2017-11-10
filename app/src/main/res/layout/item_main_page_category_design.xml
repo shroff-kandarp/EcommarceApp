@@ -68,11 +68,11 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/wishlistImgView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.3"
-                    android:src="@mipmap/ic_favorite_black_24dp" />
+                    android:src="@mipmap/ic_fav_border" />
             </LinearLayout>
         </LinearLayout>
 

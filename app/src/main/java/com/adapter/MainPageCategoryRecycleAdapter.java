@@ -79,6 +79,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             final HashMap<String, String> item = list.get(position);
             final ViewHolder viewHolder = (ViewHolder) holder;
 
+            Utils.printLog("Price", "::" + item.get("price"));
 
             viewHolder.itemNameTxtView.setText(Html.fromHtml(item.get("name")));
             viewHolder.itemPriceTxtView.setText(item.get("price"));

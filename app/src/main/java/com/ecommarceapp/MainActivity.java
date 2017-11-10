@@ -28,7 +28,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements DrawerMenuRecycleAdapter.OnItemClickListener {
+
+    public static final String MENU_HOME = "0";
+    public static final String MENU_ALL_CATEGORIES = "1";
+    public static final String MENU_MY_PROFILE = "2";
+    public static final String MENU_MY_ACCOUNT = "3";
+    public static final String MENU_MY_ORDERS = "4";
+    public static final String MENU_MY_CART = "5";
+    public static final String MENU_MY_WISH_LIST = "6";
+    public static final String MENU_MY_HELP_SUPPORT = "7";
+    public static final String MENU_MY_CONTACT_US = "8";
+    public static final String MENU_MY_TERMS_CONDITION = "9";
+    public static final String MENU_MY_HELP_CENTER = "10";
 
     GeneralFunctions generalFunc;
 
@@ -84,6 +96,18 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+        adapter.setOnItemClickListener(new MainPageCategoryRecycleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClickList(View v, int position) {
+                HashMap<String, String> data = dataList.get(position);
+                if (data.get("TYPE").equals("" + MainPageCategoryRecycleAdapter.TYPE_ITEM)) {
+                    Bundle bn = new Bundle();
+                    bn.putString("product_id", data.get("product_id"));
+                    bn.putString("name", data.get("name"));
+                    (new StartActProcess(getActContext())).startActWithData(ProductDescriptionActivity.class, bn);
+                }
+            }
+        });
 
         categoryRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -110,52 +134,62 @@ public class MainActivity extends BaseActivity {
         mDrawerLayout.openDrawer(Gravity.LEFT);
     }
 
+
     public void buildMenu() {
-        menuDataList.add(getMenuItem("Home", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
-        menuDataList.add(getMenuItem("All Categories", "" + R.mipmap.ic_menu_all_categories, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        menuDataList.add(getMenuItem("Home", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_HOME));
+        menuDataList.add(getMenuItem("All Categories", "" + R.mipmap.ic_menu_all_categories, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_ALL_CATEGORIES));
 
-        menuDataList.add(getMenuItem("My Profile", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_HEADER));
+        menuDataList.add(getMenuItem("My Profile", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_HEADER, MENU_MY_PROFILE));
 
-        menuDataList.add(getMenuItem("My Account", "" + R.mipmap.ic_menu_my_acc, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
-        menuDataList.add(getMenuItem("My Orders", "" + R.mipmap.ic_menu_orders, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
-        menuDataList.add(getMenuItem("My Cart", "" + R.mipmap.ic_cart, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
-        menuDataList.add(getMenuItem("My Wishlist", "" + R.mipmap.ic_favorite_black_24dp, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        menuDataList.add(getMenuItem("My Account", "" + R.mipmap.ic_menu_my_acc, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_ACCOUNT));
+        menuDataList.add(getMenuItem("My Orders", "" + R.mipmap.ic_menu_orders, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_ORDERS));
+        menuDataList.add(getMenuItem("My Cart", "" + R.mipmap.ic_cart, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_CART));
+        menuDataList.add(getMenuItem("My Wishlist", "" + R.mipmap.ic_favorite_black_24dp, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_WISH_LIST));
 
-        menuDataList.add(getMenuItem("Help & Support", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_HEADER));
-        menuDataList.add(getMenuItem("Contact Us", "" + R.mipmap.ic_contact_us, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
-        menuDataList.add(getMenuItem("Terms & Conditions", "" + R.mipmap.ic_contact_us, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
-        menuDataList.add(getMenuItem("Help Center", "" + R.mipmap.ic_contact_us, "" + DrawerMenuRecycleAdapter.TYPE_ITEM));
+        menuDataList.add(getMenuItem("Help & Support", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_HEADER, MENU_MY_HELP_SUPPORT));
+        menuDataList.add(getMenuItem("Contact Us", "" + R.mipmap.ic_contact_us, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_CONTACT_US));
+        menuDataList.add(getMenuItem("Terms & Conditions", "" + R.mipmap.ic_menu_terms, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_TERMS_CONDITION));
+        menuDataList.add(getMenuItem("Help Center", "" + R.mipmap.ic_menu_help_center, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_HELP_CENTER));
         drawerAdapter.notifyDataSetChanged();
 
-        drawerAdapter.setOnItemClickListener(new DrawerMenuRecycleAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClickList(View v, int position) {
-                if (position == 1) {
-                    (new StartActProcess(getActContext())).startAct(AllCategoriesActivity.class);
-                }
-            }
-        });
+        drawerAdapter.setOnItemClickListener(this);
 
-        menuImgView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkDrawerState();
-            }
-        });
+        menuImgView.setOnClickListener(new setOnClickList());
     }
 
-    public HashMap<String, String> getMenuItem(String name, String imgRes, String itemType) {
+    public HashMap<String, String> getMenuItem(String name, String imgRes, String itemType, String itemID) {
         HashMap<String, String> data = new HashMap<>();
         data.put("name", name);
         data.put("Icon", imgRes);
         data.put("TYPE", itemType);
+        data.put("ID", itemID);
 
         return data;
     }
 
+    @Override
+    public void onItemClickList(View v, int position) {
+        switch (menuDataList.get(position).get("ID")) {
+            case MENU_ALL_CATEGORIES:
+                (new StartActProcess(getActContext())).startAct(AllCategoriesActivity.class);
+                break;
+        }
+    }
+
+
+    public class setOnClickList implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.menuImgView:
+                    checkDrawerState();
+                    break;
+            }
+        }
+    }
+
     public void getBanners() {
-
-
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("type", "getBanners");
 
@@ -287,12 +321,14 @@ public class MainActivity extends BaseActivity {
                                     String productName = generalFunc.getJsonValue("name", obj_product);
                                     String productDes = generalFunc.getJsonValue("description", obj_product);
                                     String productId = generalFunc.getJsonValue("product_id", obj_product);
+                                    String price = generalFunc.getJsonValue("price", obj_product);
                                     String catId = generalFunc.getJsonValue("category_id", obj_product);
                                     HashMap<String, String> dataMap_products = new HashMap<>();
                                     dataMap_products.put("name", name);
                                     dataMap_products.put("category_id", catId);
                                     dataMap_products.put("product_id", productId);
-                                    dataMap_products.put("description", productDes);
+                                    dataMap_products.put("price", price);
+                                    dataMap_products.put("description", Utils.html2text(productDes));
                                     dataMap_products.put("image", productImg);
                                     dataMap_products.put("TYPE", "" + MainPageCategoryRecycleAdapter.TYPE_ITEM);
                                     dataList.add(dataMap_products);
@@ -313,4 +349,6 @@ public class MainActivity extends BaseActivity {
         exeWebServer.execute();
 
     }
+
+
 }

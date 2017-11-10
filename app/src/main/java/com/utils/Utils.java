@@ -24,6 +24,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.view.MyProgressDialog;
 import com.view.editBox.MaterialEditText;
 
+import org.jsoup.Jsoup;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -235,5 +237,9 @@ public class Utils {
 
     public static int getSDKInt() {
         return android.os.Build.VERSION.SDK_INT;
+    }
+
+    public static String html2text(String html) {
+        return Jsoup.parse(html).text();
     }
 }
