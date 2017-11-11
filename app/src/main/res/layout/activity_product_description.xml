@@ -209,7 +209,7 @@
                             android:background="#E0E0E0" />
 
                         <LinearLayout
-                            android:id="@+id/layout_action3"
+                            android:id="@+id/wishListArea"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -260,7 +260,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="\u2022 Regular fit, full sleeve"
+                            android:text="skdjjvbdfjkvjdf vjd jdf hjdf fdb fhvb fjb fjb jhfb jdfb kdb dfk bd sdvdffgnfy"
                             android:textColor="#1c1c1c"
                             android:textSize="12dp" />
 
@@ -284,7 +284,7 @@
                 android:weightSum="2">
 
                 <com.view.MTextView
-                    android:id="@+id/text_action_bottom1"
+                    android:id="@+id/addToCartTxtView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

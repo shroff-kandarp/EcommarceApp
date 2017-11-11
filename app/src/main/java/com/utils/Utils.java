@@ -37,6 +37,7 @@ public class Utils {
 
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
+
     public static int minPasswordLength = 2;
     public static String isFirstLaunchFinished = "isFirstLaunchFinished";
     public static String iMemberId_KEY = "iMemberId";

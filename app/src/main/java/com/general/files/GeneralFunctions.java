@@ -74,7 +74,7 @@ public class GeneralFunctions {
         if (isUserLoggedIn() == true) {
             return retriveValue(Utils.iMemberId_KEY);
         } else {
-            return "";
+            return "30";
         }
     }
 

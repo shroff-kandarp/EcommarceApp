@@ -3,6 +3,7 @@ package com.ecommarceapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -34,6 +35,8 @@ public class ProductDescriptionActivity extends AppCompatActivity {
     MTextView avgRatingsTxtView;
     MTextView totalRatingsTxtView;
     MTextView descriptionTxtView;
+    MTextView addToCartTxtView;
+    View wishListArea;
 
     GeneralFunctions generalFunc;
 
@@ -54,19 +57,22 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         loading_product_details = (ProgressBar) findViewById(R.id.loading_product_details);
         bannerSlider = (BannerSlider) findViewById(R.id.bannerSlider);
         errorView = (ErrorView) findViewById(R.id.errorView);
+        wishListArea = findViewById(R.id.wishListArea);
 
         productNameTxtView = (MTextView) findViewById(R.id.productNameTxtView);
         productPriceTxtView = (MTextView) findViewById(R.id.productPriceTxtView);
         avgRatingsTxtView = (MTextView) findViewById(R.id.avgRatingsTxtView);
         totalRatingsTxtView = (MTextView) findViewById(R.id.totalRatingsTxtView);
         descriptionTxtView = (MTextView) findViewById(R.id.descriptionTxtView);
+        addToCartTxtView = (MTextView) findViewById(R.id.addToCartTxtView);
 
         generalFunc = new GeneralFunctions(getActContext());
 
         setLabels();
 
         backImgView.setOnClickListener(new setOnClickList());
-
+        addToCartTxtView.setOnClickListener(new setOnClickList());
+        wishListArea.setOnClickListener(new setOnClickList());
         getProductDetails();
     }
 
@@ -84,9 +90,68 @@ public class ProductDescriptionActivity extends AppCompatActivity {
                 case R.id.backImgView:
                     ProductDescriptionActivity.super.onBackPressed();
                     break;
+                case R.id.addToCartTxtView:
+                    addItemToCart();
+                    break;
+                case R.id.wishListArea:
+                    addItemToWishList();
+                    break;
 
             }
         }
+    }
+
+    public void addItemToWishList() {
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "addProductToWishList");
+        parameters.put("product_id", getIntent().getStringExtra("product_id"));
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
+    }
+
+    public void addItemToCart() {
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "addProductToCart");
+        parameters.put("product_id", getIntent().getStringExtra("product_id"));
+        parameters.put("quantity", "1");
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
     }
 
     public void getProductDetails() {
@@ -133,10 +198,14 @@ public class ProductDescriptionActivity extends AppCompatActivity {
                         }
 
                         productNameTxtView.setText(generalFunc.getJsonValue("name", msgObj));
-                        avgRatingsTxtView.setText(generalFunc.getJsonValue("TotalRating", msgObj));
+                        avgRatingsTxtView.setText(generalFunc.getJsonValue("TotalRating", msgObj) + " *");
                         totalRatingsTxtView.setText(generalFunc.getJsonValue("TotalRatingCount", msgObj) + " Ratings");
                         productPriceTxtView.setText(generalFunc.getJsonValue("price", msgObj));
-                        descriptionTxtView.setText(Utils.html2text(generalFunc.getJsonValue("description", msgObj)));
+
+                        Utils.printLog("description", "::description::" + msgObj.toString());
+                        Utils.printLog("description", "::11description::" + generalFunc.getJsonValue("description", msgObj));
+                        descriptionTxtView.setText(Html.fromHtml(Utils.html2text(generalFunc.getJsonValue("description", msgObj))));
+
                         setBannerData(banners);
 
                         contentView.setVisibility(View.VISIBLE);
