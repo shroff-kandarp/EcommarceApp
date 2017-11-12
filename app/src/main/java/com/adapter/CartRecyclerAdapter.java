@@ -47,7 +47,7 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public interface OnItemClickListener {
-        void onItemClickList(View v, int position);
+        void onItemClickList(View v, int btn_type, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener mItemClickListener) {
@@ -84,18 +84,26 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             viewHolder.itemNameTxtView.setText(Html.fromHtml(item.get("name")));
             viewHolder.itemPriceTxtView.setText(item.get("price"));
-            viewHolder.itemDescTxtView.setText(Html.fromHtml(item.get("description")));
+            viewHolder.itemQuantityTxtView.setText("QTY: " + item.get("quantity"));
 
             Picasso.with(mContext)
                     .load(item.get("image"))
                     .into(viewHolder.itemImgView);
 
 
+            viewHolder.removeItemArea.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClickList(view, 0, position);
+                    }
+                }
+            });
             viewHolder.contentArea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mItemClickListener != null) {
-                        mItemClickListener.onItemClickList(view, position);
+                        mItemClickListener.onItemClickList(view, -1, position);
                     }
                 }
             });
@@ -108,29 +116,29 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
             this.footerHolder = footerHolder;
         }
-
-
     }
 
     // inner class to hold a reference to each item of RecyclerView
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public MTextView itemNameTxtView;
-        public MTextView itemDescTxtView;
         public MTextView itemPriceTxtView;
-        public AppCompatImageView wishlistImgView;
+        public MTextView itemQuantityTxtView;
         public AppCompatImageView itemImgView;
+        public View removeItemArea;
+        public View editItemArea;
         public View contentArea;
 
         public ViewHolder(View view) {
             super(view);
 
             itemNameTxtView = (MTextView) view.findViewById(R.id.itemNameTxtView);
-            itemDescTxtView = (MTextView) view.findViewById(R.id.itemDescTxtView);
             itemPriceTxtView = (MTextView) view.findViewById(R.id.itemPriceTxtView);
+            itemQuantityTxtView = (MTextView) view.findViewById(R.id.itemQuantityTxtView);
             itemImgView = (AppCompatImageView) view.findViewById(R.id.itemImgView);
-            wishlistImgView = (AppCompatImageView) view.findViewById(R.id.wishlistImgView);
-            contentArea = view.findViewById(R.id.cardview);
+            removeItemArea = view.findViewById(R.id.removeItemArea);
+            editItemArea = view.findViewById(R.id.editItemArea);
+            contentArea = view.findViewById(R.id.contentArea);
         }
     }
 

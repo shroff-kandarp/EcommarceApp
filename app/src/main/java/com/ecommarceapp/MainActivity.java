@@ -54,6 +54,8 @@ public class MainActivity extends BaseActivity implements DrawerMenuRecycleAdapt
     ArrayList<HashMap<String, String>> menuDataList = new ArrayList<>();
 
     ImageView menuImgView;
+    ImageView cartImgView;
+    ImageView searchImgView;
     public DrawerLayout mDrawerLayout;
 
     @Override
@@ -64,6 +66,8 @@ public class MainActivity extends BaseActivity implements DrawerMenuRecycleAdapt
         generalFunc = new GeneralFunctions(getActContext());
 
         menuImgView = (ImageView) findViewById(R.id.menuImgView);
+        searchImgView = (ImageView) findViewById(R.id.searchImgView);
+        cartImgView = (ImageView) findViewById(R.id.cartImgView);
         bannerSlider = (BannerSlider) findViewById(R.id.bannerSlider);
         categoryRecyclerView = (RecyclerView) findViewById(R.id.categoryRecyclerView);
         menuRecyclerView = (RecyclerView) findViewById(R.id.menuRecyclerView);
@@ -103,14 +107,21 @@ public class MainActivity extends BaseActivity implements DrawerMenuRecycleAdapt
                 if (data.get("TYPE").equals("" + MainPageCategoryRecycleAdapter.TYPE_ITEM)) {
                     Bundle bn = new Bundle();
                     bn.putString("product_id", data.get("product_id"));
+                    bn.putString("category_id", data.get("category_id"));
                     bn.putString("name", data.get("name"));
                     (new StartActProcess(getActContext())).startActWithData(ProductDescriptionActivity.class, bn);
+                } else if (data.get("TYPE").equals("" + MainPageCategoryRecycleAdapter.TYPE_HEADER)) {
+                    Bundle bn = new Bundle();
+                    bn.putString("category_id", data.get("category_id"));
+                    bn.putString("name", data.get("name"));
+                    (new StartActProcess(getActContext())).startActWithData(ListAllProductsActivity.class, bn);
                 }
             }
         });
 
         categoryRecyclerView.setLayoutManager(mLayoutManager);
-
+        cartImgView.setOnClickListener(new setOnClickList());
+        searchImgView.setOnClickListener(new setOnClickList());
         getBanners();
 
         generateCategories();
@@ -169,9 +180,16 @@ public class MainActivity extends BaseActivity implements DrawerMenuRecycleAdapt
 
     @Override
     public void onItemClickList(View v, int position) {
+        closeDrawer();
         switch (menuDataList.get(position).get("ID")) {
             case MENU_ALL_CATEGORIES:
                 (new StartActProcess(getActContext())).startAct(AllCategoriesActivity.class);
+                break;
+            case MENU_MY_WISH_LIST:
+                (new StartActProcess(getActContext())).startAct(WishListActivity.class);
+                break;
+            case MENU_MY_CART:
+                (new StartActProcess(getActContext())).startAct(UserCartActivity.class);
                 break;
         }
     }
@@ -184,6 +202,12 @@ public class MainActivity extends BaseActivity implements DrawerMenuRecycleAdapt
             switch (view.getId()) {
                 case R.id.menuImgView:
                     checkDrawerState();
+                    break;
+                case R.id.cartImgView:
+                    (new StartActProcess(getActContext())).startAct(UserCartActivity.class);
+                    break;
+                case R.id.searchImgView:
+                    (new StartActProcess(getActContext())).startAct(SearchProductsActivity.class);
                     break;
             }
         }

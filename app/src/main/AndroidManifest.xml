@@ -39,7 +39,10 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".AllCategoriesActivity" />
         <activity android:name=".ProductDescriptionActivity" />
-        <activity android:name=".UserCartActivity"></activity>
+        <activity android:name=".UserCartActivity" />
+        <activity android:name=".SearchProductsActivity" />
+        <activity android:name=".ListAllProductsActivity" />
+        <activity android:name=".WishListActivity"></activity>
     </application>
 
 </manifest>

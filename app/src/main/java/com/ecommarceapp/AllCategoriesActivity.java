@@ -3,14 +3,17 @@ package com.ecommarceapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.adapter.AllCategoriesRecyclerAdapter;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
+import com.general.files.StartActProcess;
 import com.utils.Utils;
 import com.view.ErrorView;
 import com.view.MTextView;
@@ -21,7 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AllCategoriesActivity extends AppCompatActivity {
+public class AllCategoriesActivity extends AppCompatActivity implements AllCategoriesRecyclerAdapter.OnItemClickListener {
     MTextView titleTxt;
     ImageView backImgView;
 
@@ -50,11 +53,28 @@ public class AllCategoriesActivity extends AppCompatActivity {
         adapter = new AllCategoriesRecyclerAdapter(getActContext(), dataList, generalFunc, false);
         dataRecyclerView.setAdapter(adapter);
         dataRecyclerView.setNestedScrollingEnabled(false);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dataRecyclerView.getContext(),
+                LinearLayout.VERTICAL);
+        dataRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        adapter.setOnItemClickListener(this);
         setLabels();
 
         backImgView.setOnClickListener(new setOnClickList());
 
         loadAllCategories();
+    }
+
+    @Override
+    public void onItemClickList(View v, int position) {
+        HashMap<String, String> data = dataList.get(position);
+        if (data.get("TYPE").equals("" + adapter.TYPE_HEADER)) {
+            Bundle bn = new Bundle();
+            bn.putString("category_id", data.get("category_id"));
+            bn.putString("name", data.get("name"));
+            (new StartActProcess(getActContext())).startActWithData(ListAllProductsActivity.class, bn);
+        }
     }
 
     public class setOnClickList implements View.OnClickListener {

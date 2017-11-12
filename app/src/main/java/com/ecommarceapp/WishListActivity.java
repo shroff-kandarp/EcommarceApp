@@ -2,12 +2,13 @@ package com.ecommarceapp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.adapter.CartRecyclerAdapter;
+import com.adapter.WishListRecycleAdapter;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
@@ -21,7 +22,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UserCartActivity extends BaseActivity implements CartRecyclerAdapter.OnItemClickListener {
+public class WishListActivity extends AppCompatActivity implements WishListRecycleAdapter.OnItemClickListener {
+
 
     MTextView titleTxt;
     ImageView backImgView;
@@ -29,55 +31,46 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
     GeneralFunctions generalFunc;
     ErrorView errorView;
     ProgressBar loading;
-    MTextView totalPriceTxtView;
-    MTextView makePayTxtView;
-
-    View layout_payment;
-
-    View layout_cart_empty;
 
     ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
 
     RecyclerView dataRecyclerView;
-    CartRecyclerAdapter adapter;
+    WishListRecycleAdapter adapter;
+
+    MTextView noProductsTxtView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_cart);
+        setContentView(R.layout.activity_wish_list);
 
         generalFunc = new GeneralFunctions(getActContext());
 
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
         backImgView = (ImageView) findViewById(R.id.backImgView);
-
-        layout_cart_empty = findViewById(R.id.layout_cart_empty);
         dataRecyclerView = (RecyclerView) findViewById(R.id.dataRecyclerView);
         loading = (ProgressBar) findViewById(R.id.loading);
-        totalPriceTxtView = (MTextView) findViewById(R.id.totalPriceTxtView);
-        makePayTxtView = (MTextView) findViewById(R.id.makePayTxtView);
         errorView = (ErrorView) findViewById(R.id.errorView);
-        layout_payment = findViewById(R.id.layout_payment);
+        noProductsTxtView = (MTextView) findViewById(R.id.noProductsTxtView);
 
         backImgView.setOnClickListener(new setOnClickList());
 
 
-        adapter = new CartRecyclerAdapter(getActContext(), dataList, generalFunc, false);
+        adapter = new WishListRecycleAdapter(getActContext(), dataList, generalFunc, false);
         dataRecyclerView.setAdapter(adapter);
         dataRecyclerView.setNestedScrollingEnabled(false);
 
         adapter.setOnItemClickListener(this);
         setLabels();
 
-        getUserCart();
+        getUserWishList();
     }
-
 
     public void setLabels() {
-        titleTxt.setText("Cart");
+        titleTxt.setText("My Wishlist");
     }
 
-    public void getUserCart() {
+    public void getUserWishList() {
         dataList.clear();
         adapter.notifyDataSetChanged();
         if (errorView.getVisibility() == View.VISIBLE) {
@@ -88,7 +81,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
         }
 
         HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("type", "getUserCart");
+        parameters.put("type", "getUserWishList");
         parameters.put("customer_id", generalFunc.getMemberId());
 
         ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
@@ -113,8 +106,6 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
                         dataList.clear();
                         adapter.notifyDataSetChanged();
 
-                        layout_payment.setVisibility(View.VISIBLE);
-                        totalPriceTxtView.setText(generalFunc.getJsonValue("TotalPrice", responseString));
 
                         if (msgArr != null) {
 
@@ -127,19 +118,17 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
                                 String productId = generalFunc.getJsonValue("product_id", obj_cart);
                                 String price = generalFunc.getJsonValue("price", obj_cart);
                                 String category_id = generalFunc.getJsonValue("category_id", obj_cart);
-                                String cart_id = generalFunc.getJsonValue("cart_id", obj_cart);
-                                String quantity = generalFunc.getJsonValue("quantity", obj_cart);
+                                String iWishListId = generalFunc.getJsonValue("iWishListId", obj_cart);
 
                                 HashMap<String, String> dataMap_products = new HashMap<>();
                                 dataMap_products.put("name", productName);
-                                dataMap_products.put("cart_id", cart_id);
+                                dataMap_products.put("iWishListId", iWishListId);
                                 dataMap_products.put("category_id", category_id);
                                 dataMap_products.put("product_id", productId);
                                 dataMap_products.put("price", price);
                                 dataMap_products.put("description", Utils.html2text(productDes));
                                 dataMap_products.put("image", productImg);
-                                dataMap_products.put("quantity", quantity);
-                                dataMap_products.put("TYPE", "" + CartRecyclerAdapter.TYPE_ITEM);
+                                dataMap_products.put("TYPE", "" + WishListRecycleAdapter.TYPE_ITEM);
 
                                 dataList.add(dataMap_products);
 
@@ -149,7 +138,8 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
                             adapter.notifyDataSetChanged();
                         }
                     } else {
-                        layout_cart_empty.setVisibility(View.VISIBLE);
+                        noProductsTxtView.setText(generalFunc.getJsonValue(Utils.message_str, responseString));
+                        noProductsTxtView.setVisibility(View.VISIBLE);
                     }
                     closeLoader();
                 } else {
@@ -173,22 +163,22 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
                 (new StartActProcess(getActContext())).startActWithData(ProductDescriptionActivity.class, bn);
                 break;
             case 0:
-                deleteItemFromCart(position);
+                deleteItemFromWishList(position);
                 break;
             case 1:
                 break;
         }
     }
 
-    public void deleteItemFromCart(int position) {
+    public void deleteItemFromWishList(int position) {
         HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("type", "deleteItemFromCart");
+        parameters.put("type", "deleteItemFromWishList");
         parameters.put("product_id", dataList.get(position).get("product_id"));
         parameters.put("category_id", dataList.get(position).get("category_id"));
-        parameters.put("cart_id", dataList.get(position).get("cart_id"));
+        parameters.put("iWishListId", dataList.get(position).get("iWishListId"));
         parameters.put("customer_id", "" + generalFunc.getMemberId());
 
-        Utils.printLog("deleteFromCartParameters", "::" + parameters.toString());
+        Utils.printLog("deleteFromWishListParameters", "::" + parameters.toString());
         ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
         exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
         exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
@@ -202,7 +192,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
 
                     generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
 
-                    getUserCart();
+                    getUserWishList();
                 } else {
                     generalFunc.showError();
                 }
@@ -218,7 +208,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.backImgView:
-                    UserCartActivity.super.onBackPressed();
+                    WishListActivity.super.onBackPressed();
                     break;
             }
         }
@@ -242,14 +232,13 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
         errorView.setOnRetryListener(new ErrorView.RetryListener() {
             @Override
             public void onRetry() {
-                getUserCart();
+                getUserWishList();
             }
         });
     }
 
 
     public Context getActContext() {
-        return UserCartActivity.this;
+        return WishListActivity.this;
     }
-
 }

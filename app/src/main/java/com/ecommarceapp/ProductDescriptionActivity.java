@@ -105,8 +105,10 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("type", "addProductToWishList");
         parameters.put("product_id", getIntent().getStringExtra("product_id"));
+        parameters.put("category_id", getIntent().getStringExtra("category_id"));
         parameters.put("customer_id", "" + generalFunc.getMemberId());
 
+        Utils.printLog("WishListParameters::", "::" + parameters.toString());
         ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
         exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
         exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
@@ -131,6 +133,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("type", "addProductToCart");
         parameters.put("product_id", getIntent().getStringExtra("product_id"));
+        parameters.put("category_id", getIntent().getStringExtra("category_id"));
         parameters.put("quantity", "1");
         parameters.put("customer_id", "" + generalFunc.getMemberId());
 

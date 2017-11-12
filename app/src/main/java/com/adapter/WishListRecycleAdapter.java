@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.ecommarceapp.R;
-import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.squareup.picasso.Picasso;
 import com.utils.Utils;
@@ -20,10 +19,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Admin on 09-07-2016.
+ * Created by Shroff on 13-Nov-17.
  */
-public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+public class WishListRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<HashMap<String, String>> list;
     Context mContext;
     public GeneralFunctions generalFunc;
@@ -39,7 +38,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
 
     FooterViewHolder footerHolder;
 
-    public MainPageCategoryRecycleAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
+    public WishListRecycleAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
         this.mContext = mContext;
         this.list = list;
         this.generalFunc = generalFunc;
@@ -47,7 +46,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
     }
 
     public interface OnItemClickListener {
-        void onItemClickList(View v, int position);
+        void onItemClickList(View v, int btn_type, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener mItemClickListener) {
@@ -63,9 +62,10 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             return new FooterViewHolder(v);
         } else if (viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_name, parent, false);
+            v.setBackgroundColor(mContext.getResources().getColor(android.R.color.transparent));
             return new HeaderViewHolder(v);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_design, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_wishlist_item, parent, false);
             return new ViewHolder(view);
         }
 
@@ -80,111 +80,68 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             final HashMap<String, String> item = list.get(position);
             final ViewHolder viewHolder = (ViewHolder) holder;
 
-            Utils.printLog("Price", "::" + item.get("price"));
 
             viewHolder.itemNameTxtView.setText(Html.fromHtml(item.get("name")));
             viewHolder.itemPriceTxtView.setText(item.get("price"));
-            viewHolder.itemDescTxtView.setText(Html.fromHtml(item.get("description")));
 
             Picasso.with(mContext)
                     .load(item.get("image"))
                     .into(viewHolder.itemImgView);
 
 
+            viewHolder.removeItemArea.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClickList(view, 0, position);
+                    }
+                }
+            });
             viewHolder.contentArea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mItemClickListener != null) {
-                        mItemClickListener.onItemClickList(view, position);
+                        mItemClickListener.onItemClickList(view, -1, position);
                     }
-                }
-            });
-
-            viewHolder.wishlistImgView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    addItemToWishList(item.get("product_id"), item.get("category_id"));
                 }
             });
         } else if (holder instanceof HeaderViewHolder) {
             final HashMap<String, String> item = list.get(position);
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             headerHolder.categoryNameTxtView.setText(Html.fromHtml(item.get("name")));
-            headerHolder.contentArea.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mItemClickListener != null) {
-                        mItemClickListener.onItemClickList(view, position);
-                    }
-                }
-            });
+//            Utils.printLog("CCN","::"+item.get("name"));
         } else {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
             this.footerHolder = footerHolder;
         }
-
-
-    }
-
-    public void addItemToWishList(String product_id, String category_id) {
-        HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("type", "addProductToWishList");
-        parameters.put("product_id", product_id);
-        parameters.put("category_id", category_id);
-        parameters.put("customer_id", "" + generalFunc.getMemberId());
-
-        Utils.printLog("WishListParameters::", "::" + parameters.toString());
-
-        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
-        exeWebServer.setLoaderConfig(mContext, true, generalFunc);
-        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
-        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
-            @Override
-            public void setResponse(final String responseString) {
-
-                Utils.printLog("ResponseData", "Data::" + responseString);
-
-                if (responseString != null && !responseString.equals("")) {
-
-                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
-                } else {
-                    generalFunc.showError();
-                }
-            }
-        });
-        exeWebServer.execute();
     }
 
     // inner class to hold a reference to each item of RecyclerView
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public MTextView itemNameTxtView;
-        public MTextView itemDescTxtView;
         public MTextView itemPriceTxtView;
-        public AppCompatImageView wishlistImgView;
         public AppCompatImageView itemImgView;
+        public View removeItemArea;
         public View contentArea;
 
         public ViewHolder(View view) {
             super(view);
 
             itemNameTxtView = (MTextView) view.findViewById(R.id.itemNameTxtView);
-            itemDescTxtView = (MTextView) view.findViewById(R.id.itemDescTxtView);
             itemPriceTxtView = (MTextView) view.findViewById(R.id.itemPriceTxtView);
             itemImgView = (AppCompatImageView) view.findViewById(R.id.itemImgView);
-            wishlistImgView = (AppCompatImageView) view.findViewById(R.id.wishlistImgView);
-            contentArea = view.findViewById(R.id.cardview);
+            removeItemArea = view.findViewById(R.id.removeItemArea);
+            contentArea = view.findViewById(R.id.contentArea);
         }
     }
 
     class FooterViewHolder extends RecyclerView.ViewHolder {
         LinearLayout progressArea;
 
-        public View contentArea;
         public FooterViewHolder(View itemView) {
             super(itemView);
-            contentArea = itemView;
+
             progressArea = (LinearLayout) itemView;
 
         }
@@ -193,10 +150,9 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
     class HeaderViewHolder extends RecyclerView.ViewHolder {
         MTextView categoryNameTxtView;
 
-        public View contentArea;
         public HeaderViewHolder(View itemView) {
             super(itemView);
-            contentArea = itemView;
+
             categoryNameTxtView = (MTextView) itemView.findViewById(R.id.categoryNameTxtView);
 
         }

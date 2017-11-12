@@ -46,15 +46,6 @@
                 android:textSize="@dimen/text_size_xmedium" />
 
 
-            <com.view.MTextView
-                android:id="@+id/itemQuantityTxtView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small"
-                android:text="QTY: 1"
-                android:textSize="@dimen/text_size_small" />
-
-
         </LinearLayout>
     </LinearLayout>
 
@@ -68,17 +59,17 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/removeItemArea"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp">
 
             <ImageView
                 android:layout_width="18dp"
@@ -89,41 +80,9 @@
                 android:id="@+id/text_action1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:gravity="left"
+                android:layout_marginStart="8dp"
+                android:gravity="start"
                 android:text="Remove"
-                android:textColor="@color/gen_black"
-                android:textSize="12dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="@dimen/view_width_small"
-            android:layout_height="match_parent"
-            android:background="@color/grey_light" />
-
-        <LinearLayout
-            android:id="@+id/editItemArea"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@mipmap/ic_edit" />
-
-            <TextView
-                android:id="@+id/text_action2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="Edit"
                 android:textColor="@color/gen_black"
                 android:textSize="12dp" />
         </LinearLayout>

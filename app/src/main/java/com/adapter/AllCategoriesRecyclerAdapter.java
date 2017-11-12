@@ -103,6 +103,15 @@ public class AllCategoriesRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
             final HashMap<String, String> item = list.get(position);
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             headerHolder.categoryNameTxtView.setText(Html.fromHtml(item.get("name")));
+
+            headerHolder.contentArea.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClickList(view, position);
+                    }
+                }
+            });
 //            Utils.printLog("CCN","::"+item.get("name"));
         } else {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
@@ -136,10 +145,11 @@ public class AllCategoriesRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
 
     class FooterViewHolder extends RecyclerView.ViewHolder {
         LinearLayout progressArea;
+        View contentArea;
 
         public FooterViewHolder(View itemView) {
             super(itemView);
-
+            contentArea = itemView;
             progressArea = (LinearLayout) itemView;
 
         }
@@ -147,10 +157,10 @@ public class AllCategoriesRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
         MTextView categoryNameTxtView;
-
+        View contentArea;
         public HeaderViewHolder(View itemView) {
             super(itemView);
-
+            contentArea = itemView;
             categoryNameTxtView = (MTextView) itemView.findViewById(R.id.categoryNameTxtView);
 
         }
