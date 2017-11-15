@@ -225,7 +225,7 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.backImgView:
-                    SearchProductsActivity.super.onBackPressed();
+                    onBackPressed();
                     break;
 
             }

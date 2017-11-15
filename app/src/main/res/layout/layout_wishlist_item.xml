@@ -44,8 +44,6 @@
                 android:text="Rs. 8,999"
                 android:textColor="#4CAF50"
                 android:textSize="@dimen/text_size_xmedium" />
-
-
         </LinearLayout>
     </LinearLayout>
 
@@ -83,6 +81,37 @@
                 android:layout_marginStart="8dp"
                 android:gravity="start"
                 android:text="Remove"
+                android:textColor="@color/gen_black"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/view_width_small"
+            android:layout_height="match_parent"
+            android:background="@color/grey_light" />
+
+        <LinearLayout
+            android:id="@+id/moveItemArea"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@mipmap/ic_cart_add"
+                android:tint="#1c1c1c" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="start"
+                android:text="Move to cart"
                 android:textColor="@color/gen_black"
                 android:textSize="12dp" />
         </LinearLayout>

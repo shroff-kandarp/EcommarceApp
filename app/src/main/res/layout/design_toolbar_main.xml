@@ -31,6 +31,7 @@
                 android:tint="@color/appThemeColor_TXT_1" />
 
             <com.view.MTextView
+                android:id="@+id/titleTxt"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

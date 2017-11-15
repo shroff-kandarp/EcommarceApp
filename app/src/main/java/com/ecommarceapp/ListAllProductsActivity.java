@@ -6,10 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.adapter.MainPageCategoryRecycleAdapter;
+import com.general.files.AddDrawer;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
@@ -26,7 +26,6 @@ import java.util.HashMap;
 public class ListAllProductsActivity extends AppCompatActivity {
 
     MTextView titleTxt;
-    ImageView backImgView;
     GeneralFunctions generalFunc;
 
     ProgressBar loading;
@@ -38,6 +37,8 @@ public class ListAllProductsActivity extends AppCompatActivity {
     MainPageCategoryRecycleAdapter adapter;
     ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
 
+    AddDrawer addDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +47,9 @@ public class ListAllProductsActivity extends AppCompatActivity {
 
         generalFunc = new GeneralFunctions(getActContext());
 
+        addDrawer = new AddDrawer(getActContext());
+
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
-        backImgView = (ImageView) findViewById(R.id.backImgView);
         noProductsTxtView = (MTextView) findViewById(R.id.noProductsTxtView);
 
         productsRecyclerView = (RecyclerView) findViewById(R.id.productsRecyclerView);
@@ -96,7 +98,6 @@ public class ListAllProductsActivity extends AppCompatActivity {
 
         productsRecyclerView.setLayoutManager(mLayoutManager);
 
-        backImgView.setOnClickListener(new setOnClickList());
         setLabels();
 
         findProducts(getIntent().getStringExtra("category_id"));

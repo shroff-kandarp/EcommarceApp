@@ -331,7 +331,7 @@ public class GeneralFunctions {
     }
 
 
-    public Integer parseInt(int orig, String value) {
+    public static Integer parseInt(int orig, String value) {
 
         try {
             int value_int = Integer.parseInt(value);
@@ -369,7 +369,7 @@ public class GeneralFunctions {
         ActivityCompat.finishAffinity((Activity) mContext);
     }
 
-    public View getCurrentView(Activity act) {
+    public static View getCurrentView(Activity act) {
         View view = act.findViewById(android.R.id.content);
         return view;
     }
@@ -403,4 +403,6 @@ public class GeneralFunctions {
                 .retryTextColor(mContext.getResources().getColor(R.color.error_view_retry_btn_txt_color))
                 .build());
     }
+
+
 }

@@ -6,11 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.adapter.AllCategoriesRecyclerAdapter;
+import com.general.files.AddDrawer;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 public class AllCategoriesActivity extends AppCompatActivity implements AllCategoriesRecyclerAdapter.OnItemClickListener {
     MTextView titleTxt;
-    ImageView backImgView;
+//    ImageView backImgView;
 
     GeneralFunctions generalFunc;
     ProgressBar loading;
@@ -37,6 +37,8 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
 
     ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
 
+    AddDrawer addDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +46,10 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
 
         generalFunc = new GeneralFunctions(getActContext());
 
+        addDrawer = new AddDrawer(getActContext());
+
         dataRecyclerView = (RecyclerView) findViewById(R.id.dataRecyclerView);
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
-        backImgView = (ImageView) findViewById(R.id.backImgView);
         loading = (ProgressBar) findViewById(R.id.loading);
         errorView = (ErrorView) findViewById(R.id.errorView);
 
@@ -60,8 +63,6 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
 
         adapter.setOnItemClickListener(this);
         setLabels();
-
-        backImgView.setOnClickListener(new setOnClickList());
 
         loadAllCategories();
     }

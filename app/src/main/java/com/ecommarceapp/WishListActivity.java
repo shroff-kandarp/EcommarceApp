@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.adapter.WishListRecycleAdapter;
+import com.general.files.AddDrawer;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
@@ -26,7 +26,6 @@ public class WishListActivity extends AppCompatActivity implements WishListRecyc
 
 
     MTextView titleTxt;
-    ImageView backImgView;
 
     GeneralFunctions generalFunc;
     ErrorView errorView;
@@ -38,6 +37,7 @@ public class WishListActivity extends AppCompatActivity implements WishListRecyc
     WishListRecycleAdapter adapter;
 
     MTextView noProductsTxtView;
+    AddDrawer addDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +45,13 @@ public class WishListActivity extends AppCompatActivity implements WishListRecyc
         setContentView(R.layout.activity_wish_list);
 
         generalFunc = new GeneralFunctions(getActContext());
+        addDrawer = new AddDrawer(getActContext());
 
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
-        backImgView = (ImageView) findViewById(R.id.backImgView);
         dataRecyclerView = (RecyclerView) findViewById(R.id.dataRecyclerView);
         loading = (ProgressBar) findViewById(R.id.loading);
         errorView = (ErrorView) findViewById(R.id.errorView);
         noProductsTxtView = (MTextView) findViewById(R.id.noProductsTxtView);
-
-        backImgView.setOnClickListener(new setOnClickList());
-
 
         adapter = new WishListRecycleAdapter(getActContext(), dataList, generalFunc, false);
         dataRecyclerView.setAdapter(adapter);
@@ -166,8 +163,40 @@ public class WishListActivity extends AppCompatActivity implements WishListRecyc
                 deleteItemFromWishList(position);
                 break;
             case 1:
+                moveProductToCart(position);
                 break;
         }
+    }
+
+    public void moveProductToCart(int position) {
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "moveProductToCart");
+        parameters.put("product_id", dataList.get(position).get("product_id"));
+        parameters.put("category_id", dataList.get(position).get("category_id"));
+        parameters.put("iWishListId", dataList.get(position).get("iWishListId"));
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        Utils.printLog("moveProductToCartParameters", "::" + parameters.toString());
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+
+                    getUserWishList();
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
     }
 
     public void deleteItemFromWishList(int position) {

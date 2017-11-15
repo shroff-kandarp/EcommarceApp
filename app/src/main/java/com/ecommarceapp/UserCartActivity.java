@@ -4,10 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.adapter.CartRecyclerAdapter;
+import com.general.files.AddDrawer;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
@@ -24,7 +24,6 @@ import java.util.HashMap;
 public class UserCartActivity extends BaseActivity implements CartRecyclerAdapter.OnItemClickListener {
 
     MTextView titleTxt;
-    ImageView backImgView;
 
     GeneralFunctions generalFunc;
     ErrorView errorView;
@@ -41,15 +40,17 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
     RecyclerView dataRecyclerView;
     CartRecyclerAdapter adapter;
 
+    AddDrawer addDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_cart);
 
         generalFunc = new GeneralFunctions(getActContext());
+        addDrawer = new AddDrawer(getActContext());
 
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
-        backImgView = (ImageView) findViewById(R.id.backImgView);
 
         layout_cart_empty = findViewById(R.id.layout_cart_empty);
         dataRecyclerView = (RecyclerView) findViewById(R.id.dataRecyclerView);
@@ -58,9 +59,6 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
         makePayTxtView = (MTextView) findViewById(R.id.makePayTxtView);
         errorView = (ErrorView) findViewById(R.id.errorView);
         layout_payment = findViewById(R.id.layout_payment);
-
-        backImgView.setOnClickListener(new setOnClickList());
-
 
         adapter = new CartRecyclerAdapter(getActContext(), dataList, generalFunc, false);
         dataRecyclerView.setAdapter(adapter);
@@ -80,6 +78,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
     public void getUserCart() {
         dataList.clear();
         adapter.notifyDataSetChanged();
+        layout_payment.setVisibility(View.GONE);
         if (errorView.getVisibility() == View.VISIBLE) {
             errorView.setVisibility(View.GONE);
         }
@@ -130,6 +129,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
                                 String cart_id = generalFunc.getJsonValue("cart_id", obj_cart);
                                 String quantity = generalFunc.getJsonValue("quantity", obj_cart);
 
+                                Utils.printLog("quantity", "::" + quantity);
                                 HashMap<String, String> dataMap_products = new HashMap<>();
                                 dataMap_products.put("name", productName);
                                 dataMap_products.put("cart_id", cart_id);
@@ -178,6 +178,81 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
             case 1:
                 break;
         }
+    }
+
+    @Override
+    public void onQTYChangeList(View v, int quantity, int position) {
+        changeQuantity(quantity, position);
+    }
+
+    @Override
+    public void onMoveToWishClickList(View v, int position) {
+        moveProductToWishList(position);
+    }
+
+    public void moveProductToWishList(int position) {
+
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "moveItemToWishList");
+        parameters.put("product_id", dataList.get(position).get("product_id"));
+        parameters.put("category_id", dataList.get(position).get("category_id"));
+        parameters.put("cart_id", dataList.get(position).get("cart_id"));
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        Utils.printLog("changeQuantityParameters", "::" + parameters.toString());
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+
+                    getUserCart();
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
+    }
+
+    public void changeQuantity(int quantity, int position) {
+        Utils.printLog("quantity", ":m:" + quantity);
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "changeQuantity");
+        parameters.put("product_id", dataList.get(position).get("product_id"));
+        parameters.put("category_id", dataList.get(position).get("category_id"));
+        parameters.put("cart_id", dataList.get(position).get("cart_id"));
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+        parameters.put("quantity", "" + quantity);
+
+        Utils.printLog("changeQuantityParameters", "::" + parameters.toString());
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+
+                    getUserCart();
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
     }
 
     public void deleteItemFromCart(int position) {

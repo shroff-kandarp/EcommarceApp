@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bannerslider.banners.Banner;
 import com.bannerslider.banners.RemoteBanner;
 import com.bannerslider.events.OnBannerClickListener;
 import com.bannerslider.views.BannerSlider;
+import com.general.files.AddDrawer;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.utils.Utils;
@@ -28,7 +28,6 @@ import java.util.List;
 public class ProductDescriptionActivity extends AppCompatActivity {
 
     MTextView titleTxt;
-    ImageView backImgView;
 
     MTextView productNameTxtView;
     MTextView productPriceTxtView;
@@ -46,13 +45,17 @@ public class ProductDescriptionActivity extends AppCompatActivity {
 
     BannerSlider bannerSlider;
 
+    AddDrawer addDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_description);
 
+        generalFunc = new GeneralFunctions(getActContext());
+        addDrawer = new AddDrawer(getActContext());
+
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
-        backImgView = (ImageView) findViewById(R.id.backImgView);
         contentView = findViewById(R.id.contentView);
         loading_product_details = (ProgressBar) findViewById(R.id.loading_product_details);
         bannerSlider = (BannerSlider) findViewById(R.id.bannerSlider);
@@ -66,11 +69,9 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         descriptionTxtView = (MTextView) findViewById(R.id.descriptionTxtView);
         addToCartTxtView = (MTextView) findViewById(R.id.addToCartTxtView);
 
-        generalFunc = new GeneralFunctions(getActContext());
 
         setLabels();
 
-        backImgView.setOnClickListener(new setOnClickList());
         addToCartTxtView.setOnClickListener(new setOnClickList());
         wishListArea.setOnClickListener(new setOnClickList());
         getProductDetails();

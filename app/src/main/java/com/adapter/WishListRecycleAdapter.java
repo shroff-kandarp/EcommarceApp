@@ -97,6 +97,14 @@ public class WishListRecycleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 }
             });
+            viewHolder.moveItemArea.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClickList(view, 1, position);
+                    }
+                }
+            });
             viewHolder.contentArea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -123,6 +131,7 @@ public class WishListRecycleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public MTextView itemPriceTxtView;
         public AppCompatImageView itemImgView;
         public View removeItemArea;
+        public View moveItemArea;
         public View contentArea;
 
         public ViewHolder(View view) {
@@ -132,6 +141,7 @@ public class WishListRecycleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemPriceTxtView = (MTextView) view.findViewById(R.id.itemPriceTxtView);
             itemImgView = (AppCompatImageView) view.findViewById(R.id.itemImgView);
             removeItemArea = view.findViewById(R.id.removeItemArea);
+            moveItemArea = view.findViewById(R.id.moveItemArea);
             contentArea = view.findViewById(R.id.contentArea);
         }
     }

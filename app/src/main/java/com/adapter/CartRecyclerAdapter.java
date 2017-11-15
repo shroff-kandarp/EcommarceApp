@@ -1,18 +1,23 @@
 package com.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import com.ecommarceapp.R;
 import com.general.files.GeneralFunctions;
 import com.squareup.picasso.Picasso;
 import com.utils.Utils;
+import com.view.CreateRoundedView;
 import com.view.MTextView;
 
 import java.util.ArrayList;
@@ -48,6 +53,10 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public interface OnItemClickListener {
         void onItemClickList(View v, int btn_type, int position);
+
+        void onQTYChangeList(View v, int quantity, int position);
+
+        void onMoveToWishClickList(View v, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener mItemClickListener) {
@@ -84,12 +93,11 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             viewHolder.itemNameTxtView.setText(Html.fromHtml(item.get("name")));
             viewHolder.itemPriceTxtView.setText(item.get("price"));
-            viewHolder.itemQuantityTxtView.setText("QTY: " + item.get("quantity"));
-
+//            viewHolder.itemQuantityTxtView.setText("QTY: " + item.get("quantity"));
+            buildQTYData(viewHolder.qtySpinner, viewHolder.qtyArea, GeneralFunctions.parseInt(1, item.get("quantity")));
             Picasso.with(mContext)
                     .load(item.get("image"))
                     .into(viewHolder.itemImgView);
-
 
             viewHolder.removeItemArea.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -107,6 +115,33 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                 }
             });
+            viewHolder.editItemArea.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onMoveToWishClickList(view, position);
+                    }
+                }
+            });
+
+
+            final int[] iCurrentSelection = {viewHolder.qtySpinner.getSelectedItemPosition()};
+            viewHolder.qtySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    if (iCurrentSelection[0] != i) {
+                        // Your code here
+                        if (mItemClickListener != null) {
+                            mItemClickListener.onQTYChangeList(view, viewHolder.qtySpinner.getSelectedItemPosition() + 1, position);
+                        }
+                    }
+                    iCurrentSelection[0] = i;
+                }
+
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    return;
+                }
+            });
+
         } else if (holder instanceof HeaderViewHolder) {
             final HashMap<String, String> item = list.get(position);
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
@@ -118,27 +153,51 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
+    public void buildQTYData(AppCompatSpinner spinner, View qtyArea, int currentQTY) {
+        ArrayList<String> qtyData = new ArrayList<>();
+
+        int qtySelectedPosition = 0;
+        for (int i = 1; i < 6; i++) {
+            qtyData.add("QTY: " + i);
+            if (currentQTY == i) {
+                qtySelectedPosition = qtyData.size() - 1;
+            }
+        }
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, qtyData);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
+        spinner.setSelection(qtySelectedPosition);
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(mContext, 5), Utils.dipToPixels(mContext, 1), Color.parseColor("#DEDEDE"), spinner);
+    }
+
     // inner class to hold a reference to each item of RecyclerView
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public MTextView itemNameTxtView;
         public MTextView itemPriceTxtView;
-        public MTextView itemQuantityTxtView;
+        public AppCompatSpinner qtySpinner;
         public AppCompatImageView itemImgView;
         public View removeItemArea;
         public View editItemArea;
         public View contentArea;
+        public View qtyArea;
 
         public ViewHolder(View view) {
             super(view);
 
             itemNameTxtView = (MTextView) view.findViewById(R.id.itemNameTxtView);
             itemPriceTxtView = (MTextView) view.findViewById(R.id.itemPriceTxtView);
-            itemQuantityTxtView = (MTextView) view.findViewById(R.id.itemQuantityTxtView);
+            qtySpinner = (AppCompatSpinner) view.findViewById(R.id.qtySpinner);
             itemImgView = (AppCompatImageView) view.findViewById(R.id.itemImgView);
             removeItemArea = view.findViewById(R.id.removeItemArea);
             editItemArea = view.findViewById(R.id.editItemArea);
             contentArea = view.findViewById(R.id.contentArea);
+            qtyArea = view.findViewById(R.id.qtyArea);
         }
     }
 
