@@ -2,8 +2,8 @@ package com.general.files;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -142,9 +142,13 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         closeDrawer();
         switch (menuDataList.get(position).get("ID")) {
             case MENU_HOME:
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                mContext.startActivity(intent);
+                if (!(mContext instanceof MainActivity)) {
+//                    Intent intent = new Intent(mContext, MainActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    mContext.startActivity(intent);
+                    (new StartActProcess(getActContext())).startAct(MainActivity.class);
+                    ActivityCompat.finishAffinity((Activity) mContext);
+                }
 //                (new StartActProcess(getActContext())).startAct(MainActivity.class);
                 break;
             case MENU_ALL_CATEGORIES:

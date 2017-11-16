@@ -1,7 +1,9 @@
 package com.ecommarceapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
 import com.general.files.GeneralFunctions;
@@ -59,7 +61,10 @@ public class AppLoginActivity extends BaseActivity {
                 (new StartActProcess(getActContext())).startAct(RegisterActivity.class);
 
             } else if (i == skipTxtView.getId()) {
+//                (new StartActProcess(getActContext())).startAct(MainActivity.class);
+
                 (new StartActProcess(getActContext())).startAct(MainActivity.class);
+                ActivityCompat.finishAffinity((Activity) getActContext());
             }
         }
     }
