@@ -100,7 +100,14 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if (addDrawer != null) {
+            addDrawer.findUserCartCount();
+        }
+    }
     public void getBanners() {
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("type", "getBanners");

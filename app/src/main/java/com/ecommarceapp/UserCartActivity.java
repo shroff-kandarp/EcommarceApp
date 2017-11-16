@@ -70,7 +70,14 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
         getUserCart();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if (addDrawer != null) {
+            addDrawer.findUserCartCount();
+        }
+    }
     public void setLabels() {
         titleTxt.setText("Cart");
     }

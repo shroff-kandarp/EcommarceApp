@@ -103,6 +103,14 @@ public class ListAllProductsActivity extends AppCompatActivity {
         findProducts(getIntent().getStringExtra("category_id"));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (addDrawer != null) {
+            addDrawer.findUserCartCount();
+        }
+    }
     public void setLabels() {
         titleTxt.setText(getIntent().getStringExtra("name"));
     }

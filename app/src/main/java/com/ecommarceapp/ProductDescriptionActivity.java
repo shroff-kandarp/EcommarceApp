@@ -77,7 +77,14 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         getProductDetails();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if (addDrawer != null) {
+            addDrawer.findUserCartCount();
+        }
+    }
     public void setLabels() {
         titleTxt.setText(getIntent().getStringExtra("name"));
     }

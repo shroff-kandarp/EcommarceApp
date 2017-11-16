@@ -62,16 +62,37 @@
                 android:src="@mipmap/ic_notification"
                 android:tint="@color/appThemeColor_TXT_1" />
 
-            <ImageView
-                android:id="@+id/cartImgView"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+            <RelativeLayout
+                android:id="@+id/cartArea"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="0"
-                android:padding="10dp"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/ic_cart"
-                android:tint="@color/appThemeColor_TXT_1" />
+                android:layout_weight="0">
+
+                <ImageView
+                    android:id="@+id/cartImgView"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_cart"
+                    android:tint="@color/appThemeColor_TXT_1" />
+
+                <com.view.MTextView
+                    android:id="@+id/cartCountTxt"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="8dp"
+                    android:text="5"
+                    android:visibility="gone"
+                    android:textColor="@color/appThemeColor_TXT_1"
+                    android:textSize="@dimen/txt_size_14" />
+            </RelativeLayout>
         </LinearLayout>
 
 

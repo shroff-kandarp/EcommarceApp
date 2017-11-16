@@ -2,6 +2,8 @@ package com.general.files;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -10,10 +12,14 @@ import android.widget.ImageView;
 
 import com.adapter.DrawerMenuRecycleAdapter;
 import com.ecommarceapp.AllCategoriesActivity;
+import com.ecommarceapp.MainActivity;
 import com.ecommarceapp.R;
 import com.ecommarceapp.SearchProductsActivity;
 import com.ecommarceapp.UserCartActivity;
 import com.ecommarceapp.WishListActivity;
+import com.utils.Utils;
+import com.view.CreateRoundedView;
+import com.view.MTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,8 +51,10 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
     ImageView menuImgView;
     ImageView cartImgView;
     ImageView searchImgView;
+    MTextView cartCountTxt;
     public DrawerLayout mDrawerLayout;
     RecyclerView menuRecyclerView;
+    View cartArea;
 
     GeneralFunctions generalFunc;
     ArrayList<HashMap<String, String>> menuDataList = new ArrayList<>();
@@ -70,17 +78,23 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         cartImgView = (ImageView) view.findViewById(R.id.cartImgView);
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         menuRecyclerView = (RecyclerView) view.findViewById(R.id.menuRecyclerView);
+        cartCountTxt = (MTextView) view.findViewById(R.id.cartCountTxt);
+        cartArea = view.findViewById(R.id.cartArea);
 
         drawerAdapter = new DrawerMenuRecycleAdapter(getActContext(), menuDataList, generalFunc, false);
 
         menuRecyclerView.setAdapter(drawerAdapter);
         menuRecyclerView.setNestedScrollingEnabled(false);
 
+        new CreateRoundedView(Color.parseColor("#4545BA"), Utils.dipToPixels(mContext, 12), 0, Color.parseColor("#FFFFFF"), cartCountTxt);
 
         left_linear.setOnClickListener(new setOnClickList());
         cartImgView.setOnClickListener(new setOnClickList());
         searchImgView.setOnClickListener(new setOnClickList());
 
+        if (mContext instanceof UserCartActivity) {
+            cartArea.setVisibility(View.GONE);
+        }
         buildMenu();
     }
 
@@ -127,6 +141,12 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
     public void onItemClickList(View v, int position) {
         closeDrawer();
         switch (menuDataList.get(position).get("ID")) {
+            case MENU_HOME:
+                Intent intent = new Intent(mContext, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mContext.startActivity(intent);
+//                (new StartActProcess(getActContext())).startAct(MainActivity.class);
+                break;
             case MENU_ALL_CATEGORIES:
                 (new StartActProcess(getActContext())).startAct(AllCategoriesActivity.class);
                 break;
@@ -153,6 +173,34 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         return data;
     }
 
+    public void findUserCartCount() {
+
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("type", "getUserCartCount");
+        parameters.put("customer_id", generalFunc.getMemberId());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(String responseString) {
+
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+                    if (isDataAvail == true) {
+                        cartCountTxt.setText(generalFunc.getJsonValue(Utils.message_str, responseString));
+                        cartCountTxt.setVisibility(View.VISIBLE);
+
+                    } else {
+                        cartCountTxt.setVisibility(View.GONE);
+                    }
+                } else {
+                }
+            }
+        });
+        exeWebServer.execute();
+    }
 
     public class setOnClickList implements View.OnClickListener {
 

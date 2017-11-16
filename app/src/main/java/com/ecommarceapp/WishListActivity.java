@@ -63,6 +63,15 @@ public class WishListActivity extends AppCompatActivity implements WishListRecyc
         getUserWishList();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (addDrawer != null) {
+            addDrawer.findUserCartCount();
+        }
+    }
+
     public void setLabels() {
         titleTxt.setText("My Wishlist");
     }

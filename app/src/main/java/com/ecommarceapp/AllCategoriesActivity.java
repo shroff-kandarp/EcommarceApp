@@ -68,6 +68,15 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (addDrawer != null) {
+            addDrawer.findUserCartCount();
+        }
+    }
+
+    @Override
     public void onItemClickList(View v, int position) {
         HashMap<String, String> data = dataList.get(position);
         if (data.get("TYPE").equals("" + adapter.TYPE_HEADER)) {
