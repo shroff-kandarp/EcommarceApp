@@ -15,6 +15,7 @@ import com.ecommarceapp.AllCategoriesActivity;
 import com.ecommarceapp.MainActivity;
 import com.ecommarceapp.R;
 import com.ecommarceapp.SearchProductsActivity;
+import com.ecommarceapp.SignInActivity;
 import com.ecommarceapp.UserCartActivity;
 import com.ecommarceapp.WishListActivity;
 import com.utils.Utils;
@@ -155,14 +156,25 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
                 (new StartActProcess(getActContext())).startAct(AllCategoriesActivity.class);
                 break;
             case MENU_MY_WISH_LIST:
-                (new StartActProcess(getActContext())).startAct(WishListActivity.class);
+                if (generalFunc.isUserLoggedIn()) {
+                    (new StartActProcess(getActContext())).startAct(WishListActivity.class);
+                } else {
+                    openSignIn();
+                }
                 break;
             case MENU_MY_CART:
-                (new StartActProcess(getActContext())).startAct(UserCartActivity.class);
+                if (generalFunc.isUserLoggedIn()) {
+                    (new StartActProcess(getActContext())).startAct(UserCartActivity.class);
+                } else {
+                    openSignIn();
+                }
                 break;
         }
     }
 
+    public void openSignIn() {
+        (new StartActProcess(getActContext())).startAct(SignInActivity.class);
+    }
     public Context getActContext() {
         return mContext;
     }

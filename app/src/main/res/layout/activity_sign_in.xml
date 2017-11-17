@@ -3,54 +3,183 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbar_include"
-        layout="@layout/design_toolbar_general" />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/login_form_border"
-        android:orientation="vertical"
-        android:paddingBottom="15dp"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp">
+        android:background="@color/appThemeColor_1"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
-        <include
-            android:id="@+id/emailBox"
-            layout="@layout/editbox_form_design"
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/yourLogoImgView"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/your_logo"
+            android:tint="@color/appThemeColor_TXT_1" />
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/closeSignInImgView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:padding="12dp"
+            android:src="@mipmap/ic_clear"
+            android:tint="@color/appThemeColor_TXT_1" />
+
+        <com.view.MTextView
+            android:id="@+id/headerTxtView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp" />
+            android:layout_below="@+id/yourLogoImgView"
+            android:padding="10dp"
+            android:text="Sign in to access your orders, wishlist and your account."
+            android:textColor="@color/appThemeColor_TXT_1"
+            android:textSize="@dimen/txt_size_18" />
 
-        <include
-            android:id="@+id/passwordBox"
-            layout="@layout/editbox_form_design"
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
+            android:orientation="vertical">
 
-    <include
-        android:id="@+id/btn_type2"
-        layout="@layout/btn_type_2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/all_btn_height"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_marginEnd="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="40dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-    <com.view.MTextView
-        android:id="@+id/forgetPassTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:textColor="#6294AB"
-        android:textSize="@dimen/txt_size_14" />
+                <ImageView
+                    android:id="@+id/imagefacebook"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="44dp"
+                    android:src="@mipmap/facebook" />
+
+
+                <ImageView
+                    android:id="@+id/imageGoogle"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/google" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerInParent="true"
+                    android:background="#efefef" />
+
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:rotation="-45"
+                    android:src="@drawable/square" />
+
+                <com.view.MTextView
+                    android:id="@+id/orTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="OR"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/login_form_border"
+                android:orientation="vertical"
+                android:paddingBottom="15dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp">
+
+                <include
+                    android:id="@+id/emailBox"
+                    layout="@layout/editbox_form_design"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/passwordBox"
+                        layout="@layout/editbox_form_design"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <com.view.MTextView
+                        android:id="@+id/forgetPassTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:gravity="center"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
+                        android:text="Forgot?"
+                        android:textColor="#6294AB"
+                        android:textSize="@dimen/txt_size_14" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <include
+                android:id="@+id/btn_type2"
+                layout="@layout/btn_type_2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/all_btn_height"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="25dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp" />
+
+            <com.view.MTextView
+                android:id="@+id/goToRegisterTxtView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Don't have account? Click here to register."
+                android:textColor="@color/appThemeColor_1"
+                android:textSize="@dimen/txt_size_14" />
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>
