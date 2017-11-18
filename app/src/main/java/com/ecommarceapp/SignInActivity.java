@@ -1,5 +1,6 @@
 package com.ecommarceapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -71,11 +72,11 @@ public class SignInActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.backImgView:
-                    Utils.hideKeyboard(getActContext());
+                    Utils.hideKeyboard((Activity) getActContext());
                     SignInActivity.super.onBackPressed();
                     break;
                 case R.id.closeSignInImgView:
-                    Utils.hideKeyboard(getActContext());
+                    Utils.hideKeyboard((Activity) getActContext());
                     SignInActivity.super.onBackPressed();
                     break;
 

@@ -13,7 +13,9 @@ import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
 import com.utils.Utils;
 import com.view.ErrorView;
+import com.view.MButton;
 import com.view.MTextView;
+import com.view.MaterialRippleLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +32,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
     ProgressBar loading;
     MTextView totalPriceTxtView;
     MTextView makePayTxtView;
+    MButton shopNowBtn;
 
     View layout_payment;
 
@@ -59,11 +62,15 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
         makePayTxtView = (MTextView) findViewById(R.id.makePayTxtView);
         errorView = (ErrorView) findViewById(R.id.errorView);
         layout_payment = findViewById(R.id.layout_payment);
+        shopNowBtn = ((MaterialRippleLayout) findViewById(R.id.shopNowBtn)).getChildView();
 
         adapter = new CartRecyclerAdapter(getActContext(), dataList, generalFunc, false);
         dataRecyclerView.setAdapter(adapter);
         dataRecyclerView.setNestedScrollingEnabled(false);
 
+        shopNowBtn.setId(Utils.generateViewId());
+
+        shopNowBtn.setOnClickListener(new setOnClickList());
         adapter.setOnItemClickListener(this);
         setLabels();
 
@@ -80,6 +87,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
     }
     public void setLabels() {
         titleTxt.setText("Cart");
+        shopNowBtn.setText("Shop Now");
     }
 
     public void getUserCart() {
@@ -219,7 +227,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
                 if (responseString != null && !responseString.equals("")) {
 
                     generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
-
+                    addDrawer.findUserCartCount();
                     getUserCart();
                 } else {
                     generalFunc.showError();
@@ -283,7 +291,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
                 if (responseString != null && !responseString.equals("")) {
 
                     generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
-
+                    addDrawer.findUserCartCount();
                     getUserCart();
                 } else {
                     generalFunc.showError();
@@ -298,10 +306,11 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.backImgView:
-                    UserCartActivity.super.onBackPressed();
-                    break;
+            int i = view.getId();
+            if (i == R.id.backImgView) {
+                UserCartActivity.super.onBackPressed();
+            } else if (i == shopNowBtn.getId()) {
+                addDrawer.goToHome();
             }
         }
     }

@@ -2,7 +2,6 @@ package com.general.files;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
@@ -87,8 +86,8 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         menuRecyclerView.setAdapter(drawerAdapter);
         menuRecyclerView.setNestedScrollingEnabled(false);
 
-        new CreateRoundedView(Color.parseColor("#4545BA"), Utils.dipToPixels(mContext, 12), 0, Color.parseColor("#FFFFFF"), cartCountTxt);
-
+        new CreateRoundedView(mContext.getResources().getColor(R.color.appThemeColor_TXT_1), Utils.dipToPixels(mContext, 12), 0, mContext.getResources().getColor(R.color.appThemeColor_1), cartCountTxt);
+        cartCountTxt.setTextColor(mContext.getResources().getColor(R.color.appThemeColor_1));
         left_linear.setOnClickListener(new setOnClickList());
         cartImgView.setOnClickListener(new setOnClickList());
         searchImgView.setOnClickListener(new setOnClickList());
@@ -147,8 +146,7 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
 //                    Intent intent = new Intent(mContext, MainActivity.class);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    mContext.startActivity(intent);
-                    (new StartActProcess(getActContext())).startAct(MainActivity.class);
-                    ActivityCompat.finishAffinity((Activity) mContext);
+                    goToHome();
                 }
 //                (new StartActProcess(getActContext())).startAct(MainActivity.class);
                 break;
@@ -170,6 +168,11 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
                 }
                 break;
         }
+    }
+
+    public void goToHome() {
+        (new StartActProcess(getActContext())).startAct(MainActivity.class);
+        ActivityCompat.finishAffinity((Activity) mContext);
     }
 
     public void openSignIn() {

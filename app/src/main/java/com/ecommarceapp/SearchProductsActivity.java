@@ -1,5 +1,6 @@
 package com.ecommarceapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -137,13 +138,20 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
 
     @Override
     public void onBackPressed() {
-        Utils.hideKeyboard(getActContext());
+        Utils.hideKeyboard((Activity) getActContext());
         super.onBackPressed();
     }
 
     public void findProducts(final String searchQuery) {
         dataList.clear();
         adapter.notifyDataSetChanged();
+
+        if (searchQuery.trim().equals("")) {
+            if (loading.getVisibility() == View.VISIBLE) {
+                loading.setVisibility(View.GONE);
+            }
+            return;
+        }
 
         if (errorView.getVisibility() == View.VISIBLE) {
             errorView.setVisibility(View.GONE);

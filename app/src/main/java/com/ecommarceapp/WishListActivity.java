@@ -198,7 +198,7 @@ public class WishListActivity extends AppCompatActivity implements WishListRecyc
                 if (responseString != null && !responseString.equals("")) {
 
                     generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
-
+                    addDrawer.findUserCartCount();
                     getUserWishList();
                 } else {
                     generalFunc.showError();

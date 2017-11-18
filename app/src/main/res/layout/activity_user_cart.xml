@@ -32,8 +32,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:minHeight="450dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:minHeight="450dp">
 
                     <ProgressBar
                         android:id="@+id/loading"
@@ -59,6 +59,12 @@
             </android.support.v4.widget.NestedScrollView>
 
 
+            <include
+                android:id="@+id/layout_cart_empty"
+                layout="@layout/empty_cart_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
         </android.support.design.widget.CoordinatorLayout>
 
 
@@ -68,13 +74,6 @@
             android:layout_weight="0"
             android:background="#E0E0E0" />
 
-
-        <include
-            android:id="@+id/layout_cart_empty"
-            layout="@layout/empty_cart_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/layout_payment"

@@ -7,6 +7,9 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import com.ecommarceapp.R;
@@ -23,7 +26,9 @@ import java.util.HashMap;
  * Created by Admin on 09-07-2016.
  */
 public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final static int FADE_DURATION = 1000; // in milliseconds
 
+    private int lastPosition = -1;
     ArrayList<HashMap<String, String>> list;
     Context mContext;
     public GeneralFunctions generalFunc;
@@ -107,6 +112,8 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
                     addItemToWishList(item.get("product_id"), item.get("category_id"));
                 }
             });
+            setAnimation(holder.itemView, position);
+
         } else if (holder instanceof HeaderViewHolder) {
             final HashMap<String, String> item = list.get(position);
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
@@ -119,6 +126,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
                     }
                 }
             });
+            setFadeAnimation(holder.itemView);
         } else {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
             this.footerHolder = footerHolder;
@@ -245,5 +253,21 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
         if (footerHolder != null)
             footerHolder.progressArea.setVisibility(View.GONE);
 //        footerHolder.progressArea.setPadding(0, -1 * footerView.getHeight(), 0, 0);
+    }
+
+    private void setFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
+    }
+
+    private void setAnimation(View viewToAnimate, int position) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+//        if (position > lastPosition)
+//        {
+        Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left);
+        viewToAnimate.startAnimation(animation);
+        lastPosition = position;
+//        }
     }
 }

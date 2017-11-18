@@ -88,9 +88,12 @@ public class Utils {
         return isValid;
     }
 
-    public static void hideKeyboard(Context context) {
-        ((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE))
-                .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+    public static void hideKeyboard(Activity act) {
+//        ((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE))
+//                .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+
+        InputMethodManager inputManager = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(act.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public static int dipToPixels(Context context, float dipValue) {

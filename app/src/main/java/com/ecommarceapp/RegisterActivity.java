@@ -1,5 +1,6 @@
 package com.ecommarceapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -108,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.backImgView:
-                    Utils.hideKeyboard(getActContext());
+                    Utils.hideKeyboard((Activity) getActContext());
                     RegisterActivity.super.onBackPressed();
                     break;
 

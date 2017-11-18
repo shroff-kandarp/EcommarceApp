@@ -157,6 +157,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
                 if (responseString != null && !responseString.equals("")) {
 
                     generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                    addDrawer.findUserCartCount();
                 } else {
                     generalFunc.showError();
                 }
