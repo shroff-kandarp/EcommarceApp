@@ -217,6 +217,7 @@ public class MainActivity extends BaseActivity {
                     if (isDataAvail == true) {
 
                         JSONArray msgArr = generalFunc.getJsonArray(Utils.message_str, responseString);
+                        JSONArray wishListDataArr = generalFunc.getJsonArray("UserWishListData", responseString);
 
                         if (msgArr != null) {
 

@@ -4,11 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.view.View;
 
 import com.ecommarceapp.LauncherActivity;
@@ -21,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -405,4 +410,19 @@ public class GeneralFunctions {
     }
 
 
+    public static void printHashKey(Context mContext) {
+        try {
+            PackageInfo info = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String hashKey = new String(Base64.encode(md.digest(), 0));
+                Utils.printLog("hashKey", ":" + hashKey);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            Utils.printLog("hashKey", ":Exception:" + e.getMessage());
+        } catch (Exception e) {
+            Utils.printLog("hashKey", ":Exception:" + e.getMessage());
+        }
+    }
 }

@@ -29,4 +29,7 @@
     <string name="contact_us">Contact Us</string>
     <string name="terms_conditions">Terms \u0026 Conditions</string>
     <string name="help_center">Help Center</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

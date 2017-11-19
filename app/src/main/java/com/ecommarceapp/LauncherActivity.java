@@ -20,6 +20,8 @@ public class LauncherActivity extends BaseActivity {
 
         generalFunc = new GeneralFunctions(getActContext());
 
+        GeneralFunctions.printHashKey(getActContext());
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

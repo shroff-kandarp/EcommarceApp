@@ -11,10 +11,10 @@ import android.widget.ImageView;
 
 import com.adapter.DrawerMenuRecycleAdapter;
 import com.ecommarceapp.AllCategoriesActivity;
+import com.ecommarceapp.AppLoginActivity;
 import com.ecommarceapp.MainActivity;
 import com.ecommarceapp.R;
 import com.ecommarceapp.SearchProductsActivity;
-import com.ecommarceapp.SignInActivity;
 import com.ecommarceapp.UserCartActivity;
 import com.ecommarceapp.WishListActivity;
 import com.utils.Utils;
@@ -176,7 +176,7 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
     }
 
     public void openSignIn() {
-        (new StartActProcess(getActContext())).startAct(SignInActivity.class);
+        (new StartActProcess(getActContext())).startAct(AppLoginActivity.class);
     }
     public Context getActContext() {
         return mContext;

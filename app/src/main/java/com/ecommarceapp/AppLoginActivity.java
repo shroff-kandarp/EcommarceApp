@@ -1,26 +1,22 @@
 package com.ecommarceapp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 
+import com.fragment.SignInFragment;
 import com.general.files.GeneralFunctions;
-import com.general.files.StartActProcess;
-import com.utils.Utils;
-import com.view.MButton;
 import com.view.MTextView;
-import com.view.MaterialRippleLayout;
 
 public class AppLoginActivity extends BaseActivity {
 
-    MButton signInBtn;
-    MButton signUpBtn;
 
-    GeneralFunctions generalFunc;
+    public GeneralFunctions generalFunc;
 
-    MTextView skipTxtView;
+    AppCompatImageView closeLoginImgView;
+    public MTextView headerTxtView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +25,18 @@ public class AppLoginActivity extends BaseActivity {
 
         generalFunc = new GeneralFunctions(getActContext());
 
-        signInBtn = ((MaterialRippleLayout) findViewById(R.id.signInBtn)).getChildView();
-        signUpBtn = ((MaterialRippleLayout) findViewById(R.id.signUpBtn)).getChildView();
-        skipTxtView = (MTextView) findViewById(R.id.skipTxtView);
+        closeLoginImgView = findViewById(R.id.closeLoginImgView);
+        headerTxtView = findViewById(R.id.headerTxtView);
 
-        signInBtn.setId(Utils.generateViewId());
-        signUpBtn.setId(Utils.generateViewId());
+        closeLoginImgView.setOnClickListener(new setOnClickList());
 
-        signInBtn.setOnClickListener(new setOnClickList());
-        signUpBtn.setOnClickListener(new setOnClickList());
-        skipTxtView.setOnClickListener(new setOnClickList());
+        loadFragment(new SignInFragment());
+    }
 
-        signInBtn.setText("SignIn");
-        signUpBtn.setText("Register");
+    public void loadFragment(Fragment fragment) {
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainerView, fragment).commit();
     }
 
     public Context getActContext() {
@@ -53,18 +48,11 @@ public class AppLoginActivity extends BaseActivity {
 
         @Override
         public void onClick(View view) {
-            int i = view.getId();
-            if (i == signInBtn.getId()) {
-                (new StartActProcess(getActContext())).startAct(SignInActivity.class);
-
-            } else if (i == signUpBtn.getId()) {
-                (new StartActProcess(getActContext())).startAct(RegisterActivity.class);
-
-            } else if (i == skipTxtView.getId()) {
-//                (new StartActProcess(getActContext())).startAct(MainActivity.class);
-
-                (new StartActProcess(getActContext())).startAct(MainActivity.class);
-                ActivityCompat.finishAffinity((Activity) getActContext());
+            switch (view.getId()) {
+                case R.id.closeLoginImgView:
+//                    Utils.hideKeyboard(AppLoginActivity.this);
+                    AppLoginActivity.super.onBackPressed();
+                    break;
             }
         }
     }
