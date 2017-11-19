@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">EcommarceApp</string>
     <string name="defaultFont">fonts/Raleway-Medium.ttf</string>
+    <string name="FACEBOOK_ID">534499253571441</string>
 
     <color name="search_layover_bg">@color/gray</color>
     <color name="search_field_bg">@color/white_ish</color>

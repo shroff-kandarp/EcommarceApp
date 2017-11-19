@@ -54,7 +54,7 @@ public class Utils {
     public static final int MENU_HELP = 4;
 
     public static final int GOOGLE_SIGN_IN_REQ_CODE = 112;
-
+    static MyProgressDialog myPDialog;
     //Single Instance object
     private static Utils instance = null;
 
@@ -172,8 +172,16 @@ public class Utils {
         System.gc();
     }
 
+
+    public static void closeLoader() {
+        if (myPDialog != null) {
+            myPDialog.close();
+            myPDialog = null;
+        }
+    }
+
     public static MyProgressDialog showLoader(Context mContext) {
-        MyProgressDialog myPDialog = new MyProgressDialog(mContext, true, "Loading");
+        myPDialog = new MyProgressDialog(mContext, true, "Loading");
         myPDialog.show();
 
         return myPDialog;

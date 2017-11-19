@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.ecommarceapp.LauncherActivity;
 import com.ecommarceapp.R;
+import com.facebook.login.LoginManager;
 import com.utils.Utils;
 import com.view.ErrorView;
 import com.view.GenerateAlertBox;
@@ -424,5 +425,10 @@ public class GeneralFunctions {
         } catch (Exception e) {
             Utils.printLog("hashKey", ":Exception:" + e.getMessage());
         }
+    }
+
+
+    public void logOUTFrmFB() {
+        LoginManager.getInstance().logOut();
     }
 }
