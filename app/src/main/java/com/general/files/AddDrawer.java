@@ -13,6 +13,8 @@ import com.adapter.DrawerMenuRecycleAdapter;
 import com.ecommarceapp.AllCategoriesActivity;
 import com.ecommarceapp.AppLoginActivity;
 import com.ecommarceapp.MainActivity;
+import com.ecommarceapp.MyAccountActivity;
+import com.ecommarceapp.MyOrdersActivity;
 import com.ecommarceapp.R;
 import com.ecommarceapp.SearchProductsActivity;
 import com.ecommarceapp.UserCartActivity;
@@ -20,6 +22,8 @@ import com.ecommarceapp.WishListActivity;
 import com.utils.Utils;
 import com.view.CreateRoundedView;
 import com.view.MTextView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,13 +39,14 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
     public static final String MENU_ALL_CATEGORIES = "1";
     public static final String MENU_MY_PROFILE = "2";
     public static final String MENU_MY_ACCOUNT = "3";
-    public static final String MENU_MY_ORDERS = "4";
-    public static final String MENU_MY_CART = "5";
-    public static final String MENU_MY_WISH_LIST = "6";
-    public static final String MENU_MY_HELP_SUPPORT = "7";
-    public static final String MENU_MY_CONTACT_US = "8";
-    public static final String MENU_MY_TERMS_CONDITION = "9";
-    public static final String MENU_MY_HELP_CENTER = "10";
+    public static final String MENU_MY_MESSAGES = "4";
+    public static final String MENU_MY_ORDERS = "5";
+    public static final String MENU_MY_CART = "6";
+    public static final String MENU_MY_WISH_LIST = "7";
+    public static final String MENU_MY_HELP_SUPPORT = "8";
+    public static final String MENU_MY_CONTACT_US = "9";
+    public static final String MENU_MY_TERMS_CONDITION = "10";
+    public static final String MENU_MY_HELP_CENTER = "11";
 
     View view;
     Context mContext;
@@ -52,6 +57,7 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
     ImageView cartImgView;
     ImageView searchImgView;
     MTextView cartCountTxt;
+    MTextView topHTxtView;
     public DrawerLayout mDrawerLayout;
     RecyclerView menuRecyclerView;
     View cartArea;
@@ -79,6 +85,7 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         menuRecyclerView = (RecyclerView) view.findViewById(R.id.menuRecyclerView);
         cartCountTxt = (MTextView) view.findViewById(R.id.cartCountTxt);
+        topHTxtView = (MTextView) view.findViewById(R.id.topHTxtView);
         cartArea = view.findViewById(R.id.cartArea);
 
         drawerAdapter = new DrawerMenuRecycleAdapter(getActContext(), menuDataList, generalFunc, false);
@@ -91,9 +98,17 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         left_linear.setOnClickListener(new setOnClickList());
         cartImgView.setOnClickListener(new setOnClickList());
         searchImgView.setOnClickListener(new setOnClickList());
+        topHTxtView.setOnClickListener(new setOnClickList());
 
         if (mContext instanceof UserCartActivity) {
             cartArea.setVisibility(View.GONE);
+        }
+
+        if (generalFunc.isUserLoggedIn() == false) {
+            topHTxtView.setText("Hello, \nSign In OR Sign Up.");
+        } else {
+            topHTxtView.setText("Welcome");
+            findUserInfo();
         }
         buildMenu();
     }
@@ -122,9 +137,10 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         menuDataList.add(getMenuItem("My Profile", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_HEADER, MENU_MY_PROFILE));
 
         menuDataList.add(getMenuItem("My Account", "" + R.mipmap.ic_menu_my_acc, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_ACCOUNT));
+        menuDataList.add(getMenuItem("My Messages", "" + R.mipmap.ic_menu_message, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_MESSAGES));
         menuDataList.add(getMenuItem("My Orders", "" + R.mipmap.ic_menu_orders, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_ORDERS));
         menuDataList.add(getMenuItem("My Cart", "" + R.mipmap.ic_cart, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_CART));
-        menuDataList.add(getMenuItem("My Wishlist", "" + R.mipmap.ic_favorite_black_24dp, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_WISH_LIST));
+        menuDataList.add(getMenuItem("My Wishlist", "" + R.mipmap.ic_menu_wishlist, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_WISH_LIST));
 
         menuDataList.add(getMenuItem("Help & Support", "" + R.mipmap.ic_menu_home, "" + DrawerMenuRecycleAdapter.TYPE_HEADER, MENU_MY_HELP_SUPPORT));
         menuDataList.add(getMenuItem("Contact Us", "" + R.mipmap.ic_contact_us, "" + DrawerMenuRecycleAdapter.TYPE_ITEM, MENU_MY_CONTACT_US));
@@ -153,6 +169,27 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
             case MENU_ALL_CATEGORIES:
                 (new StartActProcess(getActContext())).startAct(AllCategoriesActivity.class);
                 break;
+            case MENU_MY_ORDERS:
+                if (generalFunc.isUserLoggedIn()) {
+                    (new StartActProcess(getActContext())).startAct(MyOrdersActivity.class);
+                } else {
+                    openSignIn();
+                }
+                break;
+            case MENU_MY_MESSAGES:
+                if (generalFunc.isUserLoggedIn()) {
+//                    (new StartActProcess(getActContext())).startAct(MyOrdersActivity.class);
+                } else {
+                    openSignIn();
+                }
+                break;
+            case MENU_MY_ACCOUNT:
+                if (generalFunc.isUserLoggedIn()) {
+                    (new StartActProcess(getActContext())).startAct(MyAccountActivity.class);
+                } else {
+                    openSignIn();
+                }
+                break;
             case MENU_MY_WISH_LIST:
                 if (generalFunc.isUserLoggedIn()) {
                     (new StartActProcess(getActContext())).startAct(WishListActivity.class);
@@ -178,6 +215,7 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
     public void openSignIn() {
         (new StartActProcess(getActContext())).startAct(AppLoginActivity.class);
     }
+
     public Context getActContext() {
         return mContext;
     }
@@ -221,6 +259,32 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         exeWebServer.execute();
     }
 
+    public void findUserInfo() {
+
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("type", "getUserInfo");
+        parameters.put("customer_id", generalFunc.getMemberId());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(String responseString) {
+
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+                    if (isDataAvail == true) {
+                        JSONObject obj_msg = generalFunc.getJsonObject(Utils.message_str, responseString);
+
+                        topHTxtView.setText("Welcome, " + generalFunc.getJsonValue("firstname", obj_msg) + " " + generalFunc.getJsonValue("lastname", obj_msg));
+                    }
+                }
+            }
+        });
+        exeWebServer.execute();
+    }
+
     public class setOnClickList implements View.OnClickListener {
 
         @Override
@@ -230,10 +294,19 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
                     checkDrawerState();
                     break;
                 case R.id.cartImgView:
-                    (new StartActProcess(getActContext())).startAct(UserCartActivity.class);
+                    if (generalFunc.isUserLoggedIn()) {
+                        (new StartActProcess(getActContext())).startAct(UserCartActivity.class);
+                    } else {
+                        openSignIn();
+                    }
                     break;
                 case R.id.searchImgView:
                     (new StartActProcess(getActContext())).startAct(SearchProductsActivity.class);
+                    break;
+                case R.id.topHTxtView:
+                    if (!generalFunc.isUserLoggedIn()) {
+                        openSignIn();
+                    }
                     break;
             }
         }

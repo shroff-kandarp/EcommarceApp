@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ecommarceapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -42,7 +43,18 @@
         <activity android:name=".UserCartActivity" />
         <activity android:name=".SearchProductsActivity" />
         <activity android:name=".ListAllProductsActivity" />
-        <activity android:name=".WishListActivity"></activity>
+        <activity android:name=".WishListActivity" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="nosensor"
+            android:theme="@style/FBtheme"
+            tools:replace="android:theme" />
+        <activity android:name=".MyAccountActivity" />
+        <activity android:name=".MyOrdersActivity" />
+        <activity android:name=".SelectCountryActivity" />
+        <activity android:name=".MyMessagesActivity"></activity>
     </application>
 
 </manifest>

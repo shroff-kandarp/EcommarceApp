@@ -1,23 +1,31 @@
 package com.fragment;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ecommarceapp.AppLoginActivity;
+import com.ecommarceapp.MainActivity;
 import com.ecommarceapp.R;
+import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
+import com.general.files.StartActProcess;
 import com.utils.Utils;
 import com.view.CreateRoundedView;
 import com.view.MButton;
 import com.view.MTextView;
 import com.view.MaterialRippleLayout;
 import com.view.editBox.MaterialEditText;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +67,10 @@ public class SignInFragment extends Fragment {
 
         btn_type2.setId(Utils.generateViewId());
 
+        passwordBox.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        passwordBox.setTypeface(generalFunc.getDefaultFont(getActContext()));
+        emailBox.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_CLASS_TEXT);
+
         btn_type2.setOnClickListener(new setOnClickList());
         forgetPassTxt.setOnClickListener(new setOnClickList());
         goToRegisterTxtView.setOnClickListener(new setOnClickList());
@@ -84,11 +96,66 @@ public class SignInFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.goToRegisterTxtView:
-                    appLoginAct.loadFragment(new SignUpFragment());
-                    break;
+            int i = view.getId();
+            if (i == R.id.goToRegisterTxtView) {
+                SignUpFragment signUpFrag = new SignUpFragment();
+                appLoginAct.signUpFrag = signUpFrag;
+                appLoginAct.loadFragment(signUpFrag);
+
+            } else if (i == btn_type2.getId()) {
+                checkData();
             }
         }
+    }
+
+    public void checkData() {
+        boolean emailEntered = Utils.checkText(emailBox) ?
+                (generalFunc.isEmailValid(Utils.getText(emailBox)) ? true : Utils.setErrorFields(emailBox, "Invalid email"))
+                : Utils.setErrorFields(emailBox, "Required");
+
+        boolean passwordEntered = Utils.checkText(passwordBox) ?
+                (Utils.getText(passwordBox).contains(" ") ? Utils.setErrorFields(passwordBox, "Password should not contain whitespace.")
+                        : (Utils.getText(passwordBox).length() >= Utils.minPasswordLength ? true : Utils.setErrorFields(passwordBox, "Password must be" + " " + Utils.minPasswordLength + " or more character long.")))
+                : Utils.setErrorFields(passwordBox, "Required");
+
+        if (emailEntered == false || passwordEntered == false) {
+            return;
+        }
+
+        signInUser();
+    }
+
+    public void signInUser() {
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "signIn");
+        parameters.put("password", Utils.getText(passwordBox));
+        parameters.put("email", Utils.getText(emailBox));
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail) {
+                        generalFunc.storeUserData(generalFunc.getJsonValue(Utils.message_str, responseString));
+                        (new StartActProcess(getActContext())).startAct(MainActivity.class);
+                        ActivityCompat.finishAffinity((Activity) getActContext());
+                    } else {
+                        generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                    }
+
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
     }
 }

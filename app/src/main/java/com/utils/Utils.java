@@ -54,6 +54,8 @@ public class Utils {
     public static final int MENU_HELP = 4;
 
     public static final int GOOGLE_SIGN_IN_REQ_CODE = 112;
+    public static final int SELECT_COUNTRY_REQ_CODE = 124;
+
     static MyProgressDialog myPDialog;
     //Single Instance object
     private static Utils instance = null;

@@ -13,7 +13,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import com.ecommarceapp.R;
-import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.squareup.picasso.Picasso;
 import com.utils.Utils;
@@ -91,6 +90,12 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             viewHolder.itemPriceTxtView.setText(item.get("price"));
             viewHolder.itemDescTxtView.setText(Html.fromHtml(item.get("description")));
 
+            if (item.get("isWishlisted") != null && item.get("isWishlisted").equalsIgnoreCase("yes")) {
+                viewHolder.wishlistImgView.setImageResource(R.mipmap.ic_fav_fill);
+            } else {
+                viewHolder.wishlistImgView.setImageResource(R.mipmap.ic_fav_border);
+            }
+
             Picasso.with(mContext)
                     .load(item.get("image"))
                     .into(viewHolder.itemImgView);
@@ -109,7 +114,11 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
                 @Override
                 public void onClick(View view) {
 
-                    addItemToWishList(item.get("product_id"), item.get("category_id"));
+//                    addItemToWishList(item.get("product_id"), item.get("category_id"));
+
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClickList(null, position);
+                    }
                 }
             });
             setAnimation(holder.itemView, position);
@@ -135,34 +144,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
 
     }
 
-    public void addItemToWishList(String product_id, String category_id) {
-        HashMap<String, String> parameters = new HashMap<>();
-        parameters.put("type", "addProductToWishList");
-        parameters.put("product_id", product_id);
-        parameters.put("category_id", category_id);
-        parameters.put("customer_id", "" + generalFunc.getMemberId());
 
-        Utils.printLog("WishListParameters::", "::" + parameters.toString());
-
-        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
-        exeWebServer.setLoaderConfig(mContext, true, generalFunc);
-        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
-        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
-            @Override
-            public void setResponse(final String responseString) {
-
-                Utils.printLog("ResponseData", "Data::" + responseString);
-
-                if (responseString != null && !responseString.equals("")) {
-
-                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
-                } else {
-                    generalFunc.showError();
-                }
-            }
-        });
-        exeWebServer.execute();
-    }
 
     // inner class to hold a reference to each item of RecyclerView
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -190,6 +172,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
         LinearLayout progressArea;
 
         public View contentArea;
+
         public FooterViewHolder(View itemView) {
             super(itemView);
             contentArea = itemView;
@@ -202,6 +185,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
         MTextView categoryNameTxtView;
 
         public View contentArea;
+
         public HeaderViewHolder(View itemView) {
             super(itemView);
             contentArea = itemView;

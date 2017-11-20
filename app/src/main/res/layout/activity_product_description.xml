@@ -224,6 +224,7 @@
                                 android:weightSum="2">
 
                                 <ImageView
+                                    android:id="@+id/wishListImgView"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@mipmap/ic_fav_border" />

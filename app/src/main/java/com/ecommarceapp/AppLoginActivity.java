@@ -11,8 +11,13 @@ import android.widget.ImageView;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.fragment.SignInFragment;
+import com.fragment.SignUpFragment;
 import com.general.files.GeneralFunctions;
 import com.general.files.LoginWithFacebook;
+import com.general.files.LoginWithGoogle;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.utils.Utils;
 import com.view.MTextView;
 
 public class AppLoginActivity extends BaseActivity {
@@ -24,7 +29,11 @@ public class AppLoginActivity extends BaseActivity {
     public MTextView headerTxtView;
 
     ImageView fbImgView;
+    ImageView googleImgView;
     CallbackManager mCallbackManager;
+    public SignUpFragment signUpFrag;
+
+    LoginWithGoogle loginWithGoogle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +42,19 @@ public class AppLoginActivity extends BaseActivity {
 
         FacebookSdk.setApplicationId(getResources().getString(R.string.FACEBOOK_ID));
         FacebookSdk.sdkInitialize(getActContext());
+        FacebookSdk.setWebDialogTheme(R.style.FBDialogtheme);
 
+        mCallbackManager = CallbackManager.Factory.create();
         generalFunc = new GeneralFunctions(getActContext());
 
         closeLoginImgView = findViewById(R.id.closeLoginImgView);
         headerTxtView = findViewById(R.id.headerTxtView);
         fbImgView = findViewById(R.id.fbImgView);
+        googleImgView = findViewById(R.id.googleImgView);
 
         closeLoginImgView.setOnClickListener(new setOnClickList());
         fbImgView.setOnClickListener(new setOnClickList());
+        googleImgView.setOnClickListener(new setOnClickList());
 
         loadFragment(new SignInFragment());
     }
@@ -67,8 +80,10 @@ public class AppLoginActivity extends BaseActivity {
                     AppLoginActivity.super.onBackPressed();
                     break;
                 case R.id.fbImgView:
-                    mCallbackManager = CallbackManager.Factory.create();
                     new LoginWithFacebook(getActContext(), mCallbackManager);
+                    break;
+                case R.id.googleImgView:
+                    loginWithGoogle = new LoginWithGoogle(getActContext());
                     break;
             }
         }
@@ -77,6 +92,10 @@ public class AppLoginActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Utils.GOOGLE_SIGN_IN_REQ_CODE) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            loginWithGoogle.handleSignInResult(result);
+        }
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -41,7 +41,7 @@
             android:padding="10dp"
             android:text=""
             android:textColor="@color/appThemeColor_TXT_1"
-            android:textSize="@dimen/txt_size_18" />
+            android:textSize="@dimen/txt_size_16" />
 
     </RelativeLayout>
 
@@ -71,7 +71,7 @@
 
 
                 <ImageView
-                    android:id="@+id/imageGoogle"
+                    android:id="@+id/googleImgView"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@mipmap/google" />

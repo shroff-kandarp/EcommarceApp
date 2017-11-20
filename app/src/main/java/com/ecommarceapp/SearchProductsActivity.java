@@ -95,6 +95,11 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
             @Override
             public void onItemClickList(View v, int position) {
                 HashMap<String, String> data = dataList.get(position);
+                if (v == null) {
+                    addItemToWishList(data.get("product_id"), data.get("category_id"), position);
+
+                    return;
+                }
                 if (data.get("TYPE").equals("" + MainPageCategoryRecycleAdapter.TYPE_ITEM)) {
                     Bundle bn = new Bundle();
                     bn.putString("product_id", data.get("product_id"));
@@ -109,6 +114,46 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         productsRecyclerView.setLayoutManager(mLayoutManager);
 
         setLabels();
+    }
+
+
+    public void addItemToWishList(String product_id, String category_id, final int position) {
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "addProductToWishList");
+        parameters.put("product_id", product_id);
+        parameters.put("category_id", category_id);
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        Utils.printLog("WishListParameters::", "::" + parameters.toString());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail) {
+                        if (generalFunc.getJsonValue("isDelete", responseString).equalsIgnoreCase("yes")) {
+                            dataList.get(position).put("isWishlisted", "No");
+                        } else {
+                            dataList.get(position).put("isWishlisted", "Yes");
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
     }
 
     @Override
@@ -166,6 +211,7 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("type", "searchProducts");
         parameters.put("searchQuery", searchQuery);
+        parameters.put("customer_id", generalFunc.getMemberId());
 
         ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
 //        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
@@ -188,6 +234,17 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
 
                     if (isDataAvail == true) {
                         JSONArray msgArr = generalFunc.getJsonArray(Utils.message_str, responseString);
+                        JSONArray wishListDataArr = generalFunc.getJsonArray("UserWishListData", responseString);
+                        ArrayList<String> wishListProductIdsList = new ArrayList<>();
+                        if (wishListDataArr != null) {
+                            for (int i = 0; i < wishListDataArr.length(); i++) {
+
+                                JSONObject obj_temp = generalFunc.getJsonObject(wishListDataArr, i);
+
+                                wishListProductIdsList.add(generalFunc.getJsonValue("product_id", obj_temp));
+                            }
+                        }
+
                         if (msgArr != null) {
 
                             for (int i = 0; i < msgArr.length(); i++) {
@@ -206,6 +263,8 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
                                 dataMap_products.put("price", price);
                                 dataMap_products.put("description", Utils.html2text(productDes));
                                 dataMap_products.put("image", productImg);
+                                dataMap_products.put("isWishlisted", wishListProductIdsList.contains(productId) == true ? "Yes" : "No");
+
                                 dataMap_products.put("TYPE", "" + MainPageCategoryRecycleAdapter.TYPE_ITEM);
                                 dataList.add(dataMap_products);
                             }

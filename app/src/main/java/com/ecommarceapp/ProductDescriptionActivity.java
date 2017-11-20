@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bannerslider.banners.Banner;
@@ -36,6 +37,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
     MTextView descriptionTxtView;
     MTextView addToCartTxtView;
     View wishListArea;
+    ImageView wishListImgView;
 
     GeneralFunctions generalFunc;
 
@@ -61,6 +63,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         bannerSlider = (BannerSlider) findViewById(R.id.bannerSlider);
         errorView = (ErrorView) findViewById(R.id.errorView);
         wishListArea = findViewById(R.id.wishListArea);
+        wishListImgView = findViewById(R.id.wishListImgView);
 
         productNameTxtView = (MTextView) findViewById(R.id.productNameTxtView);
         productPriceTxtView = (MTextView) findViewById(R.id.productPriceTxtView);
@@ -127,7 +130,15 @@ public class ProductDescriptionActivity extends AppCompatActivity {
                 Utils.printLog("ResponseData", "Data::" + responseString);
 
                 if (responseString != null && !responseString.equals("")) {
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
 
+                    if (isDataAvail) {
+                        if (generalFunc.getJsonValue("isDelete", responseString).equalsIgnoreCase("yes")) {
+                            wishListImgView.setImageResource(R.mipmap.ic_fav_border);
+                        } else {
+                            wishListImgView.setImageResource(R.mipmap.ic_fav_fill);
+                        }
+                    }
                     generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
                 } else {
                     generalFunc.showError();
@@ -177,6 +188,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("type", "getProductInfo");
         parameters.put("product_id", getIntent().getStringExtra("product_id"));
+        parameters.put("customer_id", generalFunc.getMemberId());
 
         ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
 //        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
@@ -194,6 +206,21 @@ public class ProductDescriptionActivity extends AppCompatActivity {
                     if (isDataAvail == true) {
 
                         JSONObject msgObj = generalFunc.getJsonObject(Utils.message_str, responseString);
+
+                        JSONArray wishListDataArr = generalFunc.getJsonArray("UserWishListData", responseString);
+                        ArrayList<String> wishListProductIdsList = new ArrayList<>();
+                        if (wishListDataArr != null) {
+                            for (int i = 0; i < wishListDataArr.length(); i++) {
+
+                                JSONObject obj_temp = generalFunc.getJsonObject(wishListDataArr, i);
+
+                                wishListProductIdsList.add(generalFunc.getJsonValue("product_id", obj_temp));
+                            }
+                        }
+
+                        if (wishListProductIdsList.contains(getIntent().getStringExtra("product_id"))) {
+                            wishListImgView.setImageResource(R.mipmap.ic_fav_fill);
+                        }
 
                         Utils.printLog("ResponseData", "::" + msgObj.toString());
                         JSONArray msgArr = generalFunc.getJsonArray("MoreImages", msgObj);

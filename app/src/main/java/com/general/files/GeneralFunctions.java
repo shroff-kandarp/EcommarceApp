@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -80,8 +81,12 @@ public class GeneralFunctions {
         if (isUserLoggedIn() == true) {
             return retriveValue(Utils.iMemberId_KEY);
         } else {
-            return "30";
+            return "";
         }
+    }
+
+    public Typeface getDefaultFont(Context context) {
+        return Typeface.createFromAsset(context.getAssets(), mContext.getResources().getString(R.string.defaultFont));
     }
 
     public void signOut() {
