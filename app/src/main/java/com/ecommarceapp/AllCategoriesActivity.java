@@ -256,6 +256,11 @@ public class AllCategoriesActivity extends AppCompatActivity implements OnTabSel
             case R.id.tab_deals:
                 break;
             case R.id.tab_my_acc:
+                if (generalFunc.isUserLoggedIn()) {
+                    addDrawer.openMyAccount();
+                } else {
+                    addDrawer.openSignIn();
+                }
                 break;
         }
     }

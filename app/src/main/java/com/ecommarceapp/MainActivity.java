@@ -346,6 +346,11 @@ public class MainActivity extends BaseActivity implements OnTabSelectListener {
             case R.id.tab_deals:
                 break;
             case R.id.tab_my_acc:
+                if (generalFunc.isUserLoggedIn()) {
+                    addDrawer.openMyAccount();
+                } else {
+                    addDrawer.openSignIn();
+                }
                 break;
             default:
                 break;

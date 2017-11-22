@@ -1,8 +1,303 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.ecommarceapp.MyAccountActivity">
+    android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/toolbar_include"
+            layout="@layout/design_toolbar_main"
+            app:layout_scrollFlags="scroll|enterAlways" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.view.MTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:minHeight="35dp"
+                        android:text="Orders"
+                        android:textColor="#272727"
+                        android:textSize="@dimen/txt_size_18"
+                        app:customTypeFace="@string/semiBoldFont" />
+
+                    <LinearLayout
+                        android:id="@+id/yourOrdersArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.view.MTextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:text="Your Orders"
+                            android:textColor="#5b5b5b"
+                            android:textSize="@dimen/txt_size_16"
+                            app:customTypeFace="@string/semiBoldFont" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_weight="0"
+                            android:src="@mipmap/ic_right_arrow" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <com.view.MTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:minHeight="35dp"
+                        android:text="Account Settings"
+                        android:textColor="#272727"
+                        android:textSize="@dimen/txt_size_18"
+                        app:customTypeFace="@string/semiBoldFont" />
+
+                    <LinearLayout
+                        android:id="@+id/accountArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/loginSecurityArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.view.MTextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:paddingStart="10dp"
+                                android:text="Login and Security"
+                                android:textColor="#5b5b5b"
+                                android:textSize="@dimen/txt_size_16"
+                                app:customTypeFace="@string/semiBoldFont" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_weight="0"
+                                android:src="@mipmap/ic_right_arrow" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#DEDEDE" />
+
+                        <LinearLayout
+                            android:id="@+id/addressBookArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.view.MTextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:paddingStart="10dp"
+                                android:gravity="center_vertical"
+                                android:text="Manage Address Book"
+                                android:textColor="#5b5b5b"
+                                android:textSize="@dimen/txt_size_16"
+                                app:customTypeFace="@string/semiBoldFont" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_weight="0"
+                                android:src="@mipmap/ic_right_arrow" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <com.view.MTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:minHeight="35dp"
+                        android:text="Message Center"
+                        android:textColor="#272727"
+                        android:textSize="@dimen/txt_size_18"
+                        app:customTypeFace="@string/semiBoldFont" />
+
+                    <LinearLayout
+                        android:id="@+id/messageArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.view.MTextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Your Messages"
+                            android:paddingStart="10dp"
+                            android:textColor="#5b5b5b"
+                            android:textSize="@dimen/txt_size_16"
+                            app:customTypeFace="@string/semiBoldFont" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_weight="0"
+                            android:src="@mipmap/ic_right_arrow" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <com.view.MTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:minHeight="35dp"
+                        android:text="Personalization"
+                        android:textColor="#272727"
+                        android:textSize="@dimen/txt_size_18"
+                        app:customTypeFace="@string/semiBoldFont" />
+
+                    <LinearLayout
+                        android:id="@+id/personalizationArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/wishListArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.view.MTextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="Wish List"
+                                android:paddingStart="10dp"
+                                android:textColor="#5b5b5b"
+                                android:textSize="@dimen/txt_size_16"
+                                app:customTypeFace="@string/semiBoldFont" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_weight="0"
+                                android:src="@mipmap/ic_right_arrow" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#DEDEDE" />
+
+                        <LinearLayout
+                            android:id="@+id/profileArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.view.MTextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="Profile"
+                                android:textColor="#5b5b5b"
+                                android:paddingStart="10dp"
+                                android:textSize="@dimen/txt_size_16"
+                                app:customTypeFace="@string/semiBoldFont" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_weight="0"
+                                android:src="@mipmap/ic_right_arrow" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+        <com.view.bottombar.BottomBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            app:bb_activeTabColor="@color/appThemeColor_1"
+            app:bb_tabXmlResource="@xml/bottom_bar_tabs" />
+    </LinearLayout>
+
+
+    <include layout="@layout/layout_menu_design" />
+</android.support.v4.widget.DrawerLayout>
+
+
+

@@ -184,18 +184,10 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
                 }
                 break;
             case MENU_MY_ACCOUNT:
-                if (generalFunc.isUserLoggedIn()) {
-                    (new StartActProcess(getActContext())).startAct(MyAccountActivity.class);
-                } else {
-                    openSignIn();
-                }
+                openMyAccount();
                 break;
             case MENU_MY_WISH_LIST:
-                if (generalFunc.isUserLoggedIn()) {
-                    (new StartActProcess(getActContext())).startAct(WishListActivity.class);
-                } else {
-                    openSignIn();
-                }
+                openWishList();
                 break;
             case MENU_MY_CART:
                 if (generalFunc.isUserLoggedIn()) {
@@ -204,6 +196,24 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
                     openSignIn();
                 }
                 break;
+        }
+    }
+
+    public void openWishList() {
+
+        if (generalFunc.isUserLoggedIn()) {
+            (new StartActProcess(getActContext())).startAct(WishListActivity.class);
+        } else {
+            openSignIn();
+        }
+    }
+
+    public void openMyAccount() {
+
+        if (generalFunc.isUserLoggedIn()) {
+            (new StartActProcess(getActContext())).startAct(MyAccountActivity.class);
+        } else {
+            openSignIn();
         }
     }
 
