@@ -103,10 +103,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="@color/appThemeColor_1"
                 android:gravity="center"
                 android:text="PAY"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/appThemeColor_TXT_1"
                 android:textSize="14dp"
                 android:textStyle="bold" />
         </LinearLayout>

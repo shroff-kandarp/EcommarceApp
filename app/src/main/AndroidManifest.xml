@@ -54,7 +54,8 @@
         <activity android:name=".MyAccountActivity" />
         <activity android:name=".MyOrdersActivity" />
         <activity android:name=".SelectCountryActivity" />
-        <activity android:name=".MyMessagesActivity"></activity>
+        <activity android:name=".MyMessagesActivity" />
+        <activity android:name=".DealsActivity"></activity>
     </application>
 
 </manifest>

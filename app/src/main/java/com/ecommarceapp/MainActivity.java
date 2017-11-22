@@ -17,6 +17,8 @@ import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
 import com.utils.Utils;
+import com.view.bottombar.BottomBar;
+import com.view.bottombar.OnTabSelectListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements OnTabSelectListener {
 
 
     GeneralFunctions generalFunc;
@@ -37,6 +39,8 @@ public class MainActivity extends BaseActivity {
     ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
 
     AddDrawer addDrawer;
+
+    BottomBar bottomBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class MainActivity extends BaseActivity {
         bannerSlider = (BannerSlider) findViewById(R.id.bannerSlider);
         categoryRecyclerView = (RecyclerView) findViewById(R.id.categoryRecyclerView);
         loading_category = (ProgressBar) findViewById(R.id.loading_category);
+        bottomBar = findViewById(R.id.bottomBar);
 
         adapter = new MainPageCategoryRecycleAdapter(getActContext(), dataList, generalFunc, false);
 
@@ -102,7 +107,8 @@ public class MainActivity extends BaseActivity {
         getBanners();
 
         generateCategories();
-
+        bottomBar.setDefaultTab(R.id.tab_home);
+        bottomBar.setOnTabSelectListener(this);
     }
 
     public void addItemToWishList(String product_id, String category_id, final int position) {
@@ -328,4 +334,21 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onTabSelected(int tabId) {
+
+        switch (tabId) {
+            case R.id.tab_home:
+                break;
+            case R.id.tab_category:
+                addDrawer.openAllCategories();
+                break;
+            case R.id.tab_deals:
+                break;
+            case R.id.tab_my_acc:
+                break;
+            default:
+                break;
+        }
+    }
 }

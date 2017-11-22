@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_home"
+        icon="@mipmap/ic_tab_home"
+        title="Home" />
+    <tab
+        id="@+id/tab_category"
+        icon="@mipmap/ic_tab_category"
+        title="Categories" />
+    <tab
+        id="@+id/tab_deals"
+        icon="@mipmap/ic_tab_deals"
+        title="Deals" />
+    <tab
+        id="@+id/tab_my_acc"
+        icon="@mipmap/ic_tab_my_acc"
+        title="Account" />
+</tabs>

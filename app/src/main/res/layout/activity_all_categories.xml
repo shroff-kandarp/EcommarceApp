@@ -5,101 +5,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
 
         <include
             android:id="@+id/toolbar_include"
             layout="@layout/design_toolbar_main"
             app:layout_scrollFlags="scroll|enterAlways" />
 
-
-        <android.support.v4.widget.NestedScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:minHeight="450dp">
 
-            <RelativeLayout
+            <!-- <android.support.v7.widget.RecyclerView
+                 android:id="@+id/dataRecyclerView"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginEnd="5dp"
+                 android:layout_marginStart="5dp"
+                 android:orientation="vertical"
+                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+            <ExpandableListView
+                android:id="@+id/lvExp"
                 android:layout_width="match_parent"
-                android:minHeight="450dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/dataRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginStart="5dp"
-                    android:orientation="vertical"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            <ProgressBar
+                android:id="@+id/loading"
+                style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
 
-                <ProgressBar
-                    android:id="@+id/loading"
-                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true" />
+            <com.view.ErrorView
+                android:id="@+id/errorView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
 
-                <com.view.ErrorView
-                    android:id="@+id/errorView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </RelativeLayout>
 
 
-    </android.support.design.widget.CoordinatorLayout>
+        <com.view.bottombar.BottomBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            app:bb_activeTabColor="@color/appThemeColor_1"
+            app:bb_tabXmlResource="@xml/bottom_bar_tabs" />
+    </LinearLayout>
 
 
     <include layout="@layout/layout_menu_design" />
 </android.support.v4.widget.DrawerLayout>
 
 
-    <!--
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbar_include"
-        layout="@layout/design_toolbar_general" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/dataRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:orientation="vertical"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
-        <ProgressBar
-            android:id="@+id/loading"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
-
-        <com.view.ErrorView
-            android:id="@+id/errorView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-
-    </RelativeLayout>
-
-</LinearLayout>-->

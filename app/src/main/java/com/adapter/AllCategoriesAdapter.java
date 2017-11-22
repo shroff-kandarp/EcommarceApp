@@ -1,18 +1,14 @@
 package com.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 
 import com.ecommarceapp.R;
-import com.general.files.GeneralFunctions;
-import com.squareup.picasso.Picasso;
-import com.utils.Utils;
+import com.models.AllCategoriesParentItem;
 import com.view.MTextView;
 
 import java.util.ArrayList;
@@ -22,9 +18,105 @@ import java.util.HashMap;
  * Created by Shroff on 09-Nov-17.
  */
 
-public class AllCategoriesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AllCategoriesAdapter extends BaseExpandableListAdapter {
 
-    ArrayList<HashMap<String, String>> list;
+    private Context mContext;
+    private ArrayList<AllCategoriesParentItem> list;
+
+    public AllCategoriesAdapter(Context mContext, ArrayList<AllCategoriesParentItem> list) {
+        this.mContext = mContext;
+        this.list = list;
+    }
+
+    @Override
+    public Object getChild(int groupPosition, int childPosititon) {
+        return list.get(groupPosition).getSubCategoryList().get(childPosititon);
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, final int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+
+        final HashMap<String, String> childText = (HashMap<String, String>) getChild(groupPosition, childPosition);
+
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this.mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.item_category_all_item_design, null);
+        }
+
+        MTextView txtListChild = (MTextView) convertView
+                .findViewById(R.id.categoryNameTxtView);
+
+        txtListChild.setText(childText.get("name"));
+        return convertView;
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return list.get(groupPosition).getSubCategoryList().size();
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        return this.list.get(groupPosition);
+    }
+
+    @Override
+    public int getGroupCount() {
+        return this.list.size();
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
+        AllCategoriesParentItem parentItem = (AllCategoriesParentItem) getGroup(groupPosition);
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this.mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.item_category_all_header, null);
+        }
+
+        MTextView lblListHeader = (MTextView) convertView
+                .findViewById(R.id.categoryNameTxtView);
+
+        ImageView arrowImgView = (ImageView) convertView.findViewById(R.id.arrowImgView);
+        if (parentItem.getSubCategoryList().size() == 0) {
+            arrowImgView.setImageResource(R.mipmap.ic_right_arrow);
+        } else {
+            if (isExpanded) {
+                arrowImgView.setImageResource(R.mipmap.ic_collapse);
+            } else {
+                arrowImgView.setImageResource(R.mipmap.ic_expand);
+            }
+        }
+//        lblListHeader.setTypeface(null, Typeface.BOLD);
+        lblListHeader.setText(parentItem.getName());
+
+        return convertView;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+   /* ArrayList<AllCategoriesParentItem> list;
     Context mContext;
     public GeneralFunctions generalFunc;
 
@@ -39,7 +131,7 @@ public class AllCategoriesRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
 
     FooterViewHolder footerHolder;
 
-    public AllCategoriesRecyclerAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
+    public AllCategoriesRecyclerAdapter(Context mContext, ArrayList<AllCategoriesParentItem> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
         this.mContext = mContext;
         this.list = list;
         this.generalFunc = generalFunc;
@@ -62,11 +154,11 @@ public class AllCategoriesRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
             this.footerView = v;
             return new FooterViewHolder(v);
         } else if (viewType == TYPE_HEADER) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_name, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_all_header, parent, false);
             v.setBackgroundColor(mContext.getResources().getColor(android.R.color.transparent));
             return new HeaderViewHolder(v);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_design, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_all_item_design, parent, false);
             return new ViewHolder(view);
         }
 
@@ -209,5 +301,5 @@ public class AllCategoriesRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
         if (footerHolder != null)
             footerHolder.progressArea.setVisibility(View.GONE);
 //        footerHolder.progressArea.setPadding(0, -1 * footerView.getHeight(), 0, 0);
-    }
+    }*/
 }

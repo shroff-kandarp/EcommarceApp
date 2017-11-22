@@ -14,6 +14,7 @@ import com.ecommarceapp.AllCategoriesActivity;
 import com.ecommarceapp.AppLoginActivity;
 import com.ecommarceapp.MainActivity;
 import com.ecommarceapp.MyAccountActivity;
+import com.ecommarceapp.MyMessagesActivity;
 import com.ecommarceapp.MyOrdersActivity;
 import com.ecommarceapp.R;
 import com.ecommarceapp.SearchProductsActivity;
@@ -158,16 +159,15 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         closeDrawer();
         switch (menuDataList.get(position).get("ID")) {
             case MENU_HOME:
-                if (!(mContext instanceof MainActivity)) {
 //                    Intent intent = new Intent(mContext, MainActivity.class);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    mContext.startActivity(intent);
-                    goToHome();
-                }
+                goToHome();
+
 //                (new StartActProcess(getActContext())).startAct(MainActivity.class);
                 break;
             case MENU_ALL_CATEGORIES:
-                (new StartActProcess(getActContext())).startAct(AllCategoriesActivity.class);
+                openAllCategories();
                 break;
             case MENU_MY_ORDERS:
                 if (generalFunc.isUserLoggedIn()) {
@@ -178,7 +178,7 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
                 break;
             case MENU_MY_MESSAGES:
                 if (generalFunc.isUserLoggedIn()) {
-//                    (new StartActProcess(getActContext())).startAct(MyOrdersActivity.class);
+                    (new StartActProcess(getActContext())).startAct(MyMessagesActivity.class);
                 } else {
                     openSignIn();
                 }
@@ -207,9 +207,16 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
         }
     }
 
+    public void openAllCategories() {
+        (new StartActProcess(getActContext())).startAct(AllCategoriesActivity.class);
+    }
+
     public void goToHome() {
-        (new StartActProcess(getActContext())).startAct(MainActivity.class);
-        ActivityCompat.finishAffinity((Activity) mContext);
+
+        if (!(mContext instanceof MainActivity)) {
+            (new StartActProcess(getActContext())).startAct(MainActivity.class);
+            ActivityCompat.finishAffinity((Activity) mContext);
+        }
     }
 
     public void openSignIn() {

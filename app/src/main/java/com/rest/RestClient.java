@@ -99,7 +99,7 @@ public class RestClient {
 //        Call<Object> getAddressResult(@Query("format") String format, @Query("lat") String lat, @Query("lon") String lon, @Query("zoom") String zoom, @Query("addressdetails") String addressdetails);
 
         @FormUrlEncoded
-        @POST("/ecommarce/webservice/webservices.php")
+        @POST("/ecommarce/webservice/webservicesV1.php")
         Call<Object> getResponse(@FieldMap Map<String, String> params);
     }
 

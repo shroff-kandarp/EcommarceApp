@@ -19,6 +19,7 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="60dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -81,10 +82,12 @@
                         android:id="@+id/categoryRecyclerView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="60dp"
                         android:layout_centerHorizontal="true"
                         android:orientation="vertical"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
                 </RelativeLayout>
+
 
 
             </LinearLayout>
@@ -92,7 +95,16 @@
         </android.support.v4.widget.NestedScrollView>
 
 
+        <com.view.bottombar.BottomBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            app:bb_behavior="shy"
+            app:bb_activeTabColor="@color/appThemeColor_1"
+            app:bb_tabXmlResource="@xml/bottom_bar_tabs" />
     </android.support.design.widget.CoordinatorLayout>
+
 
     <include layout="@layout/layout_menu_design" />
 </android.support.v4.widget.DrawerLayout>

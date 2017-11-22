@@ -3,20 +3,21 @@ package com.ecommarceapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 
-import com.adapter.AllCategoriesRecyclerAdapter;
+import com.adapter.AllCategoriesAdapter;
 import com.general.files.AddDrawer;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
+import com.models.AllCategoriesParentItem;
 import com.utils.Utils;
 import com.view.ErrorView;
 import com.view.MTextView;
+import com.view.bottombar.BottomBar;
+import com.view.bottombar.OnTabSelectListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,7 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AllCategoriesActivity extends AppCompatActivity implements AllCategoriesRecyclerAdapter.OnItemClickListener {
+public class AllCategoriesActivity extends AppCompatActivity implements OnTabSelectListener, ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
     MTextView titleTxt;
 //    ImageView backImgView;
 
@@ -32,12 +33,14 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
     ProgressBar loading;
     ErrorView errorView;
 
-    RecyclerView dataRecyclerView;
-    AllCategoriesRecyclerAdapter adapter;
+    ExpandableListView lvExp;
+    AllCategoriesAdapter adapter;
 
-    ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
+    ArrayList<AllCategoriesParentItem> dataList = new ArrayList<>();
 
     AddDrawer addDrawer;
+
+    BottomBar bottomBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,23 +51,29 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
 
         addDrawer = new AddDrawer(getActContext());
 
-        dataRecyclerView = (RecyclerView) findViewById(R.id.dataRecyclerView);
+        lvExp = (ExpandableListView) findViewById(R.id.lvExp);
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
         loading = (ProgressBar) findViewById(R.id.loading);
         errorView = (ErrorView) findViewById(R.id.errorView);
+        bottomBar = findViewById(R.id.bottomBar);
 
-        adapter = new AllCategoriesRecyclerAdapter(getActContext(), dataList, generalFunc, false);
-        dataRecyclerView.setAdapter(adapter);
-        dataRecyclerView.setNestedScrollingEnabled(false);
+        adapter = new AllCategoriesAdapter(getActContext(), dataList);
+        lvExp.setAdapter(adapter);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dataRecyclerView.getContext(),
-                LinearLayout.VERTICAL);
-        dataRecyclerView.addItemDecoration(dividerItemDecoration);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dataRecyclerView.getContext(),
+//                LinearLayout.VERTICAL);
+//        dataRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        adapter.setOnItemClickListener(this);
+//        adapter.setOnItemClickListener(this);
+
+        lvExp.setOnChildClickListener(this);
+        lvExp.setOnGroupClickListener(this);
         setLabels();
 
         loadAllCategories();
+
+        bottomBar.setDefaultTab(R.id.tab_category);
+        bottomBar.setOnTabSelectListener(this);
     }
 
     @Override
@@ -77,15 +86,38 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
     }
 
     @Override
-    public void onItemClickList(View v, int position) {
-        HashMap<String, String> data = dataList.get(position);
-        if (data.get("TYPE").equals("" + adapter.TYPE_HEADER)) {
+    public boolean onGroupClick(ExpandableListView expandableListView, View view, int position, long l) {
+        AllCategoriesParentItem parentItem = dataList.get(position);
+        if (parentItem.getSubCategoryList().size() == 0) {
             Bundle bn = new Bundle();
-            bn.putString("category_id", data.get("category_id"));
-            bn.putString("name", data.get("name"));
+            bn.putString("category_id", parentItem.getCategory_id());
+            bn.putString("name", parentItem.getName());
             (new StartActProcess(getActContext())).startActWithData(ListAllProductsActivity.class, bn);
         }
+        return false;
     }
+
+    @Override
+    public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
+        AllCategoriesParentItem parentItem = dataList.get(groupPosition);
+        HashMap<String, String> childItem = parentItem.getSubCategoryList().get(childPosition);
+        Bundle bn = new Bundle();
+        bn.putString("category_id", childItem.get("category_id"));
+        bn.putString("name", childItem.get("name"));
+        (new StartActProcess(getActContext())).startActWithData(ListAllProductsActivity.class, bn);
+        return false;
+    }
+
+//    @Override
+//    public void onItemClickList(View v, int position) {
+////        HashMap<String, String> data = dataList.get(position);
+////        if (data.get("TYPE").equals("" + adapter.TYPE_HEADER)) {
+//            Bundle bn = new Bundle();
+//            bn.putString("category_id", data.get("category_id"));
+//            bn.putString("name", data.get("name"));
+//            (new StartActProcess(getActContext())).startActWithData(ListAllProductsActivity.class, bn);
+////        }
+//    }
 
     public class setOnClickList implements View.OnClickListener {
 
@@ -146,15 +178,33 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
                 if (msgArr != null) {
                     for (int i = 0; i < msgArr.length(); i++) {
                         JSONObject obj_cat = generalFunc.getJsonObject(msgArr, i);
+                        JSONArray subCategoriesArr = generalFunc.getJsonArray("SubCategories", obj_cat);
+
                         String name = generalFunc.getJsonValue("name", obj_cat);
                         String category_id = generalFunc.getJsonValue("category_id", obj_cat);
 
+                        AllCategoriesParentItem parentItem = new AllCategoriesParentItem();
 //                                Utils.printLog("CatName","::name::"+name);
-                        HashMap<String, String> dataMap_cat = new HashMap<>();
-                        dataMap_cat.put("name", name);
-                        dataMap_cat.put("category_id", category_id);
-                        dataMap_cat.put("TYPE", "" + adapter.TYPE_HEADER);
-                        dataList.add(dataMap_cat);
+
+                        parentItem.setCategory_id(category_id);
+                        parentItem.setName(name);
+
+                        ArrayList<HashMap<String, String>> subCatList = new ArrayList<>();
+                        for (int j = 0; j < subCategoriesArr.length(); j++) {
+                            JSONObject obj_sub = generalFunc.getJsonObject(subCategoriesArr, j);
+
+                            String subCatName = generalFunc.getJsonValue("name", obj_sub);
+                            String subCategoryId = generalFunc.getJsonValue("category_id", obj_sub);
+
+                            HashMap<String, String> dataMap_cat = new HashMap<>();
+                            dataMap_cat.put("name", subCatName);
+                            dataMap_cat.put("category_id", subCategoryId);
+
+                            subCatList.add(dataMap_cat);
+                        }
+                        parentItem.setSubCategoryList(subCatList);
+//                        dataMap_cat.put("TYPE", "" + adapter.TYPE_HEADER);
+                        dataList.add(parentItem);
                     }
 
                     adapter.notifyDataSetChanged();
@@ -192,5 +242,21 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
 
     public Context getActContext() {
         return AllCategoriesActivity.this;
+    }
+
+    @Override
+    public void onTabSelected(int tabId) {
+
+        switch (tabId) {
+            case R.id.tab_home:
+                addDrawer.goToHome();
+                break;
+            case R.id.tab_category:
+                break;
+            case R.id.tab_deals:
+                break;
+            case R.id.tab_my_acc:
+                break;
+        }
     }
 }
