@@ -146,6 +146,7 @@ public class AllCategoriesActivity extends AppCompatActivity implements OnTabSel
 
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("type", "getAllCategories");
+        parameters.put("customer_id", generalFunc.getMemberId());
 
         ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
         exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {

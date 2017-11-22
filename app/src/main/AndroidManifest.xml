@@ -56,7 +56,8 @@
         <activity android:name=".SelectCountryActivity" />
         <activity android:name=".MyMessagesActivity" />
         <activity android:name=".DealsActivity" />
-        <activity android:name=".MyAddressActivity"></activity>
+        <activity android:name=".MyAddressActivity" />
+        <activity android:name=".AddAddressActivity"></activity>
     </application>
 
 </manifest>

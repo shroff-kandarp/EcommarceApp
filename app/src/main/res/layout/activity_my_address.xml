@@ -22,13 +22,43 @@
             android:layout_weight="1"
             android:minHeight="450dp">
 
-
-            <ExpandableListView
-                android:id="@+id/lvExp"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dataRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp" />
+                android:orientation="vertical"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+            <LinearLayout
+                android:id="@+id/noAddressArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <com.view.MTextView
+                    android:id="@+id/noAddressTxtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="No addresses Found"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/txt_size_16" />
+
+                <include
+                    android:id="@+id/btn_type2"
+                    layout="@layout/btn_type_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/all_btn_height"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="10dp" />
+
+            </LinearLayout>
 
             <ProgressBar
                 android:id="@+id/loading"
@@ -46,14 +76,14 @@
 
         </RelativeLayout>
 
-
-        <com.view.bottombar.BottomBar
-            android:id="@+id/bottomBar"
+        <include
+            android:id="@+id/addAddressBtn"
+            layout="@layout/btn_type_2"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/all_btn_height"
             android:layout_gravity="bottom"
-            app:bb_activeTabColor="@color/appThemeColor_1"
-            app:bb_tabXmlResource="@xml/bottom_bar_tabs" />
+            android:layout_marginTop="10dp"
+            android:visibility="gone" />
     </LinearLayout>
 
 

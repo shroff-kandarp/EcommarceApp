@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.general.files.AddDrawer;
 import com.general.files.GeneralFunctions;
+import com.general.files.StartActProcess;
 import com.utils.Utils;
 import com.view.CreateRoundedView;
 import com.view.MTextView;
@@ -91,6 +92,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                 case R.id.loginSecurityArea:
                     break;
                 case R.id.addressBookArea:
+                    (new StartActProcess(getActContext())).startAct(MyAddressActivity.class);
                     break;
                 case R.id.messageArea:
                     break;
