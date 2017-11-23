@@ -82,8 +82,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/all_btn_height"
             android:layout_gravity="bottom"
-            android:layout_marginTop="10dp"
-            android:visibility="gone" />
+            android:layout_weight="0"
+            android:visibility="visible" />
     </LinearLayout>
 
 

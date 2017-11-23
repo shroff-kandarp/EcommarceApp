@@ -1,6 +1,5 @@
 package com.ecommarceapp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -200,7 +199,6 @@ public class SelectCountryActivity extends AppCompatActivity implements PinnedSe
 
         @Override
         public void onClick(View view) {
-            Utils.hideKeyboard((Activity) getActContext());
             switch (view.getId()) {
                 case R.id.backImgView:
                     SelectCountryActivity.super.onBackPressed();

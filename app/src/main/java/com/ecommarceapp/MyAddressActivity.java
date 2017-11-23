@@ -1,6 +1,7 @@
 package com.ecommarceapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +13,11 @@ import com.adapter.CustomerAddressRecycleAdapter;
 import com.general.files.AddDrawer;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
+import com.general.files.StartActProcess;
 import com.utils.Utils;
 import com.view.CreateRoundedView;
 import com.view.ErrorView;
+import com.view.GenerateAlertBox;
 import com.view.MButton;
 import com.view.MTextView;
 import com.view.MaterialRippleLayout;
@@ -25,7 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MyAddressActivity extends AppCompatActivity {
+public class MyAddressActivity extends AppCompatActivity implements CustomerAddressRecycleAdapter.OnItemClickListener {
     MTextView titleTxt;
     MTextView noAddressTxtView;
     GeneralFunctions generalFunc;
@@ -68,7 +71,7 @@ public class MyAddressActivity extends AppCompatActivity {
         addAddressBtn.setOnClickListener(new setOnClickList());
 
         adapter = new CustomerAddressRecycleAdapter(getActContext(), dataList, generalFunc, false);
-
+        adapter.setOnItemClickListener(this);
         dataRecyclerView.setAdapter(adapter);
 
         new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), noAddressArea);
@@ -82,6 +85,7 @@ public class MyAddressActivity extends AppCompatActivity {
         if (loading.getVisibility() != View.VISIBLE) {
             loading.setVisibility(View.VISIBLE);
         }
+        noAddressArea.setVisibility(View.GONE);
         addAddressBtn.setVisibility(View.GONE);
         dataList.clear();
         adapter.notifyDataSetChanged();
@@ -145,8 +149,8 @@ public class MyAddressActivity extends AppCompatActivity {
                     }
 
                     adapter.notifyDataSetChanged();
-                    addAddressBtn.setVisibility(View.VISIBLE);
                 }
+                addAddressBtn.setVisibility(View.VISIBLE);
             } else {
                 noAddressTxtView.setText(generalFunc.getJsonValue(Utils.message_str, responseString));
                 noAddressArea.setVisibility(View.VISIBLE);
@@ -189,6 +193,80 @@ public class MyAddressActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemClickList(View v, int btnType, int position) {
+        switch (btnType) {
+            case -1:
+                break;
+            case 0:
+                removeSelectedAddress(position);
+                break;
+            case 1:
+                editSelectedAddress(position);
+                break;
+        }
+    }
+
+    public void removeSelectedAddress(final int position) {
+        final GenerateAlertBox generateAlert = new GenerateAlertBox(getActContext());
+        generateAlert.setCancelable(false);
+        generateAlert.setBtnClickList(new GenerateAlertBox.HandleAlertBtnClick() {
+            @Override
+            public void handleBtnClick(int btn_id) {
+                if (btn_id == 1) {
+                    generateAlert.closeAlertBox();
+                    confirmRemoveAddress(position);
+                } else if (btn_id == 0) {
+                    generateAlert.closeAlertBox();
+                }
+            }
+        });
+        generateAlert.setContentMessage("Confirm", "Are you sure, you want to remove selected address?");
+        generateAlert.setPositiveBtn("YES");
+        generateAlert.setNegativeBtn("NO");
+        generateAlert.showAlertBox();
+    }
+
+    public void confirmRemoveAddress(int position) {
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "deleteCustomerAddress");
+        parameters.put("customer_id", generalFunc.getMemberId());
+        parameters.put("address_id", dataList.get(position).get("address_id"));
+
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail) {
+                        loadCustomerAddresses();
+                    } else {
+                        generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                    }
+
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
+    }
+
+    public void editSelectedAddress(int position) {
+
+        Intent int_edit_address = new Intent(MyAddressActivity.this, AddAddressActivity.class);
+        int_edit_address.putExtra("ADDRESS_DATA", dataList.get(position));
+
+        startActivityForResult(int_edit_address, Utils.ADD_ADDRESS_REQ_CODE);
+    }
 
     public class setOnClickList implements View.OnClickListener {
 
@@ -209,12 +287,13 @@ public class MyAddressActivity extends AppCompatActivity {
     }
 
     public void openAddAddress() {
-
+        (new StartActProcess(getActContext())).startActForResult(AddAddressActivity.class, Utils.ADD_ADDRESS_REQ_CODE);
     }
 
     public void setLabels() {
         titleTxt.setText("Address book");
         btn_type2.setText("Add New Address");
+        addAddressBtn.setText("Add New Address");
     }
 
 
@@ -222,4 +301,12 @@ public class MyAddressActivity extends AppCompatActivity {
         return MyAddressActivity.this;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Utils.ADD_ADDRESS_REQ_CODE && resultCode == RESULT_OK) {
+            loadCustomerAddresses();
+        }
+    }
 }

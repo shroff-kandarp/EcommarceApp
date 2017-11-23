@@ -137,8 +137,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="40dp"
                                 android:layout_weight="1"
-                                android:paddingStart="10dp"
                                 android:gravity="center_vertical"
+                                android:paddingStart="10dp"
                                 android:text="Manage Address Book"
                                 android:textColor="#5b5b5b"
                                 android:textSize="@dimen/txt_size_16"
@@ -184,8 +184,8 @@
                             android:layout_height="40dp"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Your Messages"
                             android:paddingStart="10dp"
+                            android:text="Your Messages"
                             android:textColor="#5b5b5b"
                             android:textSize="@dimen/txt_size_16"
                             app:customTypeFace="@string/semiBoldFont" />
@@ -235,8 +235,8 @@
                                 android:layout_height="40dp"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="Wish List"
                                 android:paddingStart="10dp"
+                                android:text="Wish List"
                                 android:textColor="#5b5b5b"
                                 android:textSize="@dimen/txt_size_16"
                                 app:customTypeFace="@string/semiBoldFont" />
@@ -265,9 +265,9 @@
                                 android:layout_height="40dp"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
+                                android:paddingStart="10dp"
                                 android:text="Profile"
                                 android:textColor="#5b5b5b"
-                                android:paddingStart="10dp"
                                 android:textSize="@dimen/txt_size_16"
                                 app:customTypeFace="@string/semiBoldFont" />
 
@@ -281,6 +281,38 @@
 
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:id="@+id/logOutArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imgLogOut"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/ic_logout" />
+
+                    <com.view.MTextView
+                        android:id="@+id/logOutTxtView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_weight="1"
+                        android:layout_toEndOf="@id/imgLogOut"
+                        android:gravity="center_vertical"
+                        android:minHeight="45dp"
+                        android:padding="10dp"
+                        android:text="Logout from this device?"
+                        android:textColor="#5b5b5b"
+                        android:textSize="@dimen/txt_size_16"
+                        app:customTypeFace="@string/semiBoldFont" />
+                </RelativeLayout>
 
             </LinearLayout>
         </ScrollView>

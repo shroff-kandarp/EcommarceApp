@@ -44,7 +44,7 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
     }
 
     public interface OnItemClickListener {
-        void onItemClickList(View v, int position);
+        void onItemClickList(View v, int btnType, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener mItemClickListener) {
@@ -81,11 +81,27 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
             viewHolder.nameTxtView.setText(item.get("firstname") + " " + item.get("lastname"));
             viewHolder.addressTxtView.setText(item.get("address_1") + "\n" + item.get("address_2") + "\n" + item.get("city") + "," + item.get("postcode"));
 
+            viewHolder.removeItemArea.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClickList(view, 0, position);
+                    }
+                }
+            });
+            viewHolder.editItemArea.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClickList(view, 1, position);
+                    }
+                }
+            });
             viewHolder.contentArea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mItemClickListener != null) {
-                        mItemClickListener.onItemClickList(view, position);
+                        mItemClickListener.onItemClickList(view, -1, position);
                     }
                 }
             });
@@ -106,12 +122,16 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public MTextView addressTxtView;
+        public View editItemArea;
         public MTextView nameTxtView;
         public View contentArea;
+        public View removeItemArea;
 
         public ViewHolder(View view) {
             super(view);
 
+            removeItemArea = view.findViewById(R.id.removeItemArea);
+            editItemArea = view.findViewById(R.id.editItemArea);
             nameTxtView = view.findViewById(R.id.nameTxtView);
             addressTxtView = view.findViewById(R.id.addressTxtView);
             contentArea = view.findViewById(R.id.contentArea);

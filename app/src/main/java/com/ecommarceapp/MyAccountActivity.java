@@ -12,6 +12,7 @@ import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
 import com.utils.Utils;
 import com.view.CreateRoundedView;
+import com.view.GenerateAlertBox;
 import com.view.MTextView;
 import com.view.bottombar.BottomBar;
 import com.view.bottombar.OnTabSelectListener;
@@ -20,6 +21,8 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
 
     MTextView titleTxt;
     GeneralFunctions generalFunc;
+
+    View logOutArea;
 
     LinearLayout yourOrdersArea;
     LinearLayout loginSecurityArea;
@@ -44,6 +47,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         addDrawer = new AddDrawer(getActContext());
 
         titleTxt = findViewById(R.id.titleTxt);
+        logOutArea = findViewById(R.id.logOutArea);
         yourOrdersArea = findViewById(R.id.yourOrdersArea);
         loginSecurityArea = findViewById(R.id.loginSecurityArea);
         accountArea = findViewById(R.id.accountArea);
@@ -63,6 +67,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), accountArea);
         new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), messageArea);
         new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), personalizationArea);
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), logOutArea);
 
         yourOrdersArea.setOnClickListener(new setOnClickList());
         loginSecurityArea.setOnClickListener(new setOnClickList());
@@ -70,6 +75,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         messageArea.setOnClickListener(new setOnClickList());
         wishListArea.setOnClickListener(new setOnClickList());
         profileArea.setOnClickListener(new setOnClickList());
+        logOutArea.setOnClickListener(new setOnClickList());
     }
 
     @Override
@@ -89,6 +95,9 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                 case R.id.backImgView:
                     MyAccountActivity.super.onBackPressed();
                     break;
+                case R.id.logOutArea:
+                    confirmSignOut();
+                    break;
                 case R.id.loginSecurityArea:
                     break;
                 case R.id.addressBookArea:
@@ -104,6 +113,26 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
 
             }
         }
+    }
+
+    public void confirmSignOut() {
+        final GenerateAlertBox generateAlert = new GenerateAlertBox(getActContext());
+        generateAlert.setCancelable(false);
+        generateAlert.setBtnClickList(new GenerateAlertBox.HandleAlertBtnClick() {
+            @Override
+            public void handleBtnClick(int btn_id) {
+                if (btn_id == 1) {
+                    generateAlert.closeAlertBox();
+                    generalFunc.signOut();
+                } else if (btn_id == 0) {
+                    generateAlert.closeAlertBox();
+                }
+            }
+        });
+        generateAlert.setContentMessage("Confirm", "Are you sure, you want to logout from this device?");
+        generateAlert.setPositiveBtn("YES");
+        generateAlert.setNegativeBtn("NO");
+        generateAlert.showAlertBox();
     }
 
     public void setLabels() {
