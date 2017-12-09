@@ -57,7 +57,8 @@
         <activity android:name=".MyMessagesActivity" />
         <activity android:name=".DealsActivity" />
         <activity android:name=".MyAddressActivity" />
-        <activity android:name=".AddAddressActivity"></activity>
+        <activity android:name=".AddAddressActivity" />
+        <activity android:name=".CurrentDealsActivity"></activity>
     </application>
 
 </manifest>
