@@ -3,11 +3,14 @@ package com.ecommarceapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.adapter.MainPageCategoryRecycleAdapter;
 import com.bannerslider.banners.Banner;
 import com.bannerslider.banners.RemoteBanner;
 import com.bannerslider.events.OnBannerClickListener;
@@ -15,6 +18,7 @@ import com.bannerslider.views.BannerSlider;
 import com.general.files.AddDrawer;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
+import com.general.files.StartActProcess;
 import com.utils.Utils;
 import com.view.ErrorView;
 import com.view.MTextView;
@@ -42,12 +46,20 @@ public class ProductDescriptionActivity extends AppCompatActivity {
     GeneralFunctions generalFunc;
 
     ProgressBar loading_product_details;
+    ProgressBar loadingRelatedProducts;
     View contentView;
     ErrorView errorView;
 
     BannerSlider bannerSlider;
 
     AddDrawer addDrawer;
+
+
+    RecyclerView relatedProductsRecyclerView;
+
+    MainPageCategoryRecycleAdapter relatedProductsAdapter;
+    ArrayList<HashMap<String, String>> relatedProductsDataList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +76,8 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         errorView = (ErrorView) findViewById(R.id.errorView);
         wishListArea = findViewById(R.id.wishListArea);
         wishListImgView = findViewById(R.id.wishListImgView);
+        loadingRelatedProducts = findViewById(R.id.loadingRelatedProducts);
+        relatedProductsRecyclerView = findViewById(R.id.relatedProductsRecyclerView);
 
         productNameTxtView = (MTextView) findViewById(R.id.productNameTxtView);
         productPriceTxtView = (MTextView) findViewById(R.id.productPriceTxtView);
@@ -72,12 +86,60 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         descriptionTxtView = (MTextView) findViewById(R.id.descriptionTxtView);
         addToCartTxtView = (MTextView) findViewById(R.id.addToCartTxtView);
 
+        relatedProductsAdapter = new MainPageCategoryRecycleAdapter(getActContext(), relatedProductsDataList, generalFunc, false);
+
+        relatedProductsRecyclerView.setAdapter(relatedProductsAdapter);
+
+        relatedProductsRecyclerView.setNestedScrollingEnabled(false);
 
         setLabels();
 
         addToCartTxtView.setOnClickListener(new setOnClickList());
         wishListArea.setOnClickListener(new setOnClickList());
         getProductDetails();
+
+        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch (relatedProductsAdapter.getItemViewType(position)) {
+                    case MainPageCategoryRecycleAdapter.TYPE_HEADER:
+                        return 2;
+                    case MainPageCategoryRecycleAdapter.TYPE_FOOTER:
+                        return 2;
+
+                    case MainPageCategoryRecycleAdapter.TYPE_ITEM:
+                        return 1;
+
+                    default:
+                        return 1;
+                }
+            }
+        });
+        relatedProductsAdapter.setOnItemClickListener(new MainPageCategoryRecycleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClickList(View v, int position) {
+                HashMap<String, String> data = relatedProductsDataList.get(position);
+                if (v == null) {
+                    addItemToWishList(data.get("product_id"), data.get("category_id"), position);
+
+                    return;
+                }
+
+                if (data.get("TYPE").equals("" + MainPageCategoryRecycleAdapter.TYPE_ITEM)) {
+                    Bundle bn = new Bundle();
+                    bn.putString("product_id", data.get("product_id"));
+                    bn.putString("category_id", data.get("category_id"));
+                    bn.putString("name", data.get("name"));
+                    (new StartActProcess(getActContext())).startActWithData(ProductDescriptionActivity.class, bn);
+                }
+            }
+        });
+
+
+        relatedProductsRecyclerView.setLayoutManager(mLayoutManager);
+
+        getRelatedProducts();
     }
 
     @Override
@@ -88,8 +150,9 @@ public class ProductDescriptionActivity extends AppCompatActivity {
             addDrawer.findUserCartCount();
         }
     }
+
     public void setLabels() {
-        titleTxt.setText(getIntent().getStringExtra("name"));
+        titleTxt.setText(Html.fromHtml(getIntent().getStringExtra("name")));
     }
 
 
@@ -110,6 +173,46 @@ public class ProductDescriptionActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+
+    public void addItemToWishList(String product_id, String category_id, final int position) {
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "addProductToWishList");
+        parameters.put("product_id", product_id);
+        parameters.put("category_id", category_id);
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        Utils.printLog("WishListParameters::", "::" + parameters.toString());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail) {
+                        if (generalFunc.getJsonValue("isDelete", responseString).equalsIgnoreCase("yes")) {
+                            relatedProductsDataList.get(position).put("isWishlisted", "No");
+                        } else {
+                            relatedProductsDataList.get(position).put("isWishlisted", "Yes");
+                        }
+
+                        relatedProductsAdapter.notifyDataSetChanged();
+                    }
+                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
     }
 
     public void addItemToWishList() {
@@ -256,6 +359,86 @@ public class ProductDescriptionActivity extends AppCompatActivity {
                 } else {
                     generateErrorView();
                 }
+            }
+        });
+        exeWebServer.execute();
+    }
+
+    public void getRelatedProducts() {
+        if (loadingRelatedProducts.getVisibility() != View.VISIBLE) {
+            loadingRelatedProducts.setVisibility(View.VISIBLE);
+        }
+
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "relatedProducts");
+        parameters.put("product_id", getIntent().getStringExtra("product_id"));
+        parameters.put("customer_id", generalFunc.getMemberId());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+//        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail == true) {
+
+                        JSONArray msgArr = generalFunc.getJsonArray(Utils.message_str, responseString);
+
+                        JSONArray wishListDataArr = generalFunc.getJsonArray("UserWishListData", responseString);
+                        ArrayList<String> wishListProductIdsList = new ArrayList<>();
+                        if (wishListDataArr != null) {
+                            for (int i = 0; i < wishListDataArr.length(); i++) {
+
+                                JSONObject obj_temp = generalFunc.getJsonObject(wishListDataArr, i);
+
+                                wishListProductIdsList.add(generalFunc.getJsonValue("product_id", obj_temp));
+                            }
+                        }
+                        if (msgArr != null) {
+                            for (int i = 0; i < msgArr.length(); i++) {
+                                JSONObject obj_temp = generalFunc.getJsonObject(msgArr, i);
+                                String productImg = generalFunc.getJsonValue("image", obj_temp);
+                                String productName = generalFunc.getJsonValue("name", obj_temp);
+                                String productDes = generalFunc.getJsonValue("description", obj_temp);
+                                String productId = generalFunc.getJsonValue("product_id", obj_temp);
+                                String price = generalFunc.getJsonValue("price", obj_temp);
+                                String catId = generalFunc.getJsonValue("category_id", obj_temp);
+
+                                HashMap<String, String> dataMap_products = new HashMap<>();
+                                dataMap_products.put("name", productName);
+                                dataMap_products.put("category_id", catId);
+                                dataMap_products.put("product_id", productId);
+                                dataMap_products.put("price", price);
+                                dataMap_products.put("description", Utils.html2text(productDes));
+                                dataMap_products.put("image", productImg);
+                                dataMap_products.put("isWishlisted", wishListProductIdsList.contains(productId) == true ? "Yes" : "No");
+
+                                dataMap_products.put("TYPE", "" + MainPageCategoryRecycleAdapter.TYPE_ITEM);
+                                relatedProductsDataList.add(dataMap_products);
+                            }
+                            relatedProductsAdapter.notifyDataSetChanged();
+
+                        } else {
+//                            ((MTextView) findViewById(R.id.noProductsTxtView)).setText("No related products found");
+                            ((MTextView) findViewById(R.id.noProductsTxtView)).setVisibility(View.VISIBLE);
+                        }
+                    } else {
+//                        generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+//                        ((MTextView) findViewById(R.id.noProductsTxtView)).setText("No related products found");
+                        ((MTextView) findViewById(R.id.noProductsTxtView)).setVisibility(View.VISIBLE);
+                    }
+                } else {
+//                    ((MTextView) findViewById(R.id.noProductsTxtView)).setText("No related products found");
+                    ((MTextView) findViewById(R.id.noProductsTxtView)).setVisibility(View.VISIBLE);
+                }
+                loadingRelatedProducts.setVisibility(View.GONE);
             }
         });
         exeWebServer.execute();
