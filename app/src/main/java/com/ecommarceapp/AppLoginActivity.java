@@ -47,10 +47,10 @@ public class AppLoginActivity extends BaseActivity {
         mCallbackManager = CallbackManager.Factory.create();
         generalFunc = new GeneralFunctions(getActContext());
 
-        closeLoginImgView = findViewById(R.id.closeLoginImgView);
-        headerTxtView = findViewById(R.id.headerTxtView);
-        fbImgView = findViewById(R.id.fbImgView);
-        googleImgView = findViewById(R.id.googleImgView);
+        closeLoginImgView = (AppCompatImageView) findViewById(R.id.closeLoginImgView);
+        headerTxtView = (MTextView) findViewById(R.id.headerTxtView);
+        fbImgView = (ImageView) findViewById(R.id.fbImgView);
+        googleImgView = (ImageView) findViewById(R.id.googleImgView);
 
         closeLoginImgView.setOnClickListener(new setOnClickList());
         fbImgView.setOnClickListener(new setOnClickList());

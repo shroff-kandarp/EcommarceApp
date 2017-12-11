@@ -52,14 +52,14 @@
                 android:tint="@color/appThemeColor_TXT_1" />
 
             <ImageView
-                android:id="@+id/notificationImgView"
+                android:id="@+id/listChangeImgView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0"
                 android:padding="10dp"
                 android:scaleType="fitCenter"
-                android:src="@mipmap/ic_notification"
+                android:src="@mipmap/ic_view_list"
                 android:tint="@color/appThemeColor_TXT_1" />
 
             <RelativeLayout

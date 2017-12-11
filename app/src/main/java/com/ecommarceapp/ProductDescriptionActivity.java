@@ -75,9 +75,9 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         bannerSlider = (BannerSlider) findViewById(R.id.bannerSlider);
         errorView = (ErrorView) findViewById(R.id.errorView);
         wishListArea = findViewById(R.id.wishListArea);
-        wishListImgView = findViewById(R.id.wishListImgView);
-        loadingRelatedProducts = findViewById(R.id.loadingRelatedProducts);
-        relatedProductsRecyclerView = findViewById(R.id.relatedProductsRecyclerView);
+        wishListImgView = (ImageView) findViewById(R.id.wishListImgView);
+        loadingRelatedProducts = (ProgressBar) findViewById(R.id.loadingRelatedProducts);
+        relatedProductsRecyclerView = (RecyclerView) findViewById(R.id.relatedProductsRecyclerView);
 
         productNameTxtView = (MTextView) findViewById(R.id.productNameTxtView);
         productPriceTxtView = (MTextView) findViewById(R.id.productPriceTxtView);

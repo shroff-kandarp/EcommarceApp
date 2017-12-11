@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.adapter.MainPageCategoryRecycleAdapter;
@@ -39,6 +41,11 @@ public class ListAllProductsActivity extends AppCompatActivity {
 
     AddDrawer addDrawer;
 
+    GridLayoutManager mGridLayoutManager;
+    ImageView listChangeImgView;
+
+    String CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +63,7 @@ public class ListAllProductsActivity extends AppCompatActivity {
 
         loading = (ProgressBar) findViewById(R.id.loading);
         errorView = (ErrorView) findViewById(R.id.errorView);
+        listChangeImgView = (ImageView) findViewById(R.id.listChangeImgView);
 
         adapter = new MainPageCategoryRecycleAdapter(getActContext(), dataList, generalFunc, false);
 
@@ -63,8 +71,8 @@ public class ListAllProductsActivity extends AppCompatActivity {
 
         productsRecyclerView.setNestedScrollingEnabled(false);
 
-        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        mGridLayoutManager = new GridLayoutManager(this, 2);
+        mGridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 switch (adapter.getItemViewType(position)) {
@@ -102,9 +110,11 @@ public class ListAllProductsActivity extends AppCompatActivity {
         });
 
 
-        productsRecyclerView.setLayoutManager(mLayoutManager);
+        productsRecyclerView.setLayoutManager(mGridLayoutManager);
 
         setLabels();
+
+        listChangeImgView.setOnClickListener(new setOnClickList());
 
         findProducts(getIntent().getStringExtra("category_id"));
     }
@@ -156,6 +166,7 @@ public class ListAllProductsActivity extends AppCompatActivity {
         if (addDrawer != null) {
             addDrawer.findUserCartCount();
         }
+        getWishListData();
     }
 
     public void setLabels() {
@@ -254,6 +265,54 @@ public class ListAllProductsActivity extends AppCompatActivity {
         return ListAllProductsActivity.this;
     }
 
+    public void getWishListData() {
+        if (dataList.size() < 1) {
+            return;
+        }
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "getUserWishListData");
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        Utils.printLog("WishListParameters::", "::" + parameters.toString());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), false, generalFunc);
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail) {
+                        JSONArray wishListDataArr = generalFunc.getJsonArray("UserWishListData", responseString);
+
+                        ArrayList<String> wishListProductIdsList = new ArrayList<>();
+                        if (wishListDataArr != null) {
+                            for (int i = 0; i < wishListDataArr.length(); i++) {
+
+                                JSONObject obj_temp = generalFunc.getJsonObject(wishListDataArr, i);
+
+                                wishListProductIdsList.add(generalFunc.getJsonValue("product_id", obj_temp));
+                            }
+                        }
+                        for (int i = 0; i < dataList.size(); i++) {
+
+                            dataList.get(i).put("isWishlisted", wishListProductIdsList.contains(dataList.get(i).get("product_id")) == true ? "Yes" : "No");
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                } else {
+                }
+            }
+        });
+        exeWebServer.execute();
+    }
+
     public class setOnClickList implements View.OnClickListener {
 
         @Override
@@ -261,6 +320,23 @@ public class ListAllProductsActivity extends AppCompatActivity {
             switch (view.getId()) {
                 case R.id.backImgView:
                     ListAllProductsActivity.super.onBackPressed();
+                    break;
+                case R.id.listChangeImgView:
+                    if (CURRENT_PRODUCT_DISPLAY_MODE.equals("GRID")) {
+                        productsRecyclerView.setLayoutManager(new LinearLayoutManager(getActContext()));
+                        CURRENT_PRODUCT_DISPLAY_MODE = "LIST";
+                        adapter.CURRENT_PRODUCT_DISPLAY_MODE = "LIST";
+                        adapter.notifyDataSetChanged();
+                        productsRecyclerView.setAdapter(adapter);
+                        listChangeImgView.setImageResource(R.mipmap.ic_view_grid);
+                    } else {
+                        productsRecyclerView.setLayoutManager(mGridLayoutManager);
+                        CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+                        adapter.CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+                        adapter.notifyDataSetChanged();
+                        productsRecyclerView.setAdapter(adapter);
+                        listChangeImgView.setImageResource(R.mipmap.ic_view_list);
+                    }
                     break;
 
             }

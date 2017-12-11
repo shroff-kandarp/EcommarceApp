@@ -55,7 +55,7 @@ public class AllCategoriesActivity extends AppCompatActivity implements OnTabSel
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
         loading = (ProgressBar) findViewById(R.id.loading);
         errorView = (ErrorView) findViewById(R.id.errorView);
-        bottomBar = findViewById(R.id.bottomBar);
+        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
         adapter = new AllCategoriesAdapter(getActContext(), dataList);
         lvExp.setAdapter(adapter);
@@ -83,6 +83,8 @@ public class AllCategoriesActivity extends AppCompatActivity implements OnTabSel
         if (addDrawer != null) {
             addDrawer.findUserCartCount();
         }
+
+        bottomBar.setDefaultTab(R.id.tab_category);
     }
 
     @Override
@@ -255,6 +257,7 @@ public class AllCategoriesActivity extends AppCompatActivity implements OnTabSel
             case R.id.tab_category:
                 break;
             case R.id.tab_deals:
+                (new StartActProcess(getActContext())).startAct(DealsActivity.class);
                 break;
             case R.id.tab_my_acc:
                 if (generalFunc.isUserLoggedIn()) {

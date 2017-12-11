@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:layout_gravity="center_horizontal"
+    android:gravity="center"
     android:orientation="vertical">
 
 
@@ -13,8 +13,8 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="4dp"
         card_view:cardCornerRadius="2dp">
 
@@ -66,6 +66,16 @@
                         android:text="Rs. 8,999"
                         android:textColor="#4CAF50"
                         android:textSize="12dp" />
+
+                    <com.view.MTextView
+                        android:id="@+id/dealEndTxtView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:text="Ends on: 27th may 2017"
+                        android:textColor="#FF0000"
+                        android:visibility="gone"
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <android.support.v7.widget.AppCompatImageView

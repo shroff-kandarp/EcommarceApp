@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -46,6 +47,10 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
     MainPageCategoryRecycleAdapter adapter;
     ArrayList<HashMap<String, String>> dataList = new ArrayList<>();
 
+    GridLayoutManager mGridLayoutManager;
+    ImageView listChangeImgView;
+
+    String CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,7 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         noProductsTxtView = (MTextView) findViewById(R.id.noProductsTxtView);
         searchBox = (MaterialEditText) findViewById(R.id.searchBox);
         productsRecyclerView = (RecyclerView) findViewById(R.id.productsRecyclerView);
+        listChangeImgView = (ImageView) findViewById(R.id.listChangeImgView);
 
         loading = (ProgressBar) findViewById(R.id.loading);
         errorView = (ErrorView) findViewById(R.id.errorView);
@@ -73,8 +79,8 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         searchBox.addTextChangedListener(this);
 
 
-        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        mGridLayoutManager = new GridLayoutManager(this, 2);
+        mGridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 switch (adapter.getItemViewType(position)) {
@@ -110,8 +116,9 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
             }
         });
 
+        listChangeImgView.setOnClickListener(new setOnClickList());
 
-        productsRecyclerView.setLayoutManager(mLayoutManager);
+        productsRecyclerView.setLayoutManager(mGridLayoutManager);
 
         setLabels();
     }
@@ -159,6 +166,9 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
     @Override
     protected void onResume() {
         super.onResume();
+
+
+        getWishListData();
     }
 
     public void setLabels() {
@@ -187,6 +197,53 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         super.onBackPressed();
     }
 
+    public void getWishListData() {
+        if (dataList.size() < 1) {
+            return;
+        }
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "getUserWishListData");
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        Utils.printLog("WishListParameters::", "::" + parameters.toString());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), false, generalFunc);
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail) {
+                        JSONArray wishListDataArr = generalFunc.getJsonArray("UserWishListData", responseString);
+
+                        ArrayList<String> wishListProductIdsList = new ArrayList<>();
+                        if (wishListDataArr != null) {
+                            for (int i = 0; i < wishListDataArr.length(); i++) {
+
+                                JSONObject obj_temp = generalFunc.getJsonObject(wishListDataArr, i);
+
+                                wishListProductIdsList.add(generalFunc.getJsonValue("product_id", obj_temp));
+                            }
+                        }
+                        for (int i = 0; i < dataList.size(); i++) {
+
+                            dataList.get(i).put("isWishlisted", wishListProductIdsList.contains(dataList.get(i).get("product_id")) == true ? "Yes" : "No");
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                } else {
+                }
+            }
+        });
+        exeWebServer.execute();
+    }
     public void findProducts(final String searchQuery) {
         dataList.clear();
         adapter.notifyDataSetChanged();
@@ -293,6 +350,23 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
             switch (view.getId()) {
                 case R.id.backImgView:
                     onBackPressed();
+                    break;
+                case R.id.listChangeImgView:
+                    if (CURRENT_PRODUCT_DISPLAY_MODE.equals("GRID")) {
+                        productsRecyclerView.setLayoutManager(new LinearLayoutManager(getActContext()));
+                        CURRENT_PRODUCT_DISPLAY_MODE = "LIST";
+                        adapter.CURRENT_PRODUCT_DISPLAY_MODE = "LIST";
+                        adapter.notifyDataSetChanged();
+                        productsRecyclerView.setAdapter(adapter);
+                        listChangeImgView.setImageResource(R.mipmap.ic_view_grid);
+                    } else {
+                        productsRecyclerView.setLayoutManager(mGridLayoutManager);
+                        CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+                        adapter.CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+                        adapter.notifyDataSetChanged();
+                        productsRecyclerView.setAdapter(adapter);
+                        listChangeImgView.setImageResource(R.mipmap.ic_view_list);
+                    }
                     break;
 
             }

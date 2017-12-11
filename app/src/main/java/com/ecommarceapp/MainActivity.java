@@ -3,8 +3,10 @@ package com.ecommarceapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.adapter.MainPageCategoryRecycleAdapter;
@@ -41,6 +43,10 @@ public class MainActivity extends BaseActivity implements OnTabSelectListener {
     AddDrawer addDrawer;
 
     BottomBar bottomBar;
+    GridLayoutManager mGridLayoutManager;
+    ImageView listChangeImgView;
+
+    String CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +60,16 @@ public class MainActivity extends BaseActivity implements OnTabSelectListener {
         bannerSlider = (BannerSlider) findViewById(R.id.bannerSlider);
         categoryRecyclerView = (RecyclerView) findViewById(R.id.categoryRecyclerView);
         loading_category = (ProgressBar) findViewById(R.id.loading_category);
-        bottomBar = findViewById(R.id.bottomBar);
+        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        listChangeImgView = (ImageView) findViewById(R.id.listChangeImgView);
 
         adapter = new MainPageCategoryRecycleAdapter(getActContext(), dataList, generalFunc, false);
 
         categoryRecyclerView.setAdapter(adapter);
         categoryRecyclerView.setNestedScrollingEnabled(false);
 
-        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        mGridLayoutManager = new GridLayoutManager(this, 2);
+        mGridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 switch (adapter.getItemViewType(position)) {
@@ -103,13 +110,17 @@ public class MainActivity extends BaseActivity implements OnTabSelectListener {
             }
         });
 
-        categoryRecyclerView.setLayoutManager(mLayoutManager);
+        categoryRecyclerView.setLayoutManager(mGridLayoutManager);
         getBanners();
 
-        generateCategories();
         bottomBar.setDefaultTab(R.id.tab_home);
         bottomBar.setOnTabSelectListener(this);
+
+        listChangeImgView.setOnClickListener(new setOnClickList());
+
+        generateCategories();
     }
+
 
     public void addItemToWishList(String product_id, String category_id, final int position) {
         HashMap<String, String> parameters = new HashMap<>();
@@ -158,6 +169,56 @@ public class MainActivity extends BaseActivity implements OnTabSelectListener {
         if (addDrawer != null) {
             addDrawer.findUserCartCount();
         }
+        bottomBar.setDefaultTab(R.id.tab_home);
+        getWishListData();
+    }
+
+    public void getWishListData() {
+        if (dataList.size() < 1) {
+            return;
+        }
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "getUserWishListData");
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        Utils.printLog("WishListParameters::", "::" + parameters.toString());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), false, generalFunc);
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("ResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail) {
+                        JSONArray wishListDataArr = generalFunc.getJsonArray("UserWishListData", responseString);
+
+                        ArrayList<String> wishListProductIdsList = new ArrayList<>();
+                        if (wishListDataArr != null) {
+                            for (int i = 0; i < wishListDataArr.length(); i++) {
+
+                                JSONObject obj_temp = generalFunc.getJsonObject(wishListDataArr, i);
+
+                                wishListProductIdsList.add(generalFunc.getJsonValue("product_id", obj_temp));
+                            }
+                        }
+                        for (int i = 0; i < dataList.size(); i++) {
+
+                            dataList.get(i).put("isWishlisted", wishListProductIdsList.contains(dataList.get(i).get("product_id")) == true ? "Yes" : "No");
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                } else {
+                }
+            }
+        });
+        exeWebServer.execute();
     }
 
     public void getBanners() {
@@ -200,30 +261,6 @@ public class MainActivity extends BaseActivity implements OnTabSelectListener {
             }
         });
         exeWebServer.execute();
-        /*Call<Object> call = RestClient.getClient().getResponse(params);
-        call.enqueue(new Callback<Object>() {
-            @Override
-            public void onResponse(Response<Object> response) {
-                if (response.isSuccess()) {
-                    // request successful (status code 200, 201)
-
-                    Utils.printLog("DeviceDetail", "response = " + new Gson().toJson( response.body()));
-//                    String action = result.getAction();
-
-//                    if (action.equals("1")) {
-//
-//
-//                    }
-                } else {
-//                    generalFunc.showGeneralMessage("", "Please try again later.");
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-//                generalFunc.showGeneralMessage("", "Please try again later.");
-            }
-        });*/
     }
 
     public void setBannerData(List<Banner> banners) {
@@ -250,6 +287,10 @@ public class MainActivity extends BaseActivity implements OnTabSelectListener {
     }
 
     public void generateCategories() {
+        loading_category.setVisibility(View.VISIBLE);
+        dataList.clear();
+        adapter.notifyDataSetChanged();
+
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("type", "getCategories");
         parameters.put("customer_id", generalFunc.getMemberId());
@@ -344,6 +385,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectListener {
                 addDrawer.openAllCategories();
                 break;
             case R.id.tab_deals:
+                (new StartActProcess(getActContext())).startAct(DealsActivity.class);
                 break;
             case R.id.tab_my_acc:
                 if (generalFunc.isUserLoggedIn()) {
@@ -354,6 +396,32 @@ public class MainActivity extends BaseActivity implements OnTabSelectListener {
                 break;
             default:
                 break;
+        }
+    }
+
+    public class setOnClickList implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.listChangeImgView:
+                    if (CURRENT_PRODUCT_DISPLAY_MODE.equals("GRID")) {
+                        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActContext()));
+                        CURRENT_PRODUCT_DISPLAY_MODE = "LIST";
+                        adapter.CURRENT_PRODUCT_DISPLAY_MODE = "LIST";
+                        adapter.notifyDataSetChanged();
+                        categoryRecyclerView.setAdapter(adapter);
+                        listChangeImgView.setImageResource(R.mipmap.ic_view_grid);
+                    } else {
+                        categoryRecyclerView.setLayoutManager(mGridLayoutManager);
+                        CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+                        adapter.CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+                        adapter.notifyDataSetChanged();
+                        categoryRecyclerView.setAdapter(adapter);
+                        listChangeImgView.setImageResource(R.mipmap.ic_view_list);
+                    }
+                    break;
+            }
         }
     }
 }

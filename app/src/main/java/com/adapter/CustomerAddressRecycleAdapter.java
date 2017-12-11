@@ -132,9 +132,9 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
 
             removeItemArea = view.findViewById(R.id.removeItemArea);
             editItemArea = view.findViewById(R.id.editItemArea);
-            nameTxtView = view.findViewById(R.id.nameTxtView);
-            addressTxtView = view.findViewById(R.id.addressTxtView);
-            contentArea = view.findViewById(R.id.contentArea);
+            nameTxtView = (MTextView) view.findViewById(R.id.nameTxtView);
+            addressTxtView = (MTextView) view.findViewById(R.id.addressTxtView);
+            contentArea = (MTextView) view.findViewById(R.id.contentArea);
         }
     }
 

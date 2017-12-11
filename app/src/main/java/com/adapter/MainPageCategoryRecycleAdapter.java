@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
+import com.ecommarceapp.DealsActivity;
 import com.ecommarceapp.R;
 import com.general.files.GeneralFunctions;
 import com.squareup.picasso.Picasso;
@@ -39,15 +40,20 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
     public static final int TYPE_FOOTER = 3;
 
     boolean isFooterEnabled = false;
+    boolean isDealShow = false;
     View footerView;
 
     FooterViewHolder footerHolder;
+
+    public String CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
 
     public MainPageCategoryRecycleAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
         this.mContext = mContext;
         this.list = list;
         this.generalFunc = generalFunc;
         this.isFooterEnabled = isFooterEnabled;
+
+        isDealShow = mContext instanceof DealsActivity;
     }
 
     public interface OnItemClickListener {
@@ -69,7 +75,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_name, parent, false);
             return new HeaderViewHolder(v);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_design, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(CURRENT_PRODUCT_DISPLAY_MODE.equals("GRID") ? R.layout.item_main_page_category_design : R.layout.item_main_page_category_list_design, parent, false);
             return new ViewHolder(view);
         }
 
@@ -84,8 +90,6 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             final HashMap<String, String> item = list.get(position);
             final ViewHolder viewHolder = (ViewHolder) holder;
 
-            Utils.printLog("Price", "::" + item.get("price"));
-
             viewHolder.itemNameTxtView.setText(Html.fromHtml(item.get("name")));
             viewHolder.itemPriceTxtView.setText(item.get("price"));
             viewHolder.itemDescTxtView.setText(Html.fromHtml(item.get("description")));
@@ -96,6 +100,10 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
                 viewHolder.wishlistImgView.setImageResource(R.mipmap.ic_fav_border);
             }
 
+            if (isDealShow == true) {
+                viewHolder.dealEndTxtView.setText("Ends on: " + item.get("date_end"));
+                viewHolder.dealEndTxtView.setVisibility(View.VISIBLE);
+            }
             Picasso.with(mContext)
                     .load(item.get("image"))
                     .into(viewHolder.itemImgView);
@@ -145,13 +153,13 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
     }
 
 
-
     // inner class to hold a reference to each item of RecyclerView
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public MTextView itemNameTxtView;
         public MTextView itemDescTxtView;
         public MTextView itemPriceTxtView;
+        public MTextView dealEndTxtView;
         public AppCompatImageView wishlistImgView;
         public AppCompatImageView itemImgView;
         public View contentArea;
@@ -162,6 +170,7 @@ public class MainPageCategoryRecycleAdapter extends RecyclerView.Adapter<Recycle
             itemNameTxtView = (MTextView) view.findViewById(R.id.itemNameTxtView);
             itemDescTxtView = (MTextView) view.findViewById(R.id.itemDescTxtView);
             itemPriceTxtView = (MTextView) view.findViewById(R.id.itemPriceTxtView);
+            dealEndTxtView = (MTextView) view.findViewById(R.id.dealEndTxtView);
             itemImgView = (AppCompatImageView) view.findViewById(R.id.itemImgView);
             wishlistImgView = (AppCompatImageView) view.findViewById(R.id.wishlistImgView);
             contentArea = view.findViewById(R.id.cardview);

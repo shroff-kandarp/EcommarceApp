@@ -46,17 +46,17 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
 
         addDrawer = new AddDrawer(getActContext());
 
-        titleTxt = findViewById(R.id.titleTxt);
+        titleTxt = (MTextView) findViewById(R.id.titleTxt);
         logOutArea = findViewById(R.id.logOutArea);
-        yourOrdersArea = findViewById(R.id.yourOrdersArea);
-        loginSecurityArea = findViewById(R.id.loginSecurityArea);
-        accountArea = findViewById(R.id.accountArea);
-        addressBookArea = findViewById(R.id.addressBookArea);
-        messageArea = findViewById(R.id.messageArea);
-        wishListArea = findViewById(R.id.wishListArea);
-        profileArea = findViewById(R.id.profileArea);
-        personalizationArea = findViewById(R.id.personalizationArea);
-        bottomBar = findViewById(R.id.bottomBar);
+        yourOrdersArea = (LinearLayout) findViewById(R.id.yourOrdersArea);
+        loginSecurityArea = (LinearLayout) findViewById(R.id.loginSecurityArea);
+        accountArea = (LinearLayout) findViewById(R.id.accountArea);
+        addressBookArea = (LinearLayout) findViewById(R.id.addressBookArea);
+        messageArea = (LinearLayout) findViewById(R.id.messageArea);
+        wishListArea = (LinearLayout) findViewById(R.id.wishListArea);
+        profileArea = (LinearLayout) findViewById(R.id.profileArea);
+        personalizationArea = (LinearLayout) findViewById(R.id.personalizationArea);
+        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
 
         setLabels();
@@ -85,6 +85,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         if (addDrawer != null) {
             addDrawer.findUserCartCount();
         }
+        bottomBar.setDefaultTab(R.id.tab_my_acc);
     }
 
     public class setOnClickList implements View.OnClickListener {
@@ -155,6 +156,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                 addDrawer.openAllCategories();
                 break;
             case R.id.tab_deals:
+                (new StartActProcess(getActContext())).startAct(DealsActivity.class);
                 break;
             case R.id.tab_my_acc:
                 break;

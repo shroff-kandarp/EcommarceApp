@@ -63,12 +63,12 @@ public class SignUpFragment extends Fragment {
         appLoginAct = (AppLoginActivity) getActivity();
         generalFunc = appLoginAct.generalFunc;
 
-        nameBox = view.findViewById(R.id.nameBox);
-        countryBox = view.findViewById(R.id.countryBox);
-        mobileBox = view.findViewById(R.id.mobileBox);
-        emailBox = view.findViewById(R.id.emailBox);
-        passwordBox = view.findViewById(R.id.passwordBox);
-        goToSignInTxtView = view.findViewById(R.id.goToSignInTxtView);
+        nameBox = (MaterialEditText) view.findViewById(R.id.nameBox);
+        countryBox = (MaterialEditText) view.findViewById(R.id.countryBox);
+        mobileBox = (MaterialEditText) view.findViewById(R.id.mobileBox);
+        emailBox = (MaterialEditText) view.findViewById(R.id.emailBox);
+        passwordBox = (MaterialEditText) view.findViewById(R.id.passwordBox);
+        goToSignInTxtView = (MTextView) view.findViewById(R.id.goToSignInTxtView);
 
         btn_type2 = ((MaterialRippleLayout) view.findViewById(R.id.btn_type2)).getChildView();
         btn_type2.setId(Utils.generateViewId());

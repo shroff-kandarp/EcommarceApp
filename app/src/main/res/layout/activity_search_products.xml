@@ -18,6 +18,7 @@
         <ImageView
             android:id="@+id/backImgView"
             android:layout_width="45dp"
+            android:layout_weight="0"
             android:layout_height="45dp"
             android:layout_gravity="bottom|center_vertical"
             android:src="@mipmap/ic_back_arrow"
@@ -31,7 +32,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_vertical"
             android:layout_marginEnd="15dp"
+            android:layout_weight="1"
             android:layout_marginStart="5dp" />
+
+        <ImageView
+            android:id="@+id/listChangeImgView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_view_list"
+            android:tint="#333333" />
     </LinearLayout>
 
     <RelativeLayout

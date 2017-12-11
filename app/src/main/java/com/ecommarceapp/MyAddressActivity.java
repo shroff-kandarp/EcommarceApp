@@ -56,12 +56,12 @@ public class MyAddressActivity extends AppCompatActivity implements CustomerAddr
         btn_type2 = ((MaterialRippleLayout) findViewById(R.id.btn_type2)).getChildView();
         addAddressBtn = ((MaterialRippleLayout) findViewById(R.id.addAddressBtn)).getChildView();
 
-        titleTxt = findViewById(R.id.titleTxt);
-        noAddressTxtView = findViewById(R.id.noAddressTxtView);
+        titleTxt = (MTextView) findViewById(R.id.titleTxt);
+        noAddressTxtView = (MTextView) findViewById(R.id.noAddressTxtView);
         loading = (ProgressBar) findViewById(R.id.loading);
         errorView = (ErrorView) findViewById(R.id.errorView);
         noAddressArea = findViewById(R.id.noAddressArea);
-        dataRecyclerView = findViewById(R.id.dataRecyclerView);
+        dataRecyclerView = (RecyclerView) findViewById(R.id.dataRecyclerView);
 
         setLabels();
         btn_type2.setId(Utils.generateViewId());

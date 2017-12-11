@@ -47,18 +47,18 @@ public class AddAddressActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_address);
 
-        backImgView = findViewById(R.id.backImgView);
+        backImgView = (ImageView) findViewById(R.id.backImgView);
 
         generalFunc = new GeneralFunctions(getActContext());
 
-        titleTxt = findViewById(R.id.titleTxt);
-        nameBox = findViewById(R.id.nameBox);
-        countryBox = findViewById(R.id.countryBox);
-        mobileBox = findViewById(R.id.mobileBox);
-        address1Box = findViewById(R.id.address1Box);
-        address2Box = findViewById(R.id.address2Box);
-        cityBox = findViewById(R.id.cityBox);
-        postalBox = findViewById(R.id.postalBox);
+        titleTxt = (MTextView) findViewById(R.id.titleTxt);
+        nameBox = (MaterialEditText) findViewById(R.id.nameBox);
+        countryBox = (MaterialEditText) findViewById(R.id.countryBox);
+        mobileBox = (MaterialEditText) findViewById(R.id.mobileBox);
+        address1Box = (MaterialEditText) findViewById(R.id.address1Box);
+        address2Box = (MaterialEditText) findViewById(R.id.address2Box);
+        cityBox = (MaterialEditText) findViewById(R.id.cityBox);
+        postalBox = (MaterialEditText) findViewById(R.id.postalBox);
 
         btn_type2 = ((MaterialRippleLayout) findViewById(R.id.btn_type2)).getChildView();
 
