@@ -275,10 +275,132 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ratingArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/ratingHeaderArea"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <com.view.MTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingBottom="10dp"
+                                    android:paddingTop="10dp"
+                                    android:text="Rating and Reviews"
+                                    android:textColor="#1c1c1c"
+                                    android:textSize="16dp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <com.view.MTextView
+                                        android:id="@+id/totalRatingsReviewsTxtView"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="top"
+                                        android:layout_marginTop="-5dp"
+                                        android:gravity="center"
+                                        android:text="4"
+                                        android:textColor="#272727"
+                                        android:textSize="@dimen/txt_size_20" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <com.aurelhubert.simpleratingbar.SimpleRatingBar
+                                            android:id="@+id/simple_rating_bar"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="45dp"
+                                            android:layout_marginStart="-20dp"
+                                            app:drawableHeight="20dp"
+                                            app:drawablePadding="5dp"
+                                            app:enable="false"
+                                            app:maxRating="5"
+                                            app:rating="4" />
+
+                                        <com.view.MTextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="20dp"
+                                            android:layout_marginTop="-10dp"
+                                            android:text="1 Review"
+                                            android:textColor="#646464"
+                                            android:textSize="@dimen/txt_size_12" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#6e6e6e" />
+
+                            <LinearLayout
+                                android:id="@+id/area1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="-20dp"
+                                    android:orientation="horizontal">
+
+                                    <com.aurelhubert.simpleratingbar.SimpleRatingBar
+                                        android:id="@+id/ratingBar1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="30dp"
+                                        android:layout_marginStart="-20dp"
+                                        app:drawableHeight="15dp"
+                                        app:drawablePadding="5dp"
+                                        app:enable="false"
+                                        app:maxRating="5"
+                                        app:rating="4" />
+
+                                    <com.view.MTextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="-40dp"
+                                        android:text="by Chi***n"
+                                        android:layout_gravity="center_vertical"
+                                        android:textColor="#646464"
+                                        android:textSize="@dimen/txt_size_12" />
+                                </LinearLayout>
+
+                                <com.view.MTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:text="Good product"
+                                    android:textColor="#646464"
+                                    android:textSize="@dimen/txt_size_14" />
+                            </LinearLayout>
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/productRatingRecyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:orientation="vertical"
+                                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:id="@+id/relatedProductsArea"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:orientation="vertical">
 
                             <com.view.MTextView
@@ -310,7 +432,7 @@
 
                                 <android.support.v7.widget.RecyclerView
                                     android:id="@+id/relatedProductsRecyclerView"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:orientation="vertical"
