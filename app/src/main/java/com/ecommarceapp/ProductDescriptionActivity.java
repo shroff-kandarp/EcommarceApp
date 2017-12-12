@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.adapter.MainPageCategoryRecycleAdapter;
+import com.adapter.ProductRatingBarAdapter;
 import com.bannerslider.banners.Banner;
 import com.bannerslider.banners.RemoteBanner;
 import com.bannerslider.events.OnBannerClickListener;
@@ -19,6 +21,7 @@ import com.general.files.AddDrawer;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.utils.Utils;
 import com.view.ErrorView;
 import com.view.MTextView;
@@ -56,10 +59,12 @@ public class ProductDescriptionActivity extends AppCompatActivity {
 
 
     RecyclerView relatedProductsRecyclerView;
+    RecyclerView productRatingRecyclerView;
 
     MainPageCategoryRecycleAdapter relatedProductsAdapter;
     ArrayList<HashMap<String, String>> relatedProductsDataList = new ArrayList<>();
 
+    ProductRatingBarAdapter ratingAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         wishListImgView = (ImageView) findViewById(R.id.wishListImgView);
         loadingRelatedProducts = (ProgressBar) findViewById(R.id.loadingRelatedProducts);
         relatedProductsRecyclerView = (RecyclerView) findViewById(R.id.relatedProductsRecyclerView);
+        productRatingRecyclerView = (RecyclerView) findViewById(R.id.productRatingRecyclerView);
 
         productNameTxtView = (MTextView) findViewById(R.id.productNameTxtView);
         productPriceTxtView = (MTextView) findViewById(R.id.productPriceTxtView);
@@ -87,11 +93,15 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         addToCartTxtView = (MTextView) findViewById(R.id.addToCartTxtView);
 
         relatedProductsAdapter = new MainPageCategoryRecycleAdapter(getActContext(), relatedProductsDataList, generalFunc, false);
+        ratingAdapter = new ProductRatingBarAdapter(getActContext(), list_ratings, generalFunc, false);
 
         relatedProductsRecyclerView.setAdapter(relatedProductsAdapter);
+        productRatingRecyclerView.setAdapter(ratingAdapter);
 
         relatedProductsRecyclerView.setNestedScrollingEnabled(false);
+        productRatingRecyclerView.setNestedScrollingEnabled(false);
 
+//        (findViewById(R.id.ratingArea)).setVisibility(View.GONE);
         setLabels();
 
         addToCartTxtView.setOnClickListener(new setOnClickList());
@@ -138,7 +148,8 @@ public class ProductDescriptionActivity extends AppCompatActivity {
 
 
         relatedProductsRecyclerView.setLayoutManager(mLayoutManager);
-
+        productRatingRecyclerView.setLayoutManager(new LinearLayoutManager(getActContext()));
+        findReviews();
         getRelatedProducts();
     }
 
@@ -245,6 +256,73 @@ public class ProductDescriptionActivity extends AppCompatActivity {
                     generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
                 } else {
                     generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
+    }
+
+    ArrayList<HashMap<String, String>> list_ratings = new ArrayList<>();
+
+    public void findReviews() {
+        list_ratings.clear();
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "getAllReviewsOfProduct");
+        parameters.put("product_id", getIntent().getStringExtra("product_id"));
+        parameters.put("isLimited", "Yes");
+        parameters.put("customer_id", "" + generalFunc.getMemberId());
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), false, generalFunc);
+//        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("RatingResponseData", "Data::" + responseString);
+
+                if (responseString != null && !responseString.equals("")) {
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail) {
+                        JSONArray obj_arr = generalFunc.getJsonArray("message", responseString);
+
+                        ((SimpleRatingBar) findViewById(R.id.totalAvgRating)).setRating(generalFunc.parseFloat(0, generalFunc.getJsonValue("TotalRating", responseString)));
+                        ((MTextView) findViewById(R.id.totalReviewsTxtView)).setText(generalFunc.getJsonValue("TotalRatingCount", responseString) + " Reviews");
+                        ((MTextView) findViewById(R.id.totalRatingsReviewsTxtView)).setText(generalFunc.getJsonValue("TotalRating", responseString));
+                        if (obj_arr != null) {
+
+                            for (int i = 0; i < obj_arr.length(); i++) {
+
+                                JSONObject obj_temp = generalFunc.getJsonObject(obj_arr, i);
+
+                                HashMap<String, String> data_map = new HashMap<>();
+
+                                data_map.put("text", generalFunc.getJsonValue("text", obj_temp));
+                                data_map.put("rating", generalFunc.getJsonValue("rating", obj_temp));
+                                data_map.put("date_added", generalFunc.getJsonValue("date_added", obj_temp));
+                                data_map.put("customer_name", generalFunc.getJsonValue("customer_name", obj_temp));
+                                data_map.put("TYPE", "" + ProductRatingBarAdapter.TYPE_ITEM);
+
+                                list_ratings.add(data_map);
+                            }
+
+                            ratingAdapter.notifyDataSetChanged();
+
+                            if (list_ratings.size() > 0 && obj_arr.length() > 0) {
+                                (findViewById(R.id.ratingArea)).setVisibility(View.VISIBLE);
+                            } else {
+                                (findViewById(R.id.ratingArea)).setVisibility(View.GONE);
+                            }
+                        } else {
+                            (findViewById(R.id.ratingArea)).setVisibility(View.GONE);
+                        }
+                    } else {
+                        (findViewById(R.id.ratingArea)).setVisibility(View.GONE);
+                    }
+                } else {
+
+                    (findViewById(R.id.ratingArea)).setVisibility(View.GONE);
                 }
             }
         });

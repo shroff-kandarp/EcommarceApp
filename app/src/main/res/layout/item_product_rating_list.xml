@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.iarcuschin.simpleratingbar.SimpleRatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srb_borderColor="#FF8800"
+                app:srb_fillColor="#FF8800"
+                app:srb_numberOfStars="5"
+                app:srb_rating="3"
+                app:srb_starSize="20dp"
+                app:srb_stepSize="0.5" />
+
+            <com.view.MTextView
+                android:id="@+id/nameTxtView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:text="by Chi***n"
+                android:textColor="#646464"
+                android:textSize="@dimen/txt_size_12" />
+        </LinearLayout>
+
+        <com.view.MTextView
+            android:id="@+id/commentTxtView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Good product"
+            android:textColor="#646464"
+            android:textSize="@dimen/txt_size_14" />
+    </LinearLayout>
+</LinearLayout>
