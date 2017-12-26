@@ -60,8 +60,8 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
         loading = (ProgressBar) findViewById(R.id.loading);
         totalPriceTxtView = (MTextView) findViewById(R.id.totalPriceTxtView);
         makePayTxtView = (MTextView) findViewById(R.id.makePayTxtView);
-        errorView = (ErrorView) findViewById(R.id.errorView);
         layout_payment = findViewById(R.id.layout_payment);
+        errorView = (ErrorView) findViewById(R.id.errorView);
         shopNowBtn = ((MaterialRippleLayout) findViewById(R.id.shopNowBtn)).getChildView();
 
         adapter = new CartRecyclerAdapter(getActContext(), dataList, generalFunc, false);
@@ -71,6 +71,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
         shopNowBtn.setId(Utils.generateViewId());
 
         shopNowBtn.setOnClickListener(new setOnClickList());
+        makePayTxtView.setOnClickListener(new setOnClickList());
         adapter.setOnItemClickListener(this);
         setLabels();
 
@@ -311,6 +312,8 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
                 UserCartActivity.super.onBackPressed();
             } else if (i == shopNowBtn.getId()) {
                 addDrawer.goToHome();
+            } else if (i == makePayTxtView.getId()) {
+                new StartActProcess(getActContext()).startAct(PlaceOrderActivity.class);
             }
         }
     }

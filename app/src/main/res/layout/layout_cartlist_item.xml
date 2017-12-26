@@ -66,14 +66,6 @@
                     android:src="@mipmap/ic_arrow_down" />
 
             </RelativeLayout>
-            <!--<com.view.MTextView
-                android:id="@+id/itemQuantityTxtView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small"
-                android:text="QTY: 1"
-                android:textSize="@dimen/text_size_small" />-->
-
 
         </LinearLayout>
     </LinearLayout>

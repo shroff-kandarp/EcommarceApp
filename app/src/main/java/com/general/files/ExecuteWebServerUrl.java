@@ -42,6 +42,7 @@ public class ExecuteWebServerUrl/* extends AsyncTask<String, String, String>*/ {
 
     boolean isGenerateDeviceToken = false;
     String key_DeviceToken_param;
+    boolean isTaskKilled = false;
 
     public ExecuteWebServerUrl(HashMap<String, String> parameters) {
         this.parameters = parameters;
@@ -117,12 +118,16 @@ public class ExecuteWebServerUrl/* extends AsyncTask<String, String, String>*/ {
         });
     }
 
+    public void cancel() {
+        isTaskKilled = true;
+    }
+
     public void fireResponse() {
         if (myPDialog != null) {
             myPDialog.close();
         }
 
-        if (setDataRes != null) {
+        if (setDataRes != null && isTaskKilled == false) {
             setDataRes.setResponse(responseString);
         }
     }

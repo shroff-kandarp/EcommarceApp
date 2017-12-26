@@ -47,10 +47,10 @@ public class AddAddressActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_address);
 
-        backImgView = (ImageView) findViewById(R.id.backImgView);
 
         generalFunc = new GeneralFunctions(getActContext());
 
+        backImgView = (ImageView) findViewById(R.id.backImgView);
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
         nameBox = (MaterialEditText) findViewById(R.id.nameBox);
         countryBox = (MaterialEditText) findViewById(R.id.countryBox);

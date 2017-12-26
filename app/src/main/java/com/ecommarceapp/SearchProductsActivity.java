@@ -50,7 +50,14 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
     GridLayoutManager mGridLayoutManager;
     ImageView listChangeImgView;
 
+
+    boolean mIsLoading = false;
+    boolean isNextPageAvailable = false;
+
+    int next_page_str = 1;
+
     String CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +127,29 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
 
         productsRecyclerView.setLayoutManager(mGridLayoutManager);
 
+        productsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                int firstVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+
+                int lastInScreen = firstVisibleItemPosition + visibleItemCount;
+                if ((lastInScreen == totalItemCount) && !(mIsLoading) && isNextPageAvailable == true) {
+
+                    mIsLoading = true;
+                    adapter.addFooterView();
+
+                    findProducts(true, currentSearchQuery);
+
+                } else if (isNextPageAvailable == false) {
+                    adapter.removeFooterView();
+                }
+            }
+        });
+
         setLabels();
     }
 
@@ -183,7 +213,7 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         currentSearchQuery = "" + charSequence;
-        findProducts(currentSearchQuery);
+        findProducts(false, currentSearchQuery);
     }
 
     @Override
@@ -244,23 +274,40 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         });
         exeWebServer.execute();
     }
-    public void findProducts(final String searchQuery) {
-        dataList.clear();
-        adapter.notifyDataSetChanged();
+
+    ExecuteWebServerUrl exeServerUrlTask;
+
+    public void findProducts(final boolean isFromRecurring, final String searchQuery) {
+
+        if (isFromRecurring == false) {
+            dataList.clear();
+            adapter.notifyDataSetChanged();
+            next_page_str = 1;
+        }
 
         if (searchQuery.trim().equals("")) {
             if (loading.getVisibility() == View.VISIBLE) {
                 loading.setVisibility(View.GONE);
             }
+            next_page_str = 1;
+            adapter.removeFooterView();
+            isNextPageAvailable = false;
             return;
+        }
+
+        if (exeServerUrlTask != null) {
+            exeServerUrlTask.cancel();
+            exeServerUrlTask = null;
         }
 
         if (errorView.getVisibility() == View.VISIBLE) {
             errorView.setVisibility(View.GONE);
         }
-        if (loading.getVisibility() != View.VISIBLE) {
+
+        if (loading.getVisibility() != View.VISIBLE && isFromRecurring == false) {
             loading.setVisibility(View.VISIBLE);
         }
+
         if (noProductsTxtView.getVisibility() != View.GONE) {
             noProductsTxtView.setVisibility(View.GONE);
         }
@@ -268,11 +315,13 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("type", "searchProducts");
         parameters.put("searchQuery", searchQuery);
+        parameters.put("page", "" + next_page_str);
         parameters.put("customer_id", generalFunc.getMemberId());
 
         ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
 //        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
         exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeServerUrlTask = exeWebServer;
         exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
             @Override
             public void setResponse(final String responseString) {
@@ -286,8 +335,11 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
                 if (responseString != null && !responseString.equals("")) {
 
                     boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
-                    dataList.clear();
-                    adapter.notifyDataSetChanged();
+
+                    if (isFromRecurring == false) {
+                        dataList.clear();
+                        adapter.notifyDataSetChanged();
+                    }
 
                     if (isDataAvail == true) {
                         JSONArray msgArr = generalFunc.getJsonArray(Utils.message_str, responseString);
@@ -328,15 +380,28 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
                         }
 
                         adapter.notifyDataSetChanged();
-
+                        isNextPageAvailable = true;
+                        next_page_str = next_page_str + 1;
+                        adapter.removeFooterView();
                     } else {
-                        noProductsTxtView.setText(generalFunc.getJsonValue(Utils.message_str, responseString));
-                        noProductsTxtView.setVisibility(View.VISIBLE);
+                        if (next_page_str < 2) {
+
+                            noProductsTxtView.setText(generalFunc.getJsonValue(Utils.message_str, responseString));
+                            noProductsTxtView.setVisibility(View.VISIBLE);
+                        }
+                        isNextPageAvailable = false;
+
+                        adapter.removeFooterView();
                     }
+
+                    mIsLoading = false;
 
                     closeLoader();
                 } else {
-                    generateErrorView();
+                    if (isFromRecurring == false) {
+
+                        generateErrorView();
+                    }
                 }
             }
         });
@@ -391,7 +456,7 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         errorView.setOnRetryListener(new ErrorView.RetryListener() {
             @Override
             public void onRetry() {
-                findProducts(currentSearchQuery);
+                findProducts(false, currentSearchQuery);
             }
         });
     }

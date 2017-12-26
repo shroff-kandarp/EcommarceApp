@@ -56,6 +56,7 @@ public class Utils {
     public static final int GOOGLE_SIGN_IN_REQ_CODE = 112;
     public static final int SELECT_COUNTRY_REQ_CODE = 124;
     public static final int ADD_ADDRESS_REQ_CODE = 125;
+    public static final int CHOOSE_ADDRESS_REQ_CODE = 126;
 
     static MyProgressDialog myPDialog;
     //Single Instance object

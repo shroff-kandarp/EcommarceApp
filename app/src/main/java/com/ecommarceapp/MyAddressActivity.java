@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.adapter.CustomerAddressRecycleAdapter;
@@ -76,6 +77,16 @@ public class MyAddressActivity extends AppCompatActivity implements CustomerAddr
 
         new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), noAddressArea);
         loadCustomerAddresses();
+
+        if (getCallingActivity() != null) {
+            (findViewById(R.id.searchImgView)).setVisibility(View.GONE);
+            (findViewById(R.id.listChangeImgView)).setVisibility(View.GONE);
+            (findViewById(R.id.cartArea)).setVisibility(View.GONE);
+            (findViewById(R.id.menuImgView)).setVisibility(View.GONE);
+            (findViewById(R.id.backImgView)).setVisibility(View.VISIBLE);
+            ((ImageView) findViewById(R.id.backImgView)).setOnClickListener(new setOnClickList());
+
+        }
     }
 
     private void loadCustomerAddresses() {
@@ -197,6 +208,10 @@ public class MyAddressActivity extends AppCompatActivity implements CustomerAddr
     public void onItemClickList(View v, int btnType, int position) {
         switch (btnType) {
             case -1:
+                Intent intent = new Intent();
+                intent.putExtra("DATA", dataList.get(position));
+                setResult(RESULT_OK, intent);
+                MyAddressActivity.super.onBackPressed();
                 break;
             case 0:
                 removeSelectedAddress(position);
@@ -274,6 +289,9 @@ public class MyAddressActivity extends AppCompatActivity implements CustomerAddr
         public void onClick(View view) {
             int i = view.getId();
             if (i == R.id.backImgView) {
+                MyAddressActivity.super.onBackPressed();
+
+            } else if (i == R.id.menuImgView) {
                 MyAddressActivity.super.onBackPressed();
 
             } else if (i == btn_type2.getId()) {

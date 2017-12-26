@@ -30,6 +30,17 @@
                 android:src="@mipmap/ic_drawer_menu"
                 android:tint="@color/appThemeColor_TXT_1" />
 
+
+            <ImageView
+                android:id="@+id/backImgView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0"
+                android:src="@mipmap/ic_back_arrow"
+                android:tint="@color/appThemeColor_TXT_1"
+                android:visibility="gone" />
+
             <com.view.MTextView
                 android:id="@+id/titleTxt"
                 android:layout_width="0dp"
@@ -83,15 +94,15 @@
                     android:id="@+id/cartCountTxt"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:gravity="center"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="8dp"
+                    android:gravity="center"
                     android:text="5"
-                    android:visibility="gone"
                     android:textColor="@color/appThemeColor_TXT_1"
-                    android:textSize="@dimen/txt_size_14" />
+                    android:textSize="@dimen/txt_size_14"
+                    android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
 

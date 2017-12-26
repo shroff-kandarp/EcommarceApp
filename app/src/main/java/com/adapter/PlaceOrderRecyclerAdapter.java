@@ -1,6 +1,7 @@
 package com.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -10,17 +11,17 @@ import android.widget.LinearLayout;
 
 import com.ecommarceapp.R;
 import com.general.files.GeneralFunctions;
-import com.utils.Utils;
+import com.squareup.picasso.Picasso;
 import com.view.MTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Shroff on 22-Nov-17.
+ * Created by Shroff on 26-Dec-17.
  */
 
-public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PlaceOrderRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<HashMap<String, String>> list;
     Context mContext;
     public GeneralFunctions generalFunc;
@@ -36,7 +37,7 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
 
     FooterViewHolder footerHolder;
 
-    public CustomerAddressRecycleAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
+    public PlaceOrderRecyclerAdapter(Context mContext, ArrayList<HashMap<String, String>> list, GeneralFunctions generalFunc, boolean isFooterEnabled) {
         this.mContext = mContext;
         this.list = list;
         this.generalFunc = generalFunc;
@@ -44,7 +45,7 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
     }
 
     public interface OnItemClickListener {
-        void onItemClickList(View v, int btnType, int position);
+        void onItemClickList(View v, int btn_type, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener mItemClickListener) {
@@ -59,10 +60,11 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
             this.footerView = v;
             return new FooterViewHolder(v);
         } else if (viewType == TYPE_HEADER) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_manu_category_design, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_page_category_name, parent, false);
+            v.setBackgroundColor(mContext.getResources().getColor(android.R.color.transparent));
             return new HeaderViewHolder(v);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_addresses_design, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_place_order_design, parent, false);
             return new ViewHolder(view);
         }
 
@@ -77,26 +79,14 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
             final HashMap<String, String> item = list.get(position);
             final ViewHolder viewHolder = (ViewHolder) holder;
 
+            viewHolder.itemNameTxtView.setText(Html.fromHtml(item.get("name")));
+            viewHolder.itemPriceTxtView.setText(item.get("price"));
+//            viewHolder.itemQuantityTxtView.setText("QTY: " + item.get("quantity"));
+            viewHolder.itemQTYTxtView.setText("QTY: " + item.get("quantity"));
+            Picasso.with(mContext)
+                    .load(item.get("image"))
+                    .into(viewHolder.itemImgView);
 
-            viewHolder.nameTxtView.setText(item.get("firstname") + " " + item.get("lastname"));
-            viewHolder.addressTxtView.setText(item.get("address_1") + "\n" + item.get("address_2") + "\n" + item.get("city") + "," + item.get("postcode"));
-
-            viewHolder.removeItemArea.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mItemClickListener != null) {
-                        mItemClickListener.onItemClickList(view, 0, position);
-                    }
-                }
-            });
-            viewHolder.editItemArea.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mItemClickListener != null) {
-                        mItemClickListener.onItemClickList(view, 1, position);
-                    }
-                }
-            });
             viewHolder.contentArea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -105,36 +95,38 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
                     }
                 }
             });
+
+
         } else if (holder instanceof HeaderViewHolder) {
             final HashMap<String, String> item = list.get(position);
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-            headerHolder.headerTxtView.setText(Html.fromHtml(item.get("name")));
+            headerHolder.categoryNameTxtView.setText(Html.fromHtml(item.get("name")));
 //            Utils.printLog("CCN","::"+item.get("name"));
         } else {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
             this.footerHolder = footerHolder;
         }
-
-
     }
 
     // inner class to hold a reference to each item of RecyclerView
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public MTextView addressTxtView;
-        public View editItemArea;
-        public MTextView nameTxtView;
+        public MTextView itemNameTxtView;
+        public MTextView itemPriceTxtView;
+        public MTextView itemQTYTxtView;
+        public AppCompatImageView itemImgView;
         public View contentArea;
-        public View removeItemArea;
+        public View qtyArea;
 
         public ViewHolder(View view) {
             super(view);
 
-            removeItemArea = view.findViewById(R.id.removeItemArea);
-            editItemArea = view.findViewById(R.id.editItemArea);
-            nameTxtView = (MTextView) view.findViewById(R.id.nameTxtView);
-            addressTxtView = (MTextView) view.findViewById(R.id.addressTxtView);
+            itemNameTxtView = (MTextView) view.findViewById(R.id.itemNameTxtView);
+            itemPriceTxtView = (MTextView) view.findViewById(R.id.itemPriceTxtView);
+            itemQTYTxtView = (MTextView) view.findViewById(R.id.itemQTYTxtView);
+            itemImgView = (AppCompatImageView) view.findViewById(R.id.itemImgView);
             contentArea = view.findViewById(R.id.contentArea);
+            qtyArea = view.findViewById(R.id.qtyArea);
         }
     }
 
@@ -150,12 +142,12 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
     }
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
-        MTextView headerTxtView;
+        MTextView categoryNameTxtView;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
-            headerTxtView = (MTextView) itemView.findViewById(R.id.headerTxtView);
+            categoryNameTxtView = (MTextView) itemView.findViewById(R.id.categoryNameTxtView);
 
         }
     }
@@ -191,7 +183,6 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
     }
 
     public void addFooterView() {
-        Utils.printLog("Footer", "added");
         this.isFooterEnabled = true;
         notifyDataSetChanged();
         if (footerHolder != null)
@@ -199,7 +190,6 @@ public class CustomerAddressRecycleAdapter extends RecyclerView.Adapter<Recycler
     }
 
     public void removeFooterView() {
-        Utils.printLog("Footer", "removed");
         if (footerHolder != null)
             footerHolder.progressArea.setVisibility(View.GONE);
 //        footerHolder.progressArea.setPadding(0, -1 * footerView.getHeight(), 0, 0);
