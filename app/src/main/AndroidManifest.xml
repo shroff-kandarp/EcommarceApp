@@ -61,7 +61,8 @@
         <activity android:name=".AddAddressActivity" />
         <activity android:name=".CurrentDealsActivity" />
         <activity android:name=".PlaceOrderActivity" />
-        <activity android:name=".ChoosePaymentMethodActivity"></activity>
+        <activity android:name=".ChoosePaymentMethodActivity" />
+        <activity android:name=".PaymentOptionActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.ecommarceapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -313,7 +314,7 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
             } else if (i == shopNowBtn.getId()) {
                 addDrawer.goToHome();
             } else if (i == makePayTxtView.getId()) {
-                new StartActProcess(getActContext()).startAct(PlaceOrderActivity.class);
+                new StartActProcess(getActContext()).startActForResult(PlaceOrderActivity.class, Utils.PLACE_ORDER_REQ_CODE);
             }
         }
     }
@@ -346,4 +347,14 @@ public class UserCartActivity extends BaseActivity implements CartRecyclerAdapte
         return UserCartActivity.this;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Utils.printLog("requestCode", "::" + requestCode);
+        Utils.printLog("resultCode", "::" + resultCode);
+        if (requestCode == Utils.PLACE_ORDER_REQ_CODE && resultCode == RESULT_OK) {
+            getUserCart();
+        }
+    }
 }

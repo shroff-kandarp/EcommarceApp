@@ -14,6 +14,7 @@ import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
 import com.utils.Utils;
+import com.view.GenerateAlertBox;
 import com.view.MTextView;
 
 import org.json.JSONArray;
@@ -78,11 +79,62 @@ public class PlaceOrderActivity extends AppCompatActivity {
                 PlaceOrderActivity.super.onBackPressed();
             } else if (view.getId() == makePayTxtView.getId()) {
 
+                checkData();
+
             } else if (view.getId() == chooseAddressArea.getId()) {
 
                 (new StartActProcess(getActContext())).startActForResult(MyAddressActivity.class, Utils.CHOOSE_ADDRESS_REQ_CODE);
             }
         }
+    }
+
+    public void checkData() {
+        if (selectedAddressData == null) {
+            generalFunc.showGeneralMessage("", "Please select address");
+            return;
+        }
+
+        createOrder();
+    }
+
+    public void createOrder() {
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("type", "createOrder");
+        parameters.put("customer_id", generalFunc.getMemberId());
+        parameters.put("address_id", selectedAddressData.get("address_id"));
+
+        Utils.printLog("CreateORDERParams", "::" + parameters.toString());
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+//        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setIsDeviceTokenGenerate(true, "vDeviceToken");
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(final String responseString) {
+
+                Utils.printLog("CreateORDERResponseData", "Data::" + responseString);
+
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    (new StartActProcess(getActContext())).setOkResult();
+                    final GenerateAlertBox generateAlert = new GenerateAlertBox(getActContext());
+                    generateAlert.setCancelable(false);
+                    generateAlert.setBtnClickList(new GenerateAlertBox.HandleAlertBtnClick() {
+                        @Override
+                        public void handleBtnClick(int btn_id) {
+                            backImgView.performClick();
+                        }
+                    });
+                    generateAlert.setContentMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                    generateAlert.setPositiveBtn("OK");
+                    generateAlert.showAlertBox();
+                } else {
+                    generalFunc.showGeneralMessage("", "Please try again later");
+                }
+
+            }
+        });
+        exeWebServer.execute();
     }
 
     public void getUserCart() {
