@@ -1,8 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ecommarceapp.PaymentOptionActivity">
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+
+    <include
+        android:id="@+id/toolbar_include"
+        layout="@layout/design_toolbar_general" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <RadioButton
+            android:id="@+id/cashOnDeliveryRadioBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Cash On Delivery"
+            android:textSize="@dimen/txt_size_16" />
+
+
+        <RadioButton
+            android:id="@+id/payUMoneyRadioBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Pay U Money"
+            android:textSize="@dimen/txt_size_16" />
+    </RadioGroup>
+</LinearLayout>

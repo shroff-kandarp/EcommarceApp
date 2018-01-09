@@ -78,6 +78,7 @@
                         android:layout_height="30dp"
                         android:layout_gravity="center_vertical|start"
                         android:layout_weight="0"
+                        android:tint="#bdbdbd"
                         android:src="@mipmap/ic_payment" />
 
                     <com.view.MTextView
@@ -93,6 +94,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/choosePaymentOptionView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#FFFFFF"
@@ -102,6 +104,7 @@
 
 
                     <com.view.MTextView
+                        android:id="@+id/choosePayTxtView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -137,7 +140,9 @@
                         android:layout_height="30dp"
                         android:layout_gravity="center_vertical|start"
                         android:layout_weight="0"
-                        android:src="@mipmap/ic_payment" />
+                        android:tint="#bdbdbd"
+                        android:padding="4dp"
+                        android:src="@mipmap/ic_order_summary" />
 
                     <com.view.MTextView
                         android:layout_width="0dp"

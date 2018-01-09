@@ -353,7 +353,7 @@ public class GeneralFunctions {
 
     }
 
-    public double parseDouble(double orig, String value) {
+    public static double parseDouble(double orig, String value) {
 
         try {
             double value_int = Double.parseDouble(value);

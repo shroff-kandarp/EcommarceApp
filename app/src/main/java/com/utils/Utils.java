@@ -58,6 +58,7 @@ public class Utils {
     public static final int ADD_ADDRESS_REQ_CODE = 125;
     public static final int CHOOSE_ADDRESS_REQ_CODE = 126;
     public static final int PLACE_ORDER_REQ_CODE = 127;
+    public static final int CHOOSE_PAY_OPTION_REQ_CODE = 128;
 
     static MyProgressDialog myPDialog;
     //Single Instance object

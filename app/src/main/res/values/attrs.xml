@@ -12,7 +12,29 @@
         <attr name="matProg_barWidth" format="dimension" />
         <attr name="matProg_linearProgress" format="boolean" />
     </declare-styleable>
-
+    <declare-styleable name="MaterialTabs">
+        <attr name="mtIndicatorColor" format="color" />
+        <attr name="mtUnderlineColor" format="color" />
+        <attr name="mtIndicatorHeight" format="dimension" />
+        <attr name="mtUnderlineHeight" format="dimension" />
+        <attr name="mtTabPaddingLeftRight" format="dimension" />
+        <attr name="mtSameWeightTabs" format="boolean" />
+        <attr name="mtTextAllCaps" format="boolean" />
+        <attr name="mtPaddingMiddle" format="boolean" />
+        <attr name="mtTextColorSelected" format="color" />
+        <attr name="mtTextColorUnSelected" format="color" />
+        <attr name="mtMrlRippleColor" format="color" localization="suggested" />
+        <attr name="mtMrlRippleHighlightColor" format="color" localization="suggested" />
+        <attr name="mtMrlRippleDiameter" format="dimension" localization="suggested" />
+        <attr name="mtMrlRippleOverlay" format="boolean" localization="suggested" />
+        <attr name="mtMrlRippleAlpha" format="float" localization="suggested" />
+        <attr name="mtMrlRippleDuration" format="integer" localization="suggested" />
+        <attr name="mtMrlRippleFadeDuration" format="integer" localization="suggested" />
+        <attr name="mtMrlRippleDelayClick" format="boolean" localization="suggested" />
+        <attr name="mtMrlRipplePersistent" format="boolean" localization="suggested" />
+        <attr name="mtMrlRippleInAdapter" format="boolean" localization="suggested" />
+        <attr name="mtMrlRippleRoundedCorners" format="dimension" localization="suggested" />
+    </declare-styleable>
 
     <declare-styleable name="MaterialRippleLayout">
         <attr name="mrl_rippleColor" format="color" localization="suggested" />
