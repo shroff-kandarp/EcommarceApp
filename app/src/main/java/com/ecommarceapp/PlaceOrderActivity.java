@@ -16,7 +16,6 @@ import com.adapter.PlaceOrderRecyclerAdapter;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
-import com.payumoney.core.PayUmoneyConstants;
 import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
@@ -28,8 +27,6 @@ import com.view.MTextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -125,11 +122,11 @@ public class PlaceOrderActivity extends AppCompatActivity {
         if (paymentOption.equalsIgnoreCase("CASH")) {
             createOrder();
         } else {
-            initializePayUMoney();
+//            initializePayUMoney();
         }
     }
 
-    public void initializePayUMoney() {
+    /*public void initializePayUMoney() {
 
         PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
         builder.setAmount(GeneralFunctions.parseDouble(0.0, totalPriceOrig))                          // Payment amount
@@ -195,7 +192,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         } catch (NoSuchAlgorithmException ignored) {
         }
         return hexString.toString();
-    }
+    }*/
 
     public void createOrder() {
         HashMap<String, String> parameters = new HashMap<>();
