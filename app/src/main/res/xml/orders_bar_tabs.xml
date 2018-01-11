@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_awaiting"
+        icon="@mipmap/ic_tab_deals"
+        title="Awaiting Shipment" />
+    <tab
+        id="@+id/tab_shipped"
+        icon="@mipmap/ic_tab_deals"
+        title="Shipped" />
+    <tab
+        id="@+id/tab_reviews"
+        icon="@mipmap/ic_tab_deals"
+        title="Awaiting Reviews" />
+    <tab
+        id="@+id/tab_refunds"
+        icon="@mipmap/ic_tab_my_acc"
+        title="Refunds and Dispute" />
+    <tab
+        id="@+id/tab_completed"
+        icon="@mipmap/ic_tab_my_acc"
+        title="Completed" />
+    <tab
+        id="@+id/tab_canceled"
+        icon="@mipmap/ic_tab_my_acc"
+        title="Canceled" />
+</tabs>

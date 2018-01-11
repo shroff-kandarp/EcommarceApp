@@ -15,7 +15,7 @@ import com.ecommarceapp.AppLoginActivity;
 import com.ecommarceapp.MainActivity;
 import com.ecommarceapp.MyAccountActivity;
 import com.ecommarceapp.MyMessagesActivity;
-import com.ecommarceapp.MyOrdersActivity;
+import com.ecommarceapp.OrdersListActivity;
 import com.ecommarceapp.R;
 import com.ecommarceapp.SearchProductsActivity;
 import com.ecommarceapp.UserCartActivity;
@@ -171,7 +171,7 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
                 break;
             case MENU_MY_ORDERS:
                 if (generalFunc.isUserLoggedIn()) {
-                    (new StartActProcess(getActContext())).startAct(MyOrdersActivity.class);
+                    (new StartActProcess(getActContext())).startAct(OrdersListActivity.class);
                 } else {
                     openSignIn();
                 }

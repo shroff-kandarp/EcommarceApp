@@ -62,7 +62,8 @@
         <activity android:name=".CurrentDealsActivity" />
         <activity android:name=".PlaceOrderActivity" />
         <activity android:name=".ChoosePaymentMethodActivity" />
-        <activity android:name=".PaymentOptionActivity"></activity>
+        <activity android:name=".PaymentOptionActivity" />
+        <activity android:name=".OrdersListActivity"></activity>
     </application>
 
 </manifest>

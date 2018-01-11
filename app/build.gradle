@@ -79,7 +79,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }
-    compile('com.payumoney.sdkui:plug-n-play:1.1.0'){
+    compile('com.payumoney.sdkui:plug-n-play:1.1.0') {
         transitive = true
         exclude module: 'payumoney-sdk'
     }
