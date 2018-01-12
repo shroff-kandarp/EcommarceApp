@@ -99,6 +99,11 @@ public class GeneralFunctions {
         restartApp();
     }
 
+
+    public String wrapHtml(Context context, String html) {
+        return context.getString(R.string.html, html);
+    }
+
     public boolean isUserLoggedIn() {
 
         if (!retriveValue(Utils.userLoggedIn_key).equals("") && retriveValue(Utils.userLoggedIn_key).equals("1")) {

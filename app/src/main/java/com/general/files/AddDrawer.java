@@ -2,6 +2,7 @@ package com.general.files;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +13,14 @@ import android.widget.ImageView;
 import com.adapter.DrawerMenuRecycleAdapter;
 import com.ecommarceapp.AllCategoriesActivity;
 import com.ecommarceapp.AppLoginActivity;
+import com.ecommarceapp.ContactUsActivity;
 import com.ecommarceapp.MainActivity;
 import com.ecommarceapp.MyAccountActivity;
 import com.ecommarceapp.MyMessagesActivity;
 import com.ecommarceapp.OrdersListActivity;
 import com.ecommarceapp.R;
 import com.ecommarceapp.SearchProductsActivity;
+import com.ecommarceapp.StaticPageActivity;
 import com.ecommarceapp.UserCartActivity;
 import com.ecommarceapp.WishListActivity;
 import com.utils.Utils;
@@ -157,6 +160,7 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
     @Override
     public void onItemClickList(View v, int position) {
         closeDrawer();
+        Bundle bn = new Bundle();
         switch (menuDataList.get(position).get("ID")) {
             case MENU_HOME:
 //                    Intent intent = new Intent(mContext, MainActivity.class);
@@ -195,6 +199,14 @@ public class AddDrawer implements DrawerMenuRecycleAdapter.OnItemClickListener {
                 } else {
                     openSignIn();
                 }
+                break;
+            case MENU_MY_TERMS_CONDITION:
+                bn.putString("staticpage", "3");
+                new StartActProcess(getActContext()).startActWithData(StaticPageActivity.class, bn);
+                break;
+            case MENU_MY_CONTACT_US:
+
+                new StartActProcess(getActContext()).startAct(ContactUsActivity.class);
                 break;
         }
     }

@@ -1,6 +1,7 @@
 package com.ecommarceapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -43,7 +44,10 @@ public class ProductDescriptionActivity extends AppCompatActivity {
     MTextView totalRatingsTxtView;
     MTextView descriptionTxtView;
     MTextView addToCartTxtView;
+    View similarArea;
+    MTextView buyNowTxtView;
     View wishListArea;
+    View shareArea;
     ImageView wishListImgView;
 
     GeneralFunctions generalFunc;
@@ -65,7 +69,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
     ArrayList<HashMap<String, String>> relatedProductsDataList = new ArrayList<>();
 
     ProductRatingBarAdapter ratingAdapter;
-
+    String shareData = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +95,9 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         totalRatingsTxtView = (MTextView) findViewById(R.id.totalRatingsTxtView);
         descriptionTxtView = (MTextView) findViewById(R.id.descriptionTxtView);
         addToCartTxtView = (MTextView) findViewById(R.id.addToCartTxtView);
+        buyNowTxtView = (MTextView) findViewById(R.id.buyNowTxtView);
+        similarArea = findViewById(R.id.similarArea);
+        shareArea = findViewById(R.id.shareArea);
 
         relatedProductsAdapter = new MainPageCategoryRecycleAdapter(getActContext(), relatedProductsDataList, generalFunc, false);
         ratingAdapter = new ProductRatingBarAdapter(getActContext(), list_ratings, generalFunc, false);
@@ -104,7 +111,10 @@ public class ProductDescriptionActivity extends AppCompatActivity {
 //        (findViewById(R.id.ratingArea)).setVisibility(View.GONE);
         setLabels();
 
+        shareArea.setOnClickListener(new setOnClickList());
+        similarArea.setOnClickListener(new setOnClickList());
         addToCartTxtView.setOnClickListener(new setOnClickList());
+        buyNowTxtView.setOnClickListener(new setOnClickList());
         wishListArea.setOnClickListener(new setOnClickList());
         getProductDetails();
 
@@ -171,15 +181,35 @@ public class ProductDescriptionActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            Bundle bn = new Bundle();
+
             switch (view.getId()) {
                 case R.id.backImgView:
                     ProductDescriptionActivity.super.onBackPressed();
                     break;
                 case R.id.addToCartTxtView:
-                    addItemToCart();
+                    addItemToCart(false);
+                    break;
+                case R.id.buyNowTxtView:
+                    addItemToCart(true);
                     break;
                 case R.id.wishListArea:
                     addItemToWishList();
+                    break;
+                case R.id.similarArea:
+                    bn.putString("PRODUCT_NAME", productNameTxtView.getText().toString());
+                    (new StartActProcess(getActContext())).startActWithData(SearchProductsActivity.class, bn);
+                    break;
+                case R.id.shareArea:
+                    try {
+                        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                        share.setType("text/plain");
+                        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                        share.putExtra(Intent.EXTRA_TEXT, shareData);
+
+                        startActivity(Intent.createChooser(share, "Share Product"));
+                    } catch (Exception e) {
+                    }
                     break;
 
             }
@@ -329,7 +359,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         exeWebServer.execute();
     }
 
-    public void addItemToCart() {
+    public void addItemToCart(final boolean isGotoPlaceOrder) {
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("type", "addProductToCart");
         parameters.put("product_id", getIntent().getStringExtra("product_id"));
@@ -348,7 +378,11 @@ public class ProductDescriptionActivity extends AppCompatActivity {
 
                 if (responseString != null && !responseString.equals("")) {
 
-                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                    if (isGotoPlaceOrder) {
+                        new StartActProcess(getActContext()).startActForResult(PlaceOrderActivity.class, Utils.PLACE_ORDER_REQ_CODE);
+                    } else {
+                        generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                    }
                     addDrawer.findUserCartCount();
                 } else {
                     generalFunc.showError();
@@ -357,6 +391,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
         });
         exeWebServer.execute();
     }
+
 
     public void getProductDetails() {
         if (errorView.getVisibility() == View.VISIBLE) {
@@ -417,6 +452,7 @@ public class ProductDescriptionActivity extends AppCompatActivity {
 
                         }
 
+                        shareData = generalFunc.getJsonValue("SHARE_DATA", msgObj);
                         productNameTxtView.setText(generalFunc.getJsonValue("name", msgObj));
                         avgRatingsTxtView.setText(generalFunc.getJsonValue("TotalRating", msgObj) + " *");
                         totalRatingsTxtView.setText(generalFunc.getJsonValue("TotalRatingCount", msgObj) + " Ratings");

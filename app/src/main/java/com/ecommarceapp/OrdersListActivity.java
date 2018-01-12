@@ -3,6 +3,7 @@ package com.ecommarceapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -11,16 +12,17 @@ import android.widget.ImageView;
 
 import com.adapter.OrdersListPagerAdapter;
 import com.fragment.OrdersFragment;
-import com.general.files.AddDrawer;
 import com.general.files.GeneralFunctions;
 import com.view.MTextView;
 
 public class OrdersListActivity extends AppCompatActivity {
+
+    ImageView backImgView;
+
     MTextView titleTxt;
 
-    GeneralFunctions generalFunc;
+    public GeneralFunctions generalFunc;
 
-    AddDrawer addDrawer;
     TabLayout tabLayout;
 
     @Override
@@ -28,28 +30,50 @@ public class OrdersListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders_list);
 
+        backImgView = (ImageView) findViewById(R.id.backImgView);
         titleTxt = (MTextView) findViewById(R.id.titleTxt);
 
         generalFunc = new GeneralFunctions(getActContext());
-
-        addDrawer = new AddDrawer(getActContext());
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
+        titleTxt.setText("My Orders");
+        backImgView.setOnClickListener(new setOnClickList());
+    }
+
+
+    public class setOnClickList implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (view.getId() == backImgView.getId()) {
+                OrdersListActivity.super.onBackPressed();
+            }
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
         OrdersListPagerAdapter adapter = new OrdersListPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new OrdersFragment(), "Awaiting Shipment");
-        adapter.addFrag(new OrdersFragment(), "Shipped");
-        adapter.addFrag(new OrdersFragment(), "Awaiting Reviews");
-        adapter.addFrag(new OrdersFragment(), "Refund & Dispute");
-        adapter.addFrag(new OrdersFragment(), "Completed");
-        adapter.addFrag(new OrdersFragment(), "Canceled");
+        adapter.addFrag(prepareFrag("Processing"), "Awaiting Shipment");
+        adapter.addFrag(prepareFrag("Shipped"), "Shipped");
+        adapter.addFrag(prepareFrag("Complete"), "Awaiting Reviews");
+        adapter.addFrag(prepareFrag("Refunded"), "Refund & Dispute");
+        adapter.addFrag(prepareFrag("Complete"), "Completed");
+        adapter.addFrag(prepareFrag("Canceled"), "Canceled");
         viewPager.setAdapter(adapter);
+    }
+
+    public Fragment prepareFrag(String pageStatus) {
+        Bundle bundle = new Bundle();
+        bundle.putString("PAGE_STATUS", pageStatus);
+
+        OrdersFragment ordersFrag = new OrdersFragment();
+        ordersFrag.setArguments(bundle);
+
+        return ordersFrag;
     }
 
     private void setupTabIcons() {

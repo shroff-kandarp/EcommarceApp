@@ -151,6 +151,10 @@ public class SearchProductsActivity extends AppCompatActivity implements TextWat
         });
 
         setLabels();
+
+        if (getIntent().getStringExtra("PRODUCT_NAME") != null && !getIntent().getStringExtra("PRODUCT_NAME").equals("")) {
+            searchBox.setText(getIntent().getStringExtra("PRODUCT_NAME"));
+        }
     }
 
 

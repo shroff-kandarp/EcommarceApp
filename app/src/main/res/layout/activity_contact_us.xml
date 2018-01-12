@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar_include"
+        layout="@layout/design_toolbar_general" />
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#e3e3e3"
+        android:gravity="center_vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Phone"
+        android:textColor="#333333"
+        android:textSize="@dimen/txt_size_18" />
+
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:autoLink="phone"
+        android:gravity="center_vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Phone 1: 8511 222502\nPhone 2: 9510 265240"
+        android:textColor="#272727"
+        android:textSize="@dimen/txt_size_16" />
+
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#e3e3e3"
+        android:gravity="center_vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Email"
+        android:textColor="#333333"
+        android:textSize="@dimen/txt_size_18" />
+
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:autoLink="email"
+        android:gravity="center_vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="contact@shivinfotech.com"
+        android:textColor="#272727"
+        android:textSize="@dimen/txt_size_16" />
+
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#e3e3e3"
+        android:gravity="center_vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Address"
+        android:textColor="#333333"
+        android:textSize="@dimen/txt_size_18" />
+
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/dimen_50dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="402, Om Shree Gokul Complex, Nr Sardar Patel Statue, Navrangpura, Ahmadabad - 380015"
+        android:textColor="#272727"
+        android:textSize="@dimen/txt_size_16" />
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:background="#e3e3e3"
+        android:gravity="center_vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="Customer Service Center"
+        android:textColor="#333333"
+        android:textSize="@dimen/txt_size_18" />
+
+    <LinearLayout
+        android:id="@+id/openContactFormArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dimen_50dp"
+        android:orientation="horizontal">
+
+        <com.view.MTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/dimen_50dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:text="For inquiries regarding your recent orders, please click here."
+            android:textColor="#272727"
+            android:textSize="@dimen/txt_size_16" />
+
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0"
+            android:src="@mipmap/ic_right_arrow" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -63,10 +63,10 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         bottomBar.setDefaultTab(R.id.tab_my_acc);
         bottomBar.setOnTabSelectListener(this);
 
-        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), yourOrdersArea);
-        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), accountArea);
-        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), messageArea);
-        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), personalizationArea);
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 0), Color.parseColor("#DEDEDE"), yourOrdersArea);
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 0), Color.parseColor("#DEDEDE"), accountArea);
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 0), Color.parseColor("#DEDEDE"), messageArea);
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 0), Color.parseColor("#DEDEDE"), personalizationArea);
         new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), logOutArea);
 
         yourOrdersArea.setOnClickListener(new setOnClickList());
@@ -110,6 +110,9 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                     addDrawer.openWishList();
                     break;
                 case R.id.profileArea:
+                    break;
+                case R.id.yourOrdersArea:
+                    (new StartActProcess(getActContext())).startAct(OrdersListActivity.class);
                     break;
 
             }
