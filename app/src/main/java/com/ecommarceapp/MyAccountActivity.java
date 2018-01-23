@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.general.files.AddDrawer;
+import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
 import com.utils.Utils;
@@ -16,6 +17,8 @@ import com.view.GenerateAlertBox;
 import com.view.MTextView;
 import com.view.bottombar.BottomBar;
 import com.view.bottombar.OnTabSelectListener;
+
+import java.util.HashMap;
 
 public class MyAccountActivity extends AppCompatActivity implements OnTabSelectListener {
 
@@ -32,6 +35,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
     LinearLayout wishListArea;
     LinearLayout profileArea;
     LinearLayout personalizationArea;
+    LinearLayout becomeAsellerArea;
 
     AddDrawer addDrawer;
 
@@ -55,6 +59,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         messageArea = (LinearLayout) findViewById(R.id.messageArea);
         wishListArea = (LinearLayout) findViewById(R.id.wishListArea);
         profileArea = (LinearLayout) findViewById(R.id.profileArea);
+        becomeAsellerArea = (LinearLayout) findViewById(R.id.becomeAsellerArea);
         personalizationArea = (LinearLayout) findViewById(R.id.personalizationArea);
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
@@ -75,7 +80,10 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         messageArea.setOnClickListener(new setOnClickList());
         wishListArea.setOnClickListener(new setOnClickList());
         profileArea.setOnClickListener(new setOnClickList());
+        becomeAsellerArea.setOnClickListener(new setOnClickList());
         logOutArea.setOnClickListener(new setOnClickList());
+
+        checkCustomerIsSeller();
     }
 
     @Override
@@ -114,6 +122,9 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                 case R.id.yourOrdersArea:
                     (new StartActProcess(getActContext())).startAct(OrdersListActivity.class);
                     break;
+                case R.id.becomeAsellerArea:
+                    (new StartActProcess(getActContext())).startActForResult(BecomeSellerActivity.class, Utils.BECOME_SELLER_REQ_CODE);
+                    break;
 
             }
         }
@@ -143,6 +154,35 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         titleTxt.setText("Account");
     }
 
+    public void checkCustomerIsSeller() {
+
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("type", "checkCustomerSeller");
+        parameters.put("customer_id", generalFunc.getMemberId());
+
+        Utils.printLog("parameters", "::" + parameters.toString());
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(String responseString) {
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail == true) {
+                        becomeAsellerArea.setVisibility(View.GONE);
+                    } else {
+                        becomeAsellerArea.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
+    }
 
     public Context getActContext() {
         return MyAccountActivity.this;

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar_include"
+        layout="@layout/design_toolbar_general" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/step1CompleteImgView"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/appThemeColor_1"
+                android:src="@mipmap/ic_check_mark"
+                android:tint="@color/appThemeColor_TXT_1"
+                android:visibility="gone" />
+
+
+            <com.view.MTextView
+                android:id="@+id/step1TxtView"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/appThemeColor_1"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/appThemeColor_TXT_1"
+                android:textSize="@dimen/txt_size_24" />
+
+            <com.view.MTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Store Name"
+                android:textColor="#333333"
+                android:textSize="@dimen/txt_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/step2CompleteImgView"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/appThemeColor_1"
+                android:src="@mipmap/ic_check_mark"
+                android:tint="@color/appThemeColor_TXT_1"
+                android:visibility="gone" />
+
+
+            <com.view.MTextView
+                android:id="@+id/step2TxtView"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/appThemeColor_1"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/appThemeColor_TXT_1"
+                android:textSize="@dimen/txt_size_24" />
+
+            <com.view.MTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Store Info"
+                android:textColor="#333333"
+                android:textSize="@dimen/txt_size_16" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/step3CompleteImgView"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/appThemeColor_1"
+                android:src="@mipmap/ic_check_mark"
+                android:tint="@color/appThemeColor_TXT_1"
+                android:visibility="gone" />
+
+
+            <com.view.MTextView
+                android:id="@+id/step3TxtView"
+                android:layout_width="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/appThemeColor_1"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/appThemeColor_TXT_1"
+                android:textSize="@dimen/txt_size_24" />
+
+            <com.view.MTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Bank Info"
+                android:textColor="#333333"
+                android:textSize="@dimen/txt_size_16" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fragContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:background="#b5b5b5" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#dbd9d9"
+            android:orientation="horizontal">
+
+            <com.view.MTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:text="Back"
+                android:textColor="#272727"
+                android:textSize="@dimen/txt_size_18" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent" />
+
+            <com.view.MTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:text="Next"
+                android:textColor="#272727"
+                android:textSize="@dimen/txt_size_18" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

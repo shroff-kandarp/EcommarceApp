@@ -59,6 +59,7 @@ public class Utils {
     public static final int CHOOSE_ADDRESS_REQ_CODE = 126;
     public static final int PLACE_ORDER_REQ_CODE = 127;
     public static final int CHOOSE_PAY_OPTION_REQ_CODE = 128;
+    public static final int BECOME_SELLER_REQ_CODE = 129;
 
     static MyProgressDialog myPDialog;
     //Single Instance object
@@ -97,6 +98,10 @@ public class Utils {
     public static void hideKeyboard(Activity act) {
 //        ((InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE))
 //                .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+
+        if (act.getCurrentFocus() == null) {
+            return;
+        }
 
         InputMethodManager inputManager = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(act.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);

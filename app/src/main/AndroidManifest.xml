@@ -65,7 +65,8 @@
         <activity android:name=".OrdersListActivity" />
         <activity android:name=".StaticPageActivity" />
         <activity android:name=".ContactUsActivity" />
-        <activity android:name=".ContactFormActivity"></activity>
+        <activity android:name=".ContactFormActivity" />
+        <activity android:name=".BecomeSellerActivity"></activity>
     </application>
 
 </manifest>

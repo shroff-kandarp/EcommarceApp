@@ -38,8 +38,8 @@
                         android:minHeight="35dp"
                         android:text="Orders"
                         android:textColor="#272727"
-                        android:visibility="gone"
                         android:textSize="@dimen/txt_size_18"
+                        android:visibility="gone"
                         app:customTypeFace="@string/semiBoldFont" />
 
                     <LinearLayout
@@ -54,8 +54,9 @@
                         <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:tint="#5b5b5b"
-                            android:src="@mipmap/ic_menu_orders" />
+                            android:src="@mipmap/ic_menu_orders"
+                            android:tint="#5b5b5b" />
+
                         <com.view.MTextView
                             android:layout_width="0dp"
                             android:layout_height="50dp"
@@ -92,8 +93,8 @@
                         android:minHeight="35dp"
                         android:text="Account Settings"
                         android:textColor="#272727"
-                        android:visibility="gone"
                         android:textSize="@dimen/txt_size_18"
+                        android:visibility="gone"
                         app:customTypeFace="@string/semiBoldFont" />
 
                     <LinearLayout
@@ -115,8 +116,8 @@
                             <ImageView
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:tint="#5b5b5b"
-                                android:src="@mipmap/ic_menu_terms" />
+                                android:src="@mipmap/ic_menu_terms"
+                                android:tint="#5b5b5b" />
 
                             <com.view.MTextView
                                 android:layout_width="0dp"
@@ -145,16 +146,17 @@
                             android:id="@+id/addressBookArea"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
                             android:layout_marginEnd="20dp"
                             android:layout_marginStart="20dp"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <ImageView
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:tint="#5b5b5b"
-                                android:src="@mipmap/ic_my_address" />
+                                android:src="@mipmap/ic_my_address"
+                                android:tint="#5b5b5b" />
+
                             <com.view.MTextView
                                 android:layout_width="0dp"
                                 android:layout_height="50dp"
@@ -192,9 +194,9 @@
                         android:layout_marginStart="10dp"
                         android:minHeight="35dp"
                         android:text="Message Center"
-                        android:visibility="gone"
                         android:textColor="#272727"
                         android:textSize="@dimen/txt_size_18"
+                        android:visibility="gone"
                         app:customTypeFace="@string/semiBoldFont" />
 
                     <LinearLayout
@@ -209,8 +211,8 @@
                         <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:tint="#5b5b5b"
-                            android:src="@mipmap/ic_menu_message" />
+                            android:src="@mipmap/ic_menu_message"
+                            android:tint="#5b5b5b" />
 
                         <com.view.MTextView
                             android:layout_width="0dp"
@@ -237,6 +239,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#DEDEDE" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -248,9 +251,9 @@
                         android:layout_marginStart="10dp"
                         android:minHeight="35dp"
                         android:text="Personalization"
-                        android:visibility="gone"
                         android:textColor="#272727"
                         android:textSize="@dimen/txt_size_18"
+                        android:visibility="gone"
                         app:customTypeFace="@string/semiBoldFont" />
 
                     <LinearLayout
@@ -263,16 +266,17 @@
                             android:id="@+id/wishListArea"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
                             android:layout_marginEnd="20dp"
                             android:layout_marginStart="20dp"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <ImageView
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:tint="#5b5b5b"
-                                android:src="@mipmap/ic_menu_wishlist" />
+                                android:src="@mipmap/ic_menu_wishlist"
+                                android:tint="#5b5b5b" />
+
                             <com.view.MTextView
                                 android:layout_width="0dp"
                                 android:layout_height="50dp"
@@ -300,16 +304,17 @@
                             android:id="@+id/profileArea"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
                             android:layout_marginEnd="20dp"
                             android:layout_marginStart="20dp"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <ImageView
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:tint="#5b5b5b"
-                                android:src="@mipmap/ic_menu_my_acc" />
+                                android:src="@mipmap/ic_menu_my_acc"
+                                android:tint="#5b5b5b" />
+
                             <com.view.MTextView
                                 android:layout_width="0dp"
                                 android:layout_height="50dp"
@@ -317,6 +322,46 @@
                                 android:gravity="center_vertical"
                                 android:paddingStart="10dp"
                                 android:text="Profile"
+                                android:textColor="#5b5b5b"
+                                android:textSize="@dimen/txt_size_16"
+                                app:customTypeFace="@string/semiBoldFont" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="0"
+                                android:src="@mipmap/ic_right_arrow" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#DEDEDE" />
+
+                        <LinearLayout
+                            android:id="@+id/becomeAsellerArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginStart="20dp"
+                            android:gravity="center_vertical"
+                            android:visibility="gone"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@mipmap/ic_shop"
+                                android:tint="#5b5b5b" />
+
+                            <com.view.MTextView
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:paddingStart="10dp"
+                                android:text="Become A Seller?"
                                 android:textColor="#5b5b5b"
                                 android:textSize="@dimen/txt_size_16"
                                 app:customTypeFace="@string/semiBoldFont" />
@@ -336,10 +381,10 @@
                     android:id="@+id/logOutArea"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
-                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center">
 
                     <ImageView
@@ -354,8 +399,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_weight="1"
                         android:layout_toEndOf="@id/imgLogOut"
+                        android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:minHeight="45dp"
                         android:padding="10dp"
