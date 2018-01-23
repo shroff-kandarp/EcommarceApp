@@ -12,7 +12,7 @@ import com.ecommarceapp.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoreNameFragment extends Fragment {
+public class StoreDetailFragment extends Fragment {
 
     View view;
 
@@ -20,7 +20,7 @@ public class StoreNameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_store_name, container, false);
+        view = inflater.inflate(R.layout.fragment_store_detail, container, false);
         return view;
     }
 

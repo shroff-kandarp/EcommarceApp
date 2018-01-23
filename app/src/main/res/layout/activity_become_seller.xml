@@ -130,12 +130,17 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/fragContainer"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"></LinearLayout>
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/fragContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -155,16 +160,32 @@
             android:background="#dbd9d9"
             android:orientation="horizontal">
 
-            <com.view.MTextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:gravity="center"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
-                android:text="Back"
-                android:textColor="#272727"
-                android:textSize="@dimen/txt_size_18" />
+                android:orientation="horizontal"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp">
+
+                <ImageView
+                    android:id="@+id/backArrowImgView"
+                    android:layout_width="@dimen/dimen_25dp"
+                    android:layout_height="@dimen/dimen_25dp"
+                    android:layout_gravity="center_vertical"
+                    android:rotation="180"
+                    android:src="@mipmap/ic_right_arrow"
+                    android:tint="#696969" />
+
+                <com.view.MTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:text="Back"
+                    android:textColor="#272727"
+                    android:textSize="@dimen/txt_size_18" />
+            </LinearLayout>
 
             <View
                 android:layout_width="0dp"
@@ -172,16 +193,32 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent" />
 
-            <com.view.MTextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:gravity="center"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp"
-                android:text="Next"
-                android:textColor="#272727"
-                android:textSize="@dimen/txt_size_18" />
+                android:orientation="horizontal"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp">
+
+                <com.view.MTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingEnd="10dp"
+                    android:text="Next"
+                    android:textColor="#272727"
+                    android:textSize="@dimen/txt_size_18" />
+
+                <ImageView
+                    android:id="@+id/nextArrowImgView"
+                    android:layout_width="@dimen/dimen_25dp"
+                    android:layout_height="@dimen/dimen_25dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0"
+                    android:src="@mipmap/ic_right_arrow"
+                    android:tint="#696969" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
