@@ -12,8 +12,18 @@
     <style name="AppCompatTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorAccent">@color/appThemeColor_1</item>
+        <item name="ms_stepperStyle">@style/DotStepperStyle</item>
     </style>
 
+    <style name="DotStepperStyle">
+        <item name="ms_stepperType">tabs</item>
+        <item name="ms_activeStepColor">@color/appThemeColor_1</item>
+        <item name="ms_inactiveStepColor">#cea38b</item>
+        <item name="ms_bottomNavigationBackground">@color/appThemeColor_1</item>
+        <item name="ms_nextButtonColor">@color/appThemeColor_TXT_1</item>
+        <item name="ms_backButtonColor">@color/appThemeColor_TXT_1</item>
+        <item name="ms_completeButtonColor">@color/appThemeColor_TXT_1</item>
+    </style>
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
         <item name="tabMaxWidth">110dp</item>
         <item name="tabIndicatorColor">@color/appThemeColor_TXT_1</item>
