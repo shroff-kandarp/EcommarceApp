@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class MyAccountActivity extends AppCompatActivity implements OnTabSelectListener {
 
     MTextView titleTxt;
-    GeneralFunctions generalFunc;
+    public GeneralFunctions generalFunc;
 
     View logOutArea;
 
@@ -172,7 +172,11 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                     boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
 
                     if (isDataAvail == true) {
-                        becomeAsellerArea.setVisibility(View.GONE);
+                        if (generalFunc.getJsonValue("IS_ALL_INFO_DONE", responseString).equalsIgnoreCase("Yes")) {
+                            becomeAsellerArea.setVisibility(View.GONE);
+                        } else {
+                            becomeAsellerArea.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         becomeAsellerArea.setVisibility(View.VISIBLE);
                     }

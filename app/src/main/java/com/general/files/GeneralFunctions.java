@@ -441,4 +441,35 @@ public class GeneralFunctions {
     public void logOUTFrmFB() {
         LoginManager.getInstance().logOut();
     }
+
+
+    public boolean isCameraPermissionGranted() {
+        int permissionCheck_storage = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionCheck_camera = ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA);
+
+        if (permissionCheck_storage == PackageManager.PERMISSION_GRANTED && permissionCheck_camera == PackageManager.PERMISSION_GRANTED) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isCameraStoragePermissionGranted() {
+
+        int permissionCheck_storage = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionCheck_camera = ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA);
+
+        if (permissionCheck_storage != PackageManager.PERMISSION_GRANTED || permissionCheck_camera != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions((Activity) mContext,
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    MY_PERMISSIONS_REQUEST);
+
+            return false;
+        }
+
+        return true;
+    }
 }

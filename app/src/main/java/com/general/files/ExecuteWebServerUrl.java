@@ -2,22 +2,15 @@ package com.general.files;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.rest.RestClient;
 import com.utils.Utils;
 import com.view.MyProgressDialog;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Admin on 22-02-2016.
@@ -81,26 +74,15 @@ public class ExecuteWebServerUrl/* extends AsyncTask<String, String, String>*/ {
     public void performPostCall() {
         Call<Object> call = RestClient.getClient().getResponse(parameters);
         call.enqueue(new Callback<Object>() {
+
             @Override
-            public void onResponse(Response<Object> response) {
-                if (response.isSuccess()) {
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                if (response.isSuccessful()) {
                     // request successful (status code 200, 201)
 
 //                    Utils.printLog("Data", "response = " + new Gson().toJson(response.body()));
-                    Utils.printLog("ResponseData", "response = " + new Gson().toJson(response.body()));
 
-                    Gson gson = new GsonBuilder().
-                            registerTypeAdapter(Double.class, new JsonSerializer<Double>() {
-
-                                @Override
-                                public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
-                                    if (src == src.longValue())
-                                        return new JsonPrimitive(src.longValue());
-                                    return new JsonPrimitive(src);
-                                }
-                            }).create();
-
-                    responseString = gson.toJson(response.body());
+                    responseString = RestClient.getGSONBuilder().toJson(response.body());
 
                     fireResponse();
                 } else {
@@ -110,11 +92,12 @@ public class ExecuteWebServerUrl/* extends AsyncTask<String, String, String>*/ {
             }
 
             @Override
-            public void onFailure(Throwable t) {
-                Utils.printLog("ResponseData", "Error::" + t.toString());
+            public void onFailure(Call<Object> call, Throwable t) {
+                Utils.printLog("DataError", "::" + t.getMessage());
                 responseString = "";
                 fireResponse();
             }
+
         });
     }
 

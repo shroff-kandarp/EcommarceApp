@@ -119,4 +119,16 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <style name="ImageSourceDialogStyle">
+        <item name="android:windowAnimationStyle">@style/ImageSourceDialogAnimStyle</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="ImageSourceDialogAnimStyle">
+        <item name="android:windowEnterAnimation">@anim/slide_up_anim</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_down_anim</item>
+    </style>
 </resources>

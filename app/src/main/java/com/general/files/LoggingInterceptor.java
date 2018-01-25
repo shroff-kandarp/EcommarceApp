@@ -1,16 +1,17 @@
 package com.general.files;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
-
-import java.io.IOException;
+//import com.squareup.okhttp.Interceptor;
+//import com.squareup.okhttp.Request;
+//import com.squareup.okhttp.Response;
+//import com.squareup.okhttp.ResponseBody;
 
 /**
  * Created by Shroff on 01-Sep-17.
  */
+public class LoggingInterceptor {
 
+}
+/*
 public class LoggingInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -35,4 +36,4 @@ public class LoggingInterceptor implements Interceptor {
                 .body(ResponseBody.create(response.body().contentType(), responseString))
                 .build();
     }
-}
+}*/

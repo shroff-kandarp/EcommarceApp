@@ -8,7 +8,7 @@
     android:textSize="@dimen/txt_size_16"
     android:theme="@style/bg_materialEditText"
     app:met_accentTypeface="@string/defaultFont"
-    app:met_clearButton="true"
+    app:met_clearButton="false"
     android:textAlignment="viewStart"
     app:met_floatingLabel="highlight"
     app:met_typeface="@string/defaultFont" />

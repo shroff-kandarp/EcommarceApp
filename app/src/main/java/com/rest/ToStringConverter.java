@@ -1,13 +1,17 @@
 package com.rest;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.ResponseBody;
+//import com.squareup.okhttp.MediaType;
+//import com.squareup.okhttp.RequestBody;
+//import com.squareup.okhttp.ResponseBody;
 
-import java.io.IOException;
+//import retrofit.Converter;
 
-import retrofit.Converter;
 
+public final class ToStringConverter {
+
+
+}
+/*
 public final class ToStringConverter implements Converter<String> {
 
     @Override
@@ -19,4 +23,4 @@ public final class ToStringConverter implements Converter<String> {
     public RequestBody toBody(String value) {
         return RequestBody.create(MediaType.parse("text/plain"), value);
     }
-}
+}*/

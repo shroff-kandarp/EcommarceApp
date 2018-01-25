@@ -2,6 +2,7 @@ package com.ecommarceapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,9 +19,12 @@ public class BecomeSellerActivity extends AppCompatActivity {
     MTextView titleTxt;
     ImageView backImgView;
 
-    GeneralFunctions generalFunc;
+    public GeneralFunctions generalFunc;
 
     private StepperLayout mStepperLayout;
+
+    public Uri fileUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +39,23 @@ public class BecomeSellerActivity extends AppCompatActivity {
         setLabels();
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new SellerSteppersAdapter(getSupportFragmentManager(), getActContext()));
+
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current state
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putParcelable("file_uri", fileUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        fileUri = savedInstanceState.getParcelable("file_uri");
+    }
     /*public void buildSteppers() {
         new CreateRoundedView(getResources().getColor(R.color.appThemeColor_1), Utils.dipToPixels(getActContext(), 25), 0, getResources().getColor(R.color.appThemeColor_1), (findViewById(R.id.step1TxtView)));
 
