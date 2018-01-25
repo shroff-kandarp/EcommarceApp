@@ -3,6 +3,7 @@ package com.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -26,6 +27,7 @@ import com.view.editBox.MaterialEditText;
 
 import org.jsoup.Jsoup;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,10 +40,15 @@ public class Utils {
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
 
+    public static final int ImageUpload_DESIREDWIDTH = 1024;
+    public static final int ImageUpload_DESIREDHEIGHT = 1024;
+
     public static int minPasswordLength = 2;
     public static String isFirstLaunchFinished = "isFirstLaunchFinished";
     public static String iMemberId_KEY = "iMemberId";
     public static String userLoggedIn_key = "isUserLoggedIn";
+
+    public static final String TempImageFolderPath = "TempImages";
 
     public static String device_type = "android";
     public static String action_str = "Action";
@@ -264,5 +271,20 @@ public class Utils {
 
     public static String html2text(String html) {
         return Jsoup.parse(html).text();
+    }
+
+
+    public static int getExifRotation(String path) {
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
+        return orientation;
+
     }
 }

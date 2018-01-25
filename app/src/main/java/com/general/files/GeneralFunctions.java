@@ -7,7 +7,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.media.ExifInterface;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +22,7 @@ import android.view.View;
 import com.ecommarceapp.LauncherActivity;
 import com.ecommarceapp.R;
 import com.facebook.login.LoginManager;
+import com.utils.ScalingUtilities;
 import com.utils.Utils;
 import com.view.ErrorView;
 import com.view.GenerateAlertBox;
@@ -26,6 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -472,4 +480,110 @@ public class GeneralFunctions {
 
         return true;
     }
+
+    public String decodeFile(String path, int DESIREDWIDTH, int DESIREDHEIGHT, String tempImgName) {
+        String strMyImagePath = null;
+        Bitmap scaledBitmap = null;
+
+        try {
+            // Part 1: Decode image
+//            scaledBitmap = ScalingUtilities.decodeFile(path, DESIREDWIDTH, DESIREDHEIGHT);
+            int rotation = Utils.getExifRotation(path);
+            Bitmap unscaledBitmap = ScalingUtilities.decodeFile(path, DESIREDWIDTH, DESIREDHEIGHT, ScalingUtilities.ScalingLogic.CROP);
+
+            if (!(unscaledBitmap.getWidth() <= DESIREDWIDTH && unscaledBitmap.getHeight() <= DESIREDHEIGHT)) {
+                // Part 2: Scale image
+                scaledBitmap = ScalingUtilities.createScaledBitmap(unscaledBitmap, DESIREDWIDTH, DESIREDHEIGHT, ScalingUtilities.ScalingLogic.CROP);
+            } else {
+//                unscaledBitmap.recycle();
+//                return path;
+
+                if (unscaledBitmap.getWidth() > unscaledBitmap.getHeight()) {
+                    scaledBitmap = ScalingUtilities.createScaledBitmap(unscaledBitmap, unscaledBitmap.getHeight(), unscaledBitmap.getHeight(), ScalingUtilities.ScalingLogic.CROP);
+                } else {
+                    scaledBitmap = ScalingUtilities.createScaledBitmap(unscaledBitmap, unscaledBitmap.getWidth(), unscaledBitmap.getWidth(), ScalingUtilities.ScalingLogic.CROP);
+                }
+            }
+
+            // Store to tmp file
+            scaledBitmap = rotateBitmap(scaledBitmap, rotation);
+            String extr = Environment.getExternalStorageDirectory().toString();
+            File mFolder = new File(extr + "/" + Utils.TempImageFolderPath);
+            if (!mFolder.exists()) {
+                mFolder.mkdir();
+            }
+
+//            String s = "tmp.png";
+
+            File f = new File(mFolder.getAbsolutePath(), tempImgName);
+
+            strMyImagePath = f.getAbsolutePath();
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(f);
+                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 60, fos);
+                fos.flush();
+                fos.close();
+            } catch (FileNotFoundException e) {
+
+                e.printStackTrace();
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+            scaledBitmap.recycle();
+        } catch (Throwable e) {
+        }
+
+        if (strMyImagePath == null) {
+            return path;
+        }
+        return strMyImagePath;
+
+    }
+
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return bitmap;
+        }
+    }
+
 }

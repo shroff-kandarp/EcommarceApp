@@ -39,14 +39,14 @@
 
                 <ImageView
                     android:id="@+id/logoImgView"
-                    android:layout_width="125dp"
-                    android:layout_height="125dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_centerHorizontal="true"
                     android:src="@mipmap/ic_no_icon" />
 
                 <View
-                    android:layout_width="125dp"
-                    android:layout_height="125dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_centerHorizontal="true"
                     android:alpha="0.25"
                     android:background="#333333" />
