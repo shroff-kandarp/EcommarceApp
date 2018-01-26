@@ -92,6 +92,7 @@ public class StoreDetailFragment extends Fragment implements BlockingStep, Uploa
         storeSEOUrlBox = (MaterialEditText) view.findViewById(R.id.storeSEOUrlBox);
         storeDescUpdateBtn = ((MaterialRippleLayout) view.findViewById(R.id.storeDescUpdateBtn)).getChildView();
 
+        storeDescUpdateBtn.setId(Utils.generateViewId());
 
         Utils.setMultiLineEditBox(storeDescriptionBox);
         Utils.setMultiLineEditBox(storeAddressBox);

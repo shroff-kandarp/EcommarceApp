@@ -59,6 +59,18 @@
                 android:padding="12dp"
                 android:src="@mipmap/ic_plus"
                 android:visibility="gone" />
+
+
+            <ImageView
+                android:id="@+id/listChangeImgView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/ic_view_list"
+                android:tint="@color/appThemeColor_TXT_1"
+                android:visibility="gone" />
         </LinearLayout>
 
 

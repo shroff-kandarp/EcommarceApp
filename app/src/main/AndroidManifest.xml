@@ -75,7 +75,7 @@
         <activity android:name=".ContactFormActivity" />
         <activity android:name=".BecomeSellerActivity" />
         <activity android:name=".SelectStateActivity" />
-        <activity android:name=".ManageStoreProductsActivity" />
+        <activity android:name=".ManageStoreProductsListActivity" />
         <activity android:name=".ManageStoreProductActivity"></activity>
     </application>
 

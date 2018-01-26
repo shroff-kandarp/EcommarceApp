@@ -35,6 +35,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
     LinearLayout wishListArea;
     LinearLayout profileArea;
     LinearLayout personalizationArea;
+    LinearLayout manageSellerProductsArea;
     LinearLayout becomeAsellerArea;
 
     MTextView becomeSellerTxtView;
@@ -63,6 +64,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         profileArea = (LinearLayout) findViewById(R.id.profileArea);
         becomeAsellerArea = (LinearLayout) findViewById(R.id.becomeAsellerArea);
         personalizationArea = (LinearLayout) findViewById(R.id.personalizationArea);
+        manageSellerProductsArea = (LinearLayout) findViewById(R.id.manageSellerProductsArea);
         becomeSellerTxtView = (MTextView) findViewById(R.id.becomeSellerTxtView);
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
@@ -85,8 +87,9 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         profileArea.setOnClickListener(new setOnClickList());
         becomeAsellerArea.setOnClickListener(new setOnClickList());
         logOutArea.setOnClickListener(new setOnClickList());
+        manageSellerProductsArea.setOnClickListener(new setOnClickList());
 
-        checkCustomerIsSeller();
+//        checkCustomerIsSeller();
     }
 
     @Override
@@ -96,6 +99,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         if (addDrawer != null) {
             addDrawer.findUserCartCount();
         }
+        checkCustomerIsSeller();
         bottomBar.setDefaultTab(R.id.tab_my_acc);
     }
 
@@ -127,6 +131,9 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                     break;
                 case R.id.becomeAsellerArea:
                     (new StartActProcess(getActContext())).startActForResult(BecomeSellerActivity.class, Utils.BECOME_SELLER_REQ_CODE);
+                    break;
+                case R.id.manageSellerProductsArea:
+                    (new StartActProcess(getActContext())).startAct(ManageStoreProductsListActivity.class);
                     break;
 
             }
@@ -177,6 +184,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                     if (isDataAvail == true) {
                         becomeSellerTxtView.setText("Store Information");
                         becomeAsellerArea.setVisibility(View.VISIBLE);
+                        manageSellerProductsArea.setVisibility(View.VISIBLE);
 //                        if (generalFunc.getJsonValue("IS_ALL_INFO_DONE", responseString).equalsIgnoreCase("Yes")) {
 ////                            becomeAsellerArea.setVisibility(View.GONE);
 //                            becomeSellerTxtView.setText("Store Information");

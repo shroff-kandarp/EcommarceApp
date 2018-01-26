@@ -346,8 +346,8 @@
                             android:layout_marginEnd="20dp"
                             android:layout_marginStart="20dp"
                             android:gravity="center_vertical"
-                            android:visibility="gone"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:layout_width="25dp"
@@ -363,6 +363,47 @@
                                 android:gravity="center_vertical"
                                 android:paddingStart="10dp"
                                 android:text="Become A Seller?"
+                                android:textColor="#5b5b5b"
+                                android:textSize="@dimen/txt_size_16"
+                                app:customTypeFace="@string/semiBoldFont" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="0"
+                                android:src="@mipmap/ic_right_arrow" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#DEDEDE" />
+
+                        <LinearLayout
+                            android:id="@+id/manageSellerProductsArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginStart="20dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@mipmap/ic_shop"
+                                android:tint="#5b5b5b" />
+
+                            <com.view.MTextView
+                                android:id="@+id/manageSellerProductsTxtView"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:paddingStart="10dp"
+                                android:text="Manage Store' Product"
                                 android:textColor="#5b5b5b"
                                 android:textSize="@dimen/txt_size_16"
                                 app:customTypeFace="@string/semiBoldFont" />

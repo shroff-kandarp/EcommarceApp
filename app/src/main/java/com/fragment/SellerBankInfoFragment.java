@@ -58,6 +58,7 @@ public class SellerBankInfoFragment extends Fragment implements BlockingStep {
         Utils.setMultiLineEditBox(storeBankDetailBox);
         setLabels();
 
+        storeBankUpdateBtn.setId(Utils.generateViewId());
         getSellerData();
         storeBankUpdateBtn.setOnClickListener(new setOnClickList());
         return view;
