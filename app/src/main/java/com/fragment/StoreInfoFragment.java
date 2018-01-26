@@ -89,7 +89,6 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
         myAccAct = (BecomeSellerActivity) getActivity();
         generalFunc = myAccAct.generalFunc;
 
-
         storeNameBox = (MaterialEditText) view.findViewById(R.id.storeNameBox);
         storeEmailBox = (MaterialEditText) view.findViewById(R.id.storeEmailBox);
         storePhoneBox = (MaterialEditText) view.findViewById(R.id.storePhoneBox);
@@ -241,10 +240,13 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
                 String logoUrl = generalFunc.getJsonValue("LogoUrl", responseString);
                 Utils.printLog("logoUrl", "::" + logoUrl);
 
-
                 Picasso.with(getActContext())
                         .load(logoUrl)
                         .into(logoImgView, null);
+
+                addOrChangeLogoTxtView.setText("Change Logo");
+                addOrChangeLogoImgView.setImageResource(R.mipmap.ic_edit);
+
             } else {
                 generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
             }
@@ -325,6 +327,16 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
         parameters.put("store_city", Utils.getText(cityBox));
         parameters.put("store_postal", Utils.getText(storePostalCodeBox));
         parameters.put("store_tin", Utils.getText(storeTINBox));
+        parameters.put("store_description", generalFunc.getJsonValue("store_description", storeData));
+        parameters.put("store_address", generalFunc.getJsonValue("store_address", storeData));
+        parameters.put("store_shipping_policy", generalFunc.getJsonValue("store_shipping_policy", storeData));
+        parameters.put("store_return_policy", generalFunc.getJsonValue("store_return_policy", storeData));
+        parameters.put("store_meta_keywords", generalFunc.getJsonValue("store_meta_keywords", storeData));
+        parameters.put("store_meta_description", generalFunc.getJsonValue("store_meta_descriptions", storeData));
+        parameters.put("store_shipping_charge", generalFunc.getJsonValue("store_shipping_charge", storeData));
+        parameters.put("store_seo_url", generalFunc.getJsonValue("SEO_URL", storeData));
+        parameters.put("store_bank", generalFunc.getJsonValue("store_bank_details", storeData));
+
 
         Utils.printLog("parameters", "::" + parameters.toString());
         ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
@@ -389,6 +401,9 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
 
+        if (storeData != null) {
+            callback.goToNextStep();
+        }
     }
 
     @Override

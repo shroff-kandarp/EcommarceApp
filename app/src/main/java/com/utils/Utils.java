@@ -12,6 +12,7 @@ import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Interpolator;
@@ -314,5 +315,12 @@ public class Utils {
             return true;
         }
         return false;
+    }
+
+
+    public static void setMultiLineEditBox(MaterialEditText editBox) {
+        editBox.setSingleLine(false);
+        editBox.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editBox.setGravity(Gravity.TOP);
     }
 }
