@@ -356,6 +356,7 @@
                                 android:tint="#5b5b5b" />
 
                             <com.view.MTextView
+                                android:id="@+id/becomeSellerTxtView"
                                 android:layout_width="0dp"
                                 android:layout_height="50dp"
                                 android:layout_weight="1"

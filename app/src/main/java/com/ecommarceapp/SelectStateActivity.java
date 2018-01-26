@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SelectCountryActivity extends AppCompatActivity implements PinnedSectionListAdapter.CountryClick {
+public class SelectStateActivity extends AppCompatActivity implements PinnedSectionListAdapter.CountryClick {
 
     ArrayList<CountryListItem> items_list;
     MTextView titleTxt;
@@ -40,7 +40,7 @@ public class SelectCountryActivity extends AppCompatActivity implements PinnedSe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_country);
+        setContentView(R.layout.activity_select_state);
 
         generalFunc = new GeneralFunctions(getActContext());
 
@@ -70,20 +70,20 @@ public class SelectCountryActivity extends AppCompatActivity implements PinnedSe
     @Override
     public void countryClickList(CountryListItem countryListItem) {
         Bundle bn = new Bundle();
-        bn.putString("iCountryId", countryListItem.iCountryId);
-        bn.putString("vCountry", countryListItem.text);
-        bn.putString("vCountryCode", countryListItem.getvCountryCode());
-        bn.putString("vPhoneCode", countryListItem.getvPhoneCode());
+        bn.putString("zone_id", countryListItem.iCountryId);
+        bn.putString("zone_name", countryListItem.text);
+//        bn.putString("vCountryCode", countryListItem.getvCountryCode());
+        bn.putString("zone_code", countryListItem.getvPhoneCode());
         new StartActProcess(getActContext()).setOkResult(bn);
         finish();
     }
 
     public Context getActContext() {
-        return SelectCountryActivity.this;
+        return SelectStateActivity.this;
     }
 
     public void setLabels() {
-        titleTxt.setText("Select Country");
+        titleTxt.setText("Select State");
     }
 
     public void getCountryList() {
@@ -95,7 +95,8 @@ public class SelectCountryActivity extends AppCompatActivity implements PinnedSe
         }
 
         HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("type", "countryList");
+        parameters.put("type", "stateList");
+        parameters.put("country_id", getIntent().getStringExtra("iCountryId"));
 
         noResTxt.setVisibility(View.GONE);
 
@@ -106,7 +107,7 @@ public class SelectCountryActivity extends AppCompatActivity implements PinnedSe
 
                 noResTxt.setVisibility(View.GONE);
 
-                Utils.printLog("CountryResponse", ":" + responseString);
+                Utils.printLog("StateResponse", ":" + responseString);
                 if (responseString != null && !responseString.equals("")) {
 
                     closeLoader();
@@ -119,41 +120,48 @@ public class SelectCountryActivity extends AppCompatActivity implements PinnedSe
                         pinnedSectionListAdapter = new PinnedSectionListAdapter(getActContext(), items_list, sections);
                         country_list.setAdapter(pinnedSectionListAdapter);
 
-                        pinnedSectionListAdapter.setCountryClickListener(SelectCountryActivity.this);
+                        pinnedSectionListAdapter.setCountryClickListener(SelectStateActivity.this);
                         items_list.clear();
                         pinnedSectionListAdapter.notifyDataSetChanged();
 
-                        JSONArray countryArr = generalFunc.getJsonArray("CountryList", responseString);
+                        JSONArray countryArr = generalFunc.getJsonArray("StateList", responseString);
 
-                        int sectionPosition = 0, listPosition = 0;
-                        for (int i = 0; i < countryArr.length(); i++) {
-                            JSONObject tempJson = generalFunc.getJsonObject(countryArr, i);
+                        if (countryArr != null) {
+                            int sectionPosition = 0, listPosition = 0;
+                            for (int i = 0; i < countryArr.length(); i++) {
+                                JSONObject tempJson = generalFunc.getJsonObject(countryArr, i);
 
-                            String key_str = generalFunc.getJsonValue("key", tempJson.toString());
-                            String count_str = generalFunc.getJsonValue("TotalCount", tempJson.toString());
+                                String key_str = generalFunc.getJsonValue("key", tempJson.toString());
+                                String count_str = generalFunc.getJsonValue("TotalCount", tempJson.toString());
 
-                            CountryListItem section = new CountryListItem(CountryListItem.SECTION, key_str);
-                            section.sectionPosition = sectionPosition;
-                            section.listPosition = listPosition++;
-                            section.CountSubItems = generalFunc.parseInt(0, count_str);
-                            onSectionAdded(section, sectionPosition);
-                            items_list.add(section);
+                                CountryListItem section = new CountryListItem(CountryListItem.SECTION, key_str);
+                                section.sectionPosition = sectionPosition;
+                                section.listPosition = listPosition++;
+                                section.CountSubItems = generalFunc.parseInt(0, count_str);
+                                onSectionAdded(section, sectionPosition);
+                                items_list.add(section);
 
-                            JSONArray subListArr = generalFunc.getJsonArray("List", tempJson.toString());
+                                JSONArray subListArr = generalFunc.getJsonArray("List", tempJson.toString());
 
-                            for (int j = 0; j < subListArr.length(); j++) {
-                                JSONObject subTempJson = generalFunc.getJsonObject(subListArr, j);
+                                for (int j = 0; j < subListArr.length(); j++) {
+                                    JSONObject subTempJson = generalFunc.getJsonObject(subListArr, j);
 
-                                CountryListItem countryListItem = new CountryListItem(CountryListItem.ITEM, generalFunc.getJsonValue("name", subTempJson.toString()));
-                                countryListItem.sectionPosition = sectionPosition;
-                                countryListItem.listPosition = listPosition++;
-//                                countryListItem.setvCountryCode(generalFunc.getJsonValue("iso_code_2", subTempJson.toString()));
-//                                countryListItem.setvPhoneCode(generalFunc.getJsonValue("iso_code_3", subTempJson.toString()));
-                                countryListItem.setiCountryId(generalFunc.getJsonValue("country_id", subTempJson.toString()));
-                                items_list.add(countryListItem);
+                                    CountryListItem countryListItem = new CountryListItem(CountryListItem.ITEM, generalFunc.getJsonValue("name", subTempJson.toString()));
+                                    countryListItem.sectionPosition = sectionPosition;
+                                    countryListItem.listPosition = listPosition++;
+                                    countryListItem.setvPhoneCode(generalFunc.getJsonValue("code", subTempJson.toString()));
+                                    countryListItem.setiCountryId(generalFunc.getJsonValue("zone_id", subTempJson.toString()));
+                                    items_list.add(countryListItem);
+                                }
+
+                                sectionPosition++;
                             }
+                        }
 
-                            sectionPosition++;
+                        if (countryArr == null || countryArr.length() < 1) {
+
+                            noResTxt.setText("No data available");
+                            noResTxt.setVisibility(View.VISIBLE);
                         }
                         pinnedSectionListAdapter.notifyDataSetChanged();
                     } else {
@@ -178,7 +186,7 @@ public class SelectCountryActivity extends AppCompatActivity implements PinnedSe
 
         closeLoader();
 
-        generalFunc.generateErrorView(errorView, "LBL_ERROR_TXT", "LBL_NO_INTERNET_TXT");
+        generalFunc.generateErrorView(errorView, "Error occurred", "Please check your internet connection or try again later.");
 
         if (errorView.getVisibility() != View.VISIBLE) {
             errorView.setVisibility(View.VISIBLE);
@@ -201,12 +209,10 @@ public class SelectCountryActivity extends AppCompatActivity implements PinnedSe
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.backImgView:
-                    SelectCountryActivity.super.onBackPressed();
+                    SelectStateActivity.super.onBackPressed();
                     break;
 
             }
         }
     }
-
 }
-

@@ -32,13 +32,14 @@ public class UploadImage /*extends AsyncTask<String, String, String>*/ {
     MyProgressDialog myPDialog;
     String loading_message = "";
     GeneralFunctions generalFunc;
-
+    String type = "";
     SetResponseListener responseListener;
 
-    public UploadImage(Context mContext, String selectedImagePath, String temp_File_Name, ArrayList<String[]> paramsList) {
+    public UploadImage(Context mContext, String selectedImagePath, String temp_File_Name, ArrayList<String[]> paramsList, String type) {
         this.selectedImagePath = selectedImagePath;
         this.temp_File_Name = temp_File_Name;
         this.paramsList = paramsList;
+        this.type = type;
         this.mContext = mContext;
         generalFunc = new GeneralFunctions(mContext);
     }
@@ -55,11 +56,10 @@ public class UploadImage /*extends AsyncTask<String, String, String>*/ {
 
         }
 
-        String filePath = generalFunc.decodeFile(selectedImagePath, Utils.ImageUpload_DESIREDWIDTH,
-                Utils.ImageUpload_DESIREDHEIGHT, temp_File_Name);
+//        String filePath = generalFunc.decodeFile(selectedImagePath, Utils.ImageUpload_DESIREDWIDTH, Utils.ImageUpload_DESIREDHEIGHT, temp_File_Name);
 
 
-        File file = new File(filePath);
+        File file = new File(selectedImagePath);
 
 
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("vImage", temp_File_Name, RequestBody.create(MediaType.parse("multipart/form-data"), file));
@@ -79,9 +79,6 @@ public class UploadImage /*extends AsyncTask<String, String, String>*/ {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
                 if (response.isSuccessful()) {
-                    // request successful (status code 200, 201)
-
-//                    Utils.printLog("Data", "response = " + new Gson().toJson(response.body()));
 
                     responseString = RestClient.getGSONBuilder().toJson(response.body());
 
@@ -113,11 +110,14 @@ public class UploadImage /*extends AsyncTask<String, String, String>*/ {
         } catch (Exception e) {
 
         }
+        if (responseListener != null) {
+            responseListener.onFileUploadResponse(responseString, type);
+        }
 //        myProfileAct.handleImgUploadResponse(responseString);
     }
 
     public interface SetResponseListener {
-        void onResponse(String responseString);
+        void onFileUploadResponse(String responseString, String type);
     }
 
     public void setResponseListener(SetResponseListener responseListener) {

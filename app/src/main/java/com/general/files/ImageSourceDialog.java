@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -23,6 +25,7 @@ import com.view.MTextView;
 import com.view.SelectableRoundedImageView;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -34,9 +37,9 @@ import java.util.Locale;
 public class ImageSourceDialog implements Runnable {
 
     public static final int MEDIA_TYPE_IMAGE = 1;
-    private static final int SELECT_PICTURE = 2;
-    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
-    private static final String IMAGE_DIRECTORY_NAME = "Temp";
+    public static final int SELECT_PICTURE = 2;
+    public static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    public static final String IMAGE_DIRECTORY_NAME = "Temp";
 
     Context mContext;
 
@@ -144,7 +147,14 @@ public class ImageSourceDialog implements Runnable {
     }
 
     public void chooseFromCamera() {
-
+        if (Build.VERSION.SDK_INT >= 24) {
+            try {
+                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                m.invoke(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);

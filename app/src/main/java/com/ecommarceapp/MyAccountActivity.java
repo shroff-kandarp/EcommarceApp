@@ -37,6 +37,8 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
     LinearLayout personalizationArea;
     LinearLayout becomeAsellerArea;
 
+    MTextView becomeSellerTxtView;
+
     AddDrawer addDrawer;
 
     BottomBar bottomBar;
@@ -61,6 +63,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
         profileArea = (LinearLayout) findViewById(R.id.profileArea);
         becomeAsellerArea = (LinearLayout) findViewById(R.id.becomeAsellerArea);
         personalizationArea = (LinearLayout) findViewById(R.id.personalizationArea);
+        becomeSellerTxtView = (MTextView) findViewById(R.id.becomeSellerTxtView);
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
 
@@ -172,11 +175,14 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                     boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
 
                     if (isDataAvail == true) {
-                        if (generalFunc.getJsonValue("IS_ALL_INFO_DONE", responseString).equalsIgnoreCase("Yes")) {
-                            becomeAsellerArea.setVisibility(View.GONE);
-                        } else {
-                            becomeAsellerArea.setVisibility(View.VISIBLE);
-                        }
+                        becomeSellerTxtView.setText("Store Information");
+                        becomeAsellerArea.setVisibility(View.VISIBLE);
+//                        if (generalFunc.getJsonValue("IS_ALL_INFO_DONE", responseString).equalsIgnoreCase("Yes")) {
+////                            becomeAsellerArea.setVisibility(View.GONE);
+//                            becomeSellerTxtView.setText("Store Information");
+//                        } else {
+//                            becomeAsellerArea.setVisibility(View.VISIBLE);
+//                        }
                     } else {
                         becomeAsellerArea.setVisibility(View.VISIBLE);
                     }

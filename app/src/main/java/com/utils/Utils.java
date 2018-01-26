@@ -2,6 +2,7 @@ package com.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.media.ExifInterface;
 import android.os.Build;
@@ -42,12 +43,15 @@ public class Utils {
 
     public static final int ImageUpload_DESIREDWIDTH = 1024;
     public static final int ImageUpload_DESIREDHEIGHT = 1024;
+    public static final int ImageUpload_MINIMUM_WIDTH = 256;
+    public static final int ImageUpload_MINIMUM_HEIGHT = 256;
 
     public static int minPasswordLength = 2;
     public static String isFirstLaunchFinished = "isFirstLaunchFinished";
     public static String iMemberId_KEY = "iMemberId";
     public static String userLoggedIn_key = "isUserLoggedIn";
 
+    public static final String TempProfileImageName = "temp_pic_img.png";
     public static final String TempImageFolderPath = "TempImages";
 
     public static String device_type = "android";
@@ -67,6 +71,7 @@ public class Utils {
     public static final int PLACE_ORDER_REQ_CODE = 127;
     public static final int CHOOSE_PAY_OPTION_REQ_CODE = 128;
     public static final int BECOME_SELLER_REQ_CODE = 129;
+    public static final int SELECT_STATE_REQ_CODE = 130;
 
     static MyProgressDialog myPDialog;
     //Single Instance object
@@ -286,5 +291,28 @@ public class Utils {
 
         return orientation;
 
+    }
+
+
+    public static String[] generateImageParams(String key, String content) {
+        String[] tempArr = new String[2];
+        tempArr[0] = key;
+        tempArr[1] = content;
+
+        return tempArr;
+    }
+
+    public static boolean isValidImageResolution(String path) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+
+        BitmapFactory.decodeFile(path, options);
+        int width = options.outWidth;
+        int height = options.outHeight;
+
+        if (width >= Utils.ImageUpload_MINIMUM_WIDTH && height >= Utils.ImageUpload_MINIMUM_HEIGHT) {
+            return true;
+        }
+        return false;
     }
 }
