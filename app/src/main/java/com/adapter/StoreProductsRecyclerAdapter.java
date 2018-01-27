@@ -54,7 +54,7 @@ public class StoreProductsRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     public interface OnItemClickListener {
-        void onItemClickList(View v, int position);
+        void onItemClickList(View v, int position, int btnType);
     }
 
     public void setOnItemClickListener(OnItemClickListener mItemClickListener) {
@@ -100,7 +100,24 @@ public class StoreProductsRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
                 @Override
                 public void onClick(View view) {
                     if (mItemClickListener != null) {
-                        mItemClickListener.onItemClickList(view, position);
+                        mItemClickListener.onItemClickList(view, position, 0);
+                    }
+                }
+            });
+
+            viewHolder.editProductImgView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClickList(view, position, 1);
+                    }
+                }
+            });
+            viewHolder.deleteProductImgView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClickList(view, position, 2);
                     }
                 }
             });
@@ -115,7 +132,7 @@ public class StoreProductsRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
                 @Override
                 public void onClick(View view) {
                     if (mItemClickListener != null) {
-                        mItemClickListener.onItemClickList(view, position);
+                        mItemClickListener.onItemClickList(view, position, -1);
                     }
                 }
             });

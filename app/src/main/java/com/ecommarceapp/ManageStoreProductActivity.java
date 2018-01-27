@@ -17,13 +17,15 @@ import com.view.MTextView;
 public class ManageStoreProductActivity extends AppCompatActivity {
 
     MTextView titleTxt;
-    ImageView backImgView;
+    public ImageView backImgView;
 
     public GeneralFunctions generalFunc;
 
     private StepperLayout mStepperLayout;
 
     public Uri fileUri;
+
+    public String product_id = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +39,10 @@ public class ManageStoreProductActivity extends AppCompatActivity {
         backImgView = (ImageView) findViewById(R.id.backImgView);
         backImgView.setOnClickListener(new setOnClickList());
 
+        product_id = getIntent().getStringExtra("product_id") != null ? getIntent().getStringExtra("product_id") : "";
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new AddStoreProductSteppersAdapter(getSupportFragmentManager(), getActContext()));
-
+        setLabels();
     }
 
     @Override
@@ -59,7 +62,7 @@ public class ManageStoreProductActivity extends AppCompatActivity {
 
 
     public void setLabels() {
-        titleTxt.setText(getIntent().getStringExtra("IS_ADD").equals("Yes") ? "Add Product" : "Edit Product");
+        titleTxt.setText(product_id.equals("") ? "Add Product" : "Edit Product");
     }
 
     public Context getActContext() {

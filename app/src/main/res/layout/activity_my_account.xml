@@ -403,7 +403,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:paddingStart="10dp"
-                                android:text="Manage Store' Product"
+                                android:text="Manage Store Products"
                                 android:textColor="#5b5b5b"
                                 android:textSize="@dimen/txt_size_16"
                                 app:customTypeFace="@string/semiBoldFont" />

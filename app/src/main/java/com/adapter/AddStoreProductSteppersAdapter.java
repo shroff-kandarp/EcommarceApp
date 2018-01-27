@@ -5,7 +5,15 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 
+import com.fragment.ProductAddAttributesFragment;
+import com.fragment.ProductAddDataFragment;
+import com.fragment.ProductAddDiscountsFragment;
 import com.fragment.ProductAddGeneralFragment;
+import com.fragment.ProductAddImagesFragment;
+import com.fragment.ProductAddLinksFragment;
+import com.fragment.ProductAddOptionsFragment;
+import com.fragment.ProductAddRewardPointsFragment;
+import com.fragment.ProductAddSpecialFragment;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
@@ -25,15 +33,27 @@ public class AddStoreProductSteppersAdapter extends AbstractFragmentStepAdapter 
         if (position == 0) {
             return new ProductAddGeneralFragment();
         } else if (position == 1) {
-            return new StoreDetailFragment();
+            return new ProductAddDataFragment();
+        } else if (position == 2) {
+            return new ProductAddLinksFragment();
+        } else if (position == 3) {
+            return new ProductAddAttributesFragment();
+        } else if (position == 4) {
+            return new ProductAddOptionsFragment();
+        } else if (position == 5) {
+            return new ProductAddDiscountsFragment();
+        } else if (position == 6) {
+            return new ProductAddSpecialFragment();
+        } else if (position == 7) {
+            return new ProductAddImagesFragment();
         } else {
-            return new SellerBankInfoFragment();
+            return new ProductAddRewardPointsFragment();
         }
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 9;
     }
 
     @NonNull
@@ -42,15 +62,39 @@ public class AddStoreProductSteppersAdapter extends AbstractFragmentStepAdapter 
         //Override this method to set Step title for the Tabs, not necessary for other stepper types
         if (position == 0) {
             return new StepViewModel.Builder(context)
-                    .setTitle("Store Info") //can be a CharSequence instead
+                    .setTitle("General") //can be a CharSequence instead
                     .create();
         } else if (position == 1) {
             return new StepViewModel.Builder(context)
-                    .setTitle("Store Detail") //can be a CharSequence instead
+                    .setTitle("Data") //can be a CharSequence instead
+                    .create();
+        } else if (position == 2) {
+            return new StepViewModel.Builder(context)
+                    .setTitle("Links") //can be a CharSequence instead
+                    .create();
+        } else if (position == 3) {
+            return new StepViewModel.Builder(context)
+                    .setTitle("Attribute") //can be a CharSequence instead
+                    .create();
+        } else if (position == 4) {
+            return new StepViewModel.Builder(context)
+                    .setTitle("Option") //can be a CharSequence instead
+                    .create();
+        } else if (position == 5) {
+            return new StepViewModel.Builder(context)
+                    .setTitle("Discount") //can be a CharSequence instead
+                    .create();
+        } else if (position == 6) {
+            return new StepViewModel.Builder(context)
+                    .setTitle("Special") //can be a CharSequence instead
+                    .create();
+        } else if (position == 7) {
+            return new StepViewModel.Builder(context)
+                    .setTitle("Image") //can be a CharSequence instead
                     .create();
         } else {
             return new StepViewModel.Builder(context)
-                    .setTitle("Bank Details") //can be a CharSequence instead
+                    .setTitle("Reward Points") //can be a CharSequence instead
                     .create();
         }
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import com.general.files.GeneralFunctions;
 import com.general.files.StartActProcess;
 import com.utils.Utils;
 import com.view.ErrorView;
+import com.view.GenerateAlertBox;
 import com.view.MButton;
 import com.view.MTextView;
 import com.view.MaterialRippleLayout;
@@ -74,6 +76,7 @@ public class ManageStoreProductsListActivity extends AppCompatActivity {
         backImgView.setOnClickListener(new setOnClickList());
         btn_type2.setOnClickListener(new setOnClickList());
         rightImgView.setOnClickListener(new setOnClickList());
+        listChangeImgView.setOnClickListener(new setOnClickList());
 
         setLabels();
 
@@ -104,16 +107,27 @@ public class ManageStoreProductsListActivity extends AppCompatActivity {
         });
         adapter.setOnItemClickListener(new StoreProductsRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClickList(View v, int position) {
+            public void onItemClickList(View v, int position, int btnType) {
                 HashMap<String, String> data = dataList.get(position);
 
 
-                if (data.get("TYPE").equals("" + StoreProductsRecyclerAdapter.TYPE_ITEM)) {
+                if (data.get("TYPE").equals("" + StoreProductsRecyclerAdapter.TYPE_ITEM) && btnType == 0) {
                     Bundle bn = new Bundle();
                     bn.putString("product_id", data.get("product_id"));
                     bn.putString("category_id", data.get("category_id"));
                     bn.putString("name", data.get("name"));
                     (new StartActProcess(getActContext())).startActWithData(ProductDescriptionActivity.class, bn);
+                }
+
+                if (btnType == 1) {
+
+                    Bundle bn = new Bundle();
+                    bn.putString("product_id", dataList.get(position).get("product_id"));
+                    (new StartActProcess(getActContext())).startActForResult(ManageStoreProductActivity.class, bn, Utils.ADD_PRODUCT_STORE_REQ_CODE);
+                }
+
+                if (btnType == 2) {
+                    confirmDeleteProduct(position);
                 }
             }
         });
@@ -121,6 +135,58 @@ public class ManageStoreProductsListActivity extends AppCompatActivity {
         listChangeImgView.setOnClickListener(new setOnClickList());
 
         findProducts();
+    }
+
+    public void confirmDeleteProduct(final int position) {
+        final GenerateAlertBox generateAlert = new GenerateAlertBox(getActContext());
+        generateAlert.setCancelable(false);
+        generateAlert.setBtnClickList(new GenerateAlertBox.HandleAlertBtnClick() {
+            @Override
+            public void handleBtnClick(int btn_id) {
+                generateAlert.closeAlertBox();
+
+                if (btn_id == 1) {
+                    deleteStoreProduct(dataList.get(position).get("product_id"));
+                }
+            }
+        });
+        generateAlert.setContentMessage("", "Are you sure to remove that product?.");
+        generateAlert.setPositiveBtn("OK");
+        generateAlert.setNegativeBtn("Cancel");
+
+        generateAlert.showAlertBox();
+    }
+
+    public void deleteStoreProduct(String product_id) {
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("type", "deleteStoreProduct");
+        parameters.put("customer_id", generalFunc.getMemberId());
+        parameters.put("product_id", product_id);
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(String responseString) {
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail == true) {
+                        findProducts();
+
+                        generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                    } else {
+                        generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                    }
+
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
     }
 
     public Context getActContext() {
@@ -141,13 +207,25 @@ public class ManageStoreProductsListActivity extends AppCompatActivity {
             if (i == R.id.backImgView) {
                 ManageStoreProductsListActivity.super.onBackPressed();
             } else if (i == btn_type2.getId()) {
-                Bundle bn = new Bundle();
-                bn.putString("IS_ADD", "Yes");
-                (new StartActProcess(getActContext())).startActForResult(ManageStoreProductActivity.class, bn, Utils.ADD_PRODUCT_STORE_REQ_CODE);
+                (new StartActProcess(getActContext())).startActForResult(ManageStoreProductActivity.class, Utils.ADD_PRODUCT_STORE_REQ_CODE);
             } else if (i == R.id.rightImgView) {
-                Bundle bn = new Bundle();
-                bn.putString("IS_ADD", "Yes");
-                (new StartActProcess(getActContext())).startActForResult(ManageStoreProductActivity.class, bn, Utils.ADD_PRODUCT_STORE_REQ_CODE);
+                (new StartActProcess(getActContext())).startActForResult(ManageStoreProductActivity.class, Utils.ADD_PRODUCT_STORE_REQ_CODE);
+            } else if (i == R.id.listChangeImgView) {
+                if (CURRENT_PRODUCT_DISPLAY_MODE.equals("GRID")) {
+                    productsRecyclerView.setLayoutManager(new LinearLayoutManager(getActContext()));
+                    CURRENT_PRODUCT_DISPLAY_MODE = "LIST";
+                    adapter.CURRENT_PRODUCT_DISPLAY_MODE = "LIST";
+                    adapter.notifyDataSetChanged();
+                    productsRecyclerView.setAdapter(adapter);
+                    listChangeImgView.setImageResource(R.mipmap.ic_view_grid);
+                } else {
+                    productsRecyclerView.setLayoutManager(mGridLayoutManager);
+                    CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+                    adapter.CURRENT_PRODUCT_DISPLAY_MODE = "GRID";
+                    adapter.notifyDataSetChanged();
+                    productsRecyclerView.setAdapter(adapter);
+                    listChangeImgView.setImageResource(R.mipmap.ic_view_list);
+                }
             }
         }
     }
@@ -261,7 +339,7 @@ public class ManageStoreProductsListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Utils.ADD_ADDRESS_REQ_CODE && resultCode == RESULT_OK) {
+        if (requestCode == Utils.ADD_PRODUCT_STORE_REQ_CODE && resultCode == RESULT_OK) {
             findProducts();
         }
     }
