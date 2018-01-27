@@ -294,7 +294,7 @@ public class StoreDetailFragment extends Fragment implements BlockingStep, Uploa
                         storeData = msgObj;
                         displayStoreData();
                     }
-                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+//                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
 
                 } else {
                     generalFunc.showError();
