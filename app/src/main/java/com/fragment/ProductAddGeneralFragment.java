@@ -128,12 +128,13 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("type", "updateStoreProduct");
         parameters.put("customer_id", generalFunc.getMemberId());
-        parameters.put("product_name", Utils.getText(productDescriptionBox));
+        parameters.put("product_name", Utils.getText(productNameBox));
         parameters.put("product_description", Utils.getText(productDescriptionBox));
         parameters.put("meta_tag_title", Utils.getText(metaTagTitleBox));
         parameters.put("meta_tag_description", Utils.getText(metaTagDescBox));
         parameters.put("meta_tag_keywords", Utils.getText(metaTagKeywordsBox));
         parameters.put("product_tag_keywords", Utils.getText(productTagsBox));
+        parameters.put("product_id", manageProductAct.product_id);
 
         ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
         exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
@@ -220,8 +221,20 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
     public void displayInformation(String responseString) {
 
         JSONObject productData = generalFunc.getJsonObject("ProductData", responseString);
-        JSONObject productTag = generalFunc.getJsonObject("ProductTag", responseString);
+        String productTag = generalFunc.getJsonValue("ProductTag", responseString);
         JSONObject productDescriptionData = generalFunc.getJsonObject("ProductDescriptionData", responseString);
+
+        if (productData == null || productDescriptionData == null) {
+            generatePageError();
+            return;
+        }
+
+        productNameBox.setText(generalFunc.getJsonValue("name", productDescriptionData));
+        productDescriptionBox.setText(generalFunc.getJsonValue("description", productDescriptionData));
+        metaTagTitleBox.setText(generalFunc.getJsonValue("meta_title", productDescriptionData));
+        metaTagDescBox.setText(generalFunc.getJsonValue("meta_description", productDescriptionData));
+        metaTagKeywordsBox.setText(generalFunc.getJsonValue("meta_keyword", productDescriptionData));
+        productTagsBox.setText(productTag);
     }
 
     @Override
