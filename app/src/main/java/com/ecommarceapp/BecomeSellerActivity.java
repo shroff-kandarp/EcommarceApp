@@ -9,12 +9,19 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.adapter.SellerSteppersAdapter;
+import com.fragment.SellerBankInfoFragment;
+import com.fragment.StoreDetailFragment;
+import com.fragment.StoreInfoFragment;
 import com.general.files.GeneralFunctions;
+import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
+import com.stepstone.stepper.VerificationError;
 import com.utils.Utils;
 import com.view.MTextView;
 
-public class BecomeSellerActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class BecomeSellerActivity extends AppCompatActivity implements StepperLayout.StepperListener {
 
     MTextView titleTxt;
     ImageView backImgView;
@@ -24,6 +31,8 @@ public class BecomeSellerActivity extends AppCompatActivity {
     private StepperLayout mStepperLayout;
 
     public Uri fileUri;
+
+    public SellerSteppersAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +47,21 @@ public class BecomeSellerActivity extends AppCompatActivity {
 
         setLabels();
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
-        mStepperLayout.setAdapter(new SellerSteppersAdapter(getSupportFragmentManager(), getActContext()));
 
+        ArrayList<Step> step_list_frag = new ArrayList<>();
+        step_list_frag.add(new StoreInfoFragment());
+        step_list_frag.add(new StoreDetailFragment());
+        step_list_frag.add(new SellerBankInfoFragment());
+
+        ArrayList<String> stepListTitle = new ArrayList<>();
+        stepListTitle.add("Store Info");
+        stepListTitle.add("Store Detail");
+        stepListTitle.add("Bank Details");
+
+        adapter = new SellerSteppersAdapter(getSupportFragmentManager(), getActContext(), step_list_frag, stepListTitle);
+
+        mStepperLayout.setAdapter(adapter);
+        mStepperLayout.setListener(this);
     }
 
     @Override
@@ -78,6 +100,36 @@ public class BecomeSellerActivity extends AppCompatActivity {
 
     public Context getActContext() {
         return BecomeSellerActivity.this;
+    }
+
+    @Override
+    public void onCompleted(View completeButton) {
+
+    }
+
+    @Override
+    public void onError(VerificationError verificationError) {
+
+    }
+
+    @Override
+    public void onStepSelected(int newStepPosition) {
+
+        if (newStepPosition == 0) {
+            ((StoreInfoFragment) adapter.list_step_frag.get(newStepPosition)).getSellerData();
+        }
+        if (newStepPosition == 1) {
+            ((StoreDetailFragment) adapter.list_step_frag.get(newStepPosition)).getSellerData();
+        }
+        if (newStepPosition == 2) {
+            ((SellerBankInfoFragment) adapter.list_step_frag.get(newStepPosition)).getSellerData();
+        }
+        Utils.printLog("newStepPosition", "::" + newStepPosition);
+    }
+
+    @Override
+    public void onReturn() {
+
     }
 
     public class setOnClickList implements View.OnClickListener {

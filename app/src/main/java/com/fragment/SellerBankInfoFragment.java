@@ -59,7 +59,7 @@ public class SellerBankInfoFragment extends Fragment implements BlockingStep {
         setLabels();
 
         storeBankUpdateBtn.setId(Utils.generateViewId());
-        getSellerData();
+//        getSellerData();
         storeBankUpdateBtn.setOnClickListener(new setOnClickList());
         return view;
     }
@@ -98,7 +98,7 @@ public class SellerBankInfoFragment extends Fragment implements BlockingStep {
 
                         displayStoreData();
                     } else {
-//                        generalFunc.showGeneralMessage("Please check back later", generalFunc.getJsonValue(Utils.message_str, responseString));
+                        generalFunc.showGeneralMessage("Please check back later", generalFunc.getJsonValue(Utils.message_str, responseString));
                     }
                 } else {
                     generalFunc.showError();

@@ -108,7 +108,7 @@ public class StoreDetailFragment extends Fragment implements BlockingStep, Uploa
         bannerArea.setOnClickListener(new setOnClickList());
         storeDescUpdateBtn.setOnClickListener(new setOnClickList());
 
-        getSellerData();
+//        getSellerData();
         return view;
     }
 
@@ -155,7 +155,7 @@ public class StoreDetailFragment extends Fragment implements BlockingStep, Uploa
 
                         displayStoreData();
                     } else {
-//                        generalFunc.showGeneralMessage("Please check back later", generalFunc.getJsonValue(Utils.message_str, responseString));
+                        generalFunc.showGeneralMessage("Please check back later", generalFunc.getJsonValue(Utils.message_str, responseString));
                     }
                 } else {
                     generalFunc.showError();

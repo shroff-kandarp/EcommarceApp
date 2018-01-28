@@ -25,56 +25,57 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="10dp" />
 
-        <LinearLayout
-            android:id="@+id/logoArea"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/logoImgView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@mipmap/ic_no_icon" />
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:alpha="0.25"
-                    android:background="#333333" />
-
-                <ImageView
-                    android:id="@+id/addOrChangeLogoImgView"
-                    android:layout_width="@dimen/dimen_40dp"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:layout_centerInParent="true"
-                    android:src="@mipmap/ic_add"
-                    android:tint="#FFFFFF" />
-            </RelativeLayout>
-
-            <com.view.MTextView
-                android:id="@+id/addOrChangeLogoTxtView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Add Logo"
-                android:textColor="#272727"
-                android:textSize="@dimen/txt_size_18" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/contentArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/logoArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/logoImgView"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/ic_no_icon" />
+
+                    <View
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:alpha="0.25"
+                        android:background="#333333" />
+
+                    <ImageView
+                        android:id="@+id/addOrChangeLogoImgView"
+                        android:layout_width="@dimen/dimen_40dp"
+                        android:layout_height="@dimen/dimen_40dp"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/ic_add"
+                        android:tint="#FFFFFF" />
+                </RelativeLayout>
+
+                <com.view.MTextView
+                    android:id="@+id/addOrChangeLogoTxtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Add Logo"
+                    android:textColor="#272727"
+                    android:textSize="@dimen/txt_size_18" />
+            </LinearLayout>
 
             <include
                 android:id="@+id/storeEmailBox"
@@ -106,8 +107,8 @@
                 <ImageView
                     android:layout_width="@dimen/dimen_25dp"
                     android:layout_height="@dimen/dimen_25dp"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginBottom="15dp"
                     android:layout_marginEnd="10dp"
                     android:src="@mipmap/ic_arrow_drop_down" />
@@ -130,8 +131,8 @@
                 <ImageView
                     android:layout_width="@dimen/dimen_25dp"
                     android:layout_height="@dimen/dimen_25dp"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginBottom="15dp"
                     android:layout_marginEnd="10dp"
                     android:src="@mipmap/ic_arrow_drop_down" />

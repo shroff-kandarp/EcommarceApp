@@ -38,6 +38,7 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
     GeneralFunctions generalFunc;
 
     MaterialEditText productNameBox;
+    MaterialEditText productModelBox;
     MaterialEditText productDescriptionBox;
     MaterialEditText metaTagTitleBox;
     MaterialEditText metaTagDescBox;
@@ -57,6 +58,7 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
         generalFunc = manageProductAct.generalFunc;
 
         productNameBox = (MaterialEditText) view.findViewById(R.id.productNameBox);
+        productModelBox = (MaterialEditText) view.findViewById(R.id.productModelBox);
         productDescriptionBox = (MaterialEditText) view.findViewById(R.id.productDescriptionBox);
         metaTagTitleBox = (MaterialEditText) view.findViewById(R.id.metaTagTitleBox);
         metaTagDescBox = (MaterialEditText) view.findViewById(R.id.metaTagDescBox);
@@ -82,6 +84,7 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
 
     public void setLabels() {
         productNameBox.setBothText("Product Name", "Enter product name");
+        productModelBox.setBothText("Product Model", "Enter product model");
         productDescriptionBox.setBothText("Description", "Enter product description");
         metaTagTitleBox.setBothText("Meta Tag Title", "Enter meta tag title");
         metaTagDescBox.setBothText("Meta Tag Description", "Enter meta tag description");
@@ -110,13 +113,14 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
 
     public void checkData() {
         boolean productNameEntered = Utils.checkText(productNameBox) ? true : Utils.setErrorFields(productNameBox, "Required");
+        boolean productModelEntered = Utils.checkText(productModelBox) ? true : Utils.setErrorFields(productModelBox, "Required");
         boolean productDescriptionEntered = Utils.checkText(productDescriptionBox) ? true : Utils.setErrorFields(productDescriptionBox, "Required");
         boolean metaTagTitleDescriptionEntered = Utils.checkText(metaTagTitleBox) ? true : Utils.setErrorFields(metaTagTitleBox, "Required");
         boolean metaTagDescriptionEntered = Utils.checkText(metaTagDescBox) ? true : Utils.setErrorFields(metaTagDescBox, "Required");
         boolean metaTagKeywordsEntered = Utils.checkText(metaTagKeywordsBox) ? true : Utils.setErrorFields(metaTagKeywordsBox, "Required");
         boolean productTagsEntered = Utils.checkText(productTagsBox) ? true : Utils.setErrorFields(productTagsBox, "Required");
 
-        if (productNameEntered == false || productDescriptionEntered == false || metaTagTitleDescriptionEntered == false
+        if (productNameEntered == false || productModelEntered == false || productDescriptionEntered == false || metaTagTitleDescriptionEntered == false
                 || metaTagDescriptionEntered == false || metaTagKeywordsEntered == false || productTagsEntered == false) {
             return;
         }
@@ -129,6 +133,7 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
         parameters.put("type", "updateStoreProduct");
         parameters.put("customer_id", generalFunc.getMemberId());
         parameters.put("product_name", Utils.getText(productNameBox));
+        parameters.put("product_model", Utils.getText(productModelBox));
         parameters.put("product_description", Utils.getText(productDescriptionBox));
         parameters.put("meta_tag_title", Utils.getText(metaTagTitleBox));
         parameters.put("meta_tag_description", Utils.getText(metaTagDescBox));
@@ -230,6 +235,7 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
         }
 
         productNameBox.setText(generalFunc.getJsonValue("name", productDescriptionData));
+        productModelBox.setText(generalFunc.getJsonValue("model", productData));
         productDescriptionBox.setText(generalFunc.getJsonValue("description", productDescriptionData));
         metaTagTitleBox.setText(generalFunc.getJsonValue("meta_title", productDescriptionData));
         metaTagDescBox.setText(generalFunc.getJsonValue("meta_description", productDescriptionData));

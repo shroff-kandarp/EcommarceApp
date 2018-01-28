@@ -62,6 +62,7 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
     MaterialEditText storePostalCodeBox;
     MaterialEditText storeTINBox;
     View containerView;
+    View contentArea;
 
     ImageView logoImgView;
     ImageView addOrChangeLogoImgView;
@@ -99,7 +100,8 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
         storeTINBox = (MaterialEditText) view.findViewById(R.id.storeTINBox);
         containerView = view.findViewById(R.id.containerView);
         logoArea = view.findViewById(R.id.logoArea);
-        countrySelectArea = view.findViewById(R.id.logoArea);
+        countrySelectArea = view.findViewById(R.id.countrySelectArea);
+        contentArea = view.findViewById(R.id.contentArea);
         logoImgView = (ImageView) view.findViewById(R.id.logoImgView);
         addOrChangeLogoImgView = (ImageView) view.findViewById(R.id.addOrChangeLogoImgView);
         addOrChangeLogoTxtView = (MTextView) view.findViewById(R.id.addOrChangeLogoTxtView);
@@ -108,8 +110,6 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
         storeNameAddBtn.setId(Utils.generateViewId());
         storeInfoAddBtn.setId(Utils.generateViewId());
 
-        setLabels();
-        getSellerData();
         storeEmailBox.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_CLASS_TEXT);
         storePhoneBox.setInputType(InputType.TYPE_CLASS_NUMBER);
         storePostalCodeBox.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -117,6 +117,8 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
         storeNameAddBtn.setOnClickListener(new setOnClickList());
         storeInfoAddBtn.setOnClickListener(new setOnClickList());
         logoArea.setOnClickListener(new setOnClickList());
+
+        setLabels();
         removeInput();
         return view;
     }
@@ -143,6 +145,7 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
 
         countryBox.setOnClickListener(new setOnClickList());
         stateBox.setOnClickListener(new setOnClickList());
+        (view.findViewById(R.id.contentArea)).setVisibility(View.GONE);
     }
 
     public Context getActContext() {
@@ -151,6 +154,7 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
 
     public void getSellerData() {
         containerView.setVisibility(View.INVISIBLE);
+        (view.findViewById(R.id.contentArea)).setVisibility(View.GONE);
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("type", "getCustomerSellerData");
         parameters.put("customer_id", generalFunc.getMemberId());
@@ -175,12 +179,15 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
                         JSONObject msgObj = generalFunc.getJsonObject(Utils.message_str, responseString);
                         storeData = msgObj;
 //                        storeNameBox.setText(generalFunc.getJsonValue("store_name", msgObj));
+                        (view.findViewById(R.id.contentArea)).setVisibility(View.VISIBLE);
 
 
                         displayStoreData();
                     } else {
                         storeNameBox.setEnabled(true);
                         (view.findViewById(R.id.storeNameAddBtn)).setVisibility(View.VISIBLE);
+                        (view.findViewById(R.id.contentArea)).setVisibility(View.GONE);
+
                     }
                 } else {
                     generalFunc.showError();
@@ -213,9 +220,11 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
 
                         storeNameBox.setEnabled(false);
                         (view.findViewById(R.id.storeNameAddBtn)).setVisibility(View.GONE);
+                        (view.findViewById(R.id.contentArea)).setVisibility(View.VISIBLE);
                     } else {
                         storeNameBox.setEnabled(true);
                         (view.findViewById(R.id.storeNameAddBtn)).setVisibility(View.VISIBLE);
+                        (view.findViewById(R.id.contentArea)).setVisibility(View.GONE);
                     }
                     generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
 
@@ -403,6 +412,10 @@ public class StoreInfoFragment extends Fragment implements BlockingStep, UploadI
 
         if (storeData != null) {
             callback.goToNextStep();
+        }
+
+        if (contentArea.getVisibility() == View.GONE) {
+            generalFunc.showGeneralMessage("", "Please add store first.");
         }
     }
 

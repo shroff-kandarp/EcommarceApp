@@ -15,6 +15,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <include
+            android:id="@+id/productModelBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
         <include
             android:id="@+id/productDescriptionBox"
