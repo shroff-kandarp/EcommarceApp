@@ -19,7 +19,8 @@
             android:id="@+id/productModelBox"
             layout="@layout/editbox_form_design"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
 
 
         <include
@@ -29,6 +30,27 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp" />
 
+        <include
+            android:id="@+id/productPriceBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+
+        <include
+            android:id="@+id/quantityBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+
+        <include
+            android:id="@+id/minQTYBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <include
             android:id="@+id/metaTagTitleBox"

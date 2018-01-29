@@ -60,7 +60,7 @@ public class ExecuteWebServerUrl/* extends AsyncTask<String, String, String>*/ {
     public void execute() {
 
         if (isLoaderShown == true) {
-            myPDialog = new MyProgressDialog(mContext, true, "Loading");
+            myPDialog = new MyProgressDialog(mContext, false, "Loading");
             myPDialog.show();
         }
 

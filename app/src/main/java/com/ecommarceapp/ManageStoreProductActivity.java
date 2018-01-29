@@ -9,12 +9,25 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.adapter.AddStoreProductSteppersAdapter;
+import com.fragment.ProductAddAttributesFragment;
+import com.fragment.ProductAddDataFragment;
+import com.fragment.ProductAddDiscountsFragment;
+import com.fragment.ProductAddGeneralFragment;
+import com.fragment.ProductAddImagesFragment;
+import com.fragment.ProductAddLinksFragment;
+import com.fragment.ProductAddOptionsFragment;
+import com.fragment.ProductAddRewardPointsFragment;
+import com.fragment.ProductAddSpecialFragment;
 import com.general.files.GeneralFunctions;
+import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
+import com.stepstone.stepper.VerificationError;
 import com.utils.Utils;
 import com.view.MTextView;
 
-public class ManageStoreProductActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class ManageStoreProductActivity extends AppCompatActivity implements StepperLayout.StepperListener {
 
     MTextView titleTxt;
     public ImageView backImgView;
@@ -26,12 +39,12 @@ public class ManageStoreProductActivity extends AppCompatActivity {
     public Uri fileUri;
 
     public String product_id = "";
+    AddStoreProductSteppersAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_store_product);
-
 
         generalFunc = new GeneralFunctions(getActContext());
 
@@ -41,7 +54,34 @@ public class ManageStoreProductActivity extends AppCompatActivity {
 
         product_id = getIntent().getStringExtra("product_id") != null ? getIntent().getStringExtra("product_id") : "";
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
-        mStepperLayout.setAdapter(new AddStoreProductSteppersAdapter(getSupportFragmentManager(), getActContext()));
+
+
+        ArrayList<Step> step_list_frag = new ArrayList<>();
+        step_list_frag.add(new ProductAddGeneralFragment());
+        step_list_frag.add(new ProductAddDataFragment());
+        step_list_frag.add(new ProductAddLinksFragment());
+        step_list_frag.add(new ProductAddAttributesFragment());
+        step_list_frag.add(new ProductAddOptionsFragment());
+        step_list_frag.add(new ProductAddDiscountsFragment());
+        step_list_frag.add(new ProductAddSpecialFragment());
+        step_list_frag.add(new ProductAddImagesFragment());
+        step_list_frag.add(new ProductAddRewardPointsFragment());
+
+        ArrayList<String> stepListTitle = new ArrayList<>();
+        stepListTitle.add("General");
+        stepListTitle.add("Data");
+        stepListTitle.add("Links");
+        stepListTitle.add("Attribute");
+        stepListTitle.add("Option");
+        stepListTitle.add("Discount");
+        stepListTitle.add("Special");
+        stepListTitle.add("Image");
+        stepListTitle.add("Reward Points");
+
+        adapter = new AddStoreProductSteppersAdapter(getSupportFragmentManager(), getActContext(), step_list_frag, stepListTitle);
+
+        mStepperLayout.setListener(this);
+        mStepperLayout.setAdapter(adapter);
         setLabels();
     }
 
@@ -67,6 +107,53 @@ public class ManageStoreProductActivity extends AppCompatActivity {
 
     public Context getActContext() {
         return ManageStoreProductActivity.this;
+    }
+
+    @Override
+    public void onCompleted(View completeButton) {
+
+    }
+
+    @Override
+    public void onError(VerificationError verificationError) {
+
+    }
+
+    @Override
+    public void onStepSelected(int newStepPosition) {
+        if (newStepPosition == 0) {
+            ((ProductAddGeneralFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+        }
+
+        if (newStepPosition == 1) {
+            ((ProductAddDataFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+        }
+        if (newStepPosition == 2) {
+            ((ProductAddLinksFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+        }
+        if (newStepPosition == 3) {
+            ((ProductAddAttributesFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+        }
+        if (newStepPosition == 4) {
+            ((ProductAddOptionsFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+        }
+        if (newStepPosition == 5) {
+            ((ProductAddDiscountsFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+        }
+        if (newStepPosition == 6) {
+            ((ProductAddSpecialFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+        }
+        if (newStepPosition == 7) {
+            ((ProductAddImagesFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+        }
+        if (newStepPosition == 8) {
+            ((ProductAddRewardPointsFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+        }
+    }
+
+    @Override
+    public void onReturn() {
+
     }
 
     public class setOnClickList implements View.OnClickListener {

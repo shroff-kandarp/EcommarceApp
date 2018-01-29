@@ -6,5 +6,355 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_20dp">
+
+        <include
+            android:id="@+id/skuBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/upcBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+
+        <include
+            android:id="@+id/eanBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+
+        <include
+            android:id="@+id/janBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+
+        <include
+            android:id="@+id/isbnBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+
+        <include
+            android:id="@+id/mpnBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+
+        <include
+            android:id="@+id/locationBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Tax Class"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/taxClassArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/taxClassSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Subtract Stock"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/subtractStockArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/subtractStockSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Out Of Stock Status"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/outOfStockStatusArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/outOfStockStatusSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Requires Shipping"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RadioGroup
+            android:id="@+id/shippingRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/shippingYesRadioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Yes"
+                android:textColor="#272727"
+                android:textSize="@dimen/txt_size_16" />
+
+            <RadioButton
+                android:id="@+id/shippingNoRadioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:textColor="#272727"
+                android:textSize="@dimen/txt_size_16" />
+        </RadioGroup>
+
+        <include
+            android:id="@+id/seoURLBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Date Available"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <com.view.MTextView
+            android:id="@+id/dateSelectTxtView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:drawableEnd="@mipmap/ic_calendar"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dimen_10dp"
+            android:textColor="#272727"
+            android:textSize="@dimen/txt_size_16" />
+
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Dimensions (L X W X H)"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/lengthBox"
+                layout="@layout/editbox_form_design"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/widthBox"
+                layout="@layout/editbox_form_design"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/heightBox"
+                layout="@layout/editbox_form_design"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Length Class"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/lengthClassArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/lengthClassSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/weightBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Weight Class"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/weightClassArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/weightClassSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Status"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/statusArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/statusSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/sortOrderBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+
+        <include
+            android:id="@+id/productInfoAddBtn"
+            layout="@layout/btn_type_2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/all_btn_height"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
 </ScrollView>

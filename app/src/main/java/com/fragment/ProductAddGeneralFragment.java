@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,9 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
     MaterialEditText productNameBox;
     MaterialEditText productModelBox;
     MaterialEditText productDescriptionBox;
+    MaterialEditText productPriceBox;
+    MaterialEditText quantityBox;
+    MaterialEditText minQTYBox;
     MaterialEditText metaTagTitleBox;
     MaterialEditText metaTagDescBox;
     MaterialEditText metaTagKeywordsBox;
@@ -60,6 +64,9 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
         productNameBox = (MaterialEditText) view.findViewById(R.id.productNameBox);
         productModelBox = (MaterialEditText) view.findViewById(R.id.productModelBox);
         productDescriptionBox = (MaterialEditText) view.findViewById(R.id.productDescriptionBox);
+        productPriceBox = (MaterialEditText) view.findViewById(R.id.productPriceBox);
+        quantityBox = (MaterialEditText) view.findViewById(R.id.quantityBox);
+        minQTYBox = (MaterialEditText) view.findViewById(R.id.minQTYBox);
         metaTagTitleBox = (MaterialEditText) view.findViewById(R.id.metaTagTitleBox);
         metaTagDescBox = (MaterialEditText) view.findViewById(R.id.metaTagDescBox);
         metaTagKeywordsBox = (MaterialEditText) view.findViewById(R.id.metaTagKeywordsBox);
@@ -74,18 +81,28 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
         Utils.setMultiLineEditBox(metaTagKeywordsBox);
         setLabels();
 
+        productPriceBox.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        quantityBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+        minQTYBox.setInputType(InputType.TYPE_CLASS_NUMBER);
         productInfoAddBtn.setOnClickListener(new setOnClickList());
+
+        return view;
+    }
+
+    public void continueExecution() {
 
         if (!manageProductAct.product_id.equals("")) {
             getProductDetails();
         }
-        return view;
     }
 
     public void setLabels() {
         productNameBox.setBothText("Product Name", "Enter product name");
         productModelBox.setBothText("Product Model", "Enter product model");
         productDescriptionBox.setBothText("Description", "Enter product description");
+        productPriceBox.setBothText("Price", "Enter product price");
+        quantityBox.setBothText("Quantity", "Enter quantity");
+        minQTYBox.setBothText("Minimum Quantity", "Enter min quantity");
         metaTagTitleBox.setBothText("Meta Tag Title", "Enter meta tag title");
         metaTagDescBox.setBothText("Meta Tag Description", "Enter meta tag description");
         metaTagKeywordsBox.setBothText("Meta Tag Keywords", "Enter meta tag keywords");
@@ -115,12 +132,19 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
         boolean productNameEntered = Utils.checkText(productNameBox) ? true : Utils.setErrorFields(productNameBox, "Required");
         boolean productModelEntered = Utils.checkText(productModelBox) ? true : Utils.setErrorFields(productModelBox, "Required");
         boolean productDescriptionEntered = Utils.checkText(productDescriptionBox) ? true : Utils.setErrorFields(productDescriptionBox, "Required");
+
+        boolean productPriceEntered = Utils.checkText(productPriceBox) ? true : Utils.setErrorFields(productDescriptionBox, "Required");
+
+        boolean productQuantityEntered = Utils.checkText(quantityBox) ? true : Utils.setErrorFields(productDescriptionBox, "Required");
+
+        boolean productMinQuantityEntered = Utils.checkText(minQTYBox) ? true : Utils.setErrorFields(productDescriptionBox, "Required");
+
         boolean metaTagTitleDescriptionEntered = Utils.checkText(metaTagTitleBox) ? true : Utils.setErrorFields(metaTagTitleBox, "Required");
         boolean metaTagDescriptionEntered = Utils.checkText(metaTagDescBox) ? true : Utils.setErrorFields(metaTagDescBox, "Required");
         boolean metaTagKeywordsEntered = Utils.checkText(metaTagKeywordsBox) ? true : Utils.setErrorFields(metaTagKeywordsBox, "Required");
         boolean productTagsEntered = Utils.checkText(productTagsBox) ? true : Utils.setErrorFields(productTagsBox, "Required");
 
-        if (productNameEntered == false || productModelEntered == false || productDescriptionEntered == false || metaTagTitleDescriptionEntered == false
+        if (productNameEntered == false || productModelEntered == false || productDescriptionEntered == false || productPriceEntered == false || productQuantityEntered == false || productMinQuantityEntered == false || metaTagTitleDescriptionEntered == false
                 || metaTagDescriptionEntered == false || metaTagKeywordsEntered == false || productTagsEntered == false) {
             return;
         }
@@ -135,6 +159,9 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
         parameters.put("product_name", Utils.getText(productNameBox));
         parameters.put("product_model", Utils.getText(productModelBox));
         parameters.put("product_description", Utils.getText(productDescriptionBox));
+        parameters.put("product_price", Utils.getText(productPriceBox));
+        parameters.put("product_quantity", Utils.getText(quantityBox));
+        parameters.put("product_min_quantity", Utils.getText(minQTYBox));
         parameters.put("meta_tag_title", Utils.getText(metaTagTitleBox));
         parameters.put("meta_tag_description", Utils.getText(metaTagDescBox));
         parameters.put("meta_tag_keywords", Utils.getText(metaTagKeywordsBox));
@@ -222,11 +249,9 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
         generateAlert.showAlertBox();
     }
 
-
     public void displayInformation(String responseString) {
 
         JSONObject productData = generalFunc.getJsonObject("ProductData", responseString);
-        String productTag = generalFunc.getJsonValue("ProductTag", responseString);
         JSONObject productDescriptionData = generalFunc.getJsonObject("ProductDescriptionData", responseString);
 
         if (productData == null || productDescriptionData == null) {
@@ -234,13 +259,16 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
             return;
         }
 
-        productNameBox.setText(generalFunc.getJsonValue("name", productDescriptionData));
         productModelBox.setText(generalFunc.getJsonValue("model", productData));
+        productPriceBox.setText(generalFunc.getJsonValue("price", productData));
+        quantityBox.setText(generalFunc.getJsonValue("quantity", productData));
+        minQTYBox.setText(generalFunc.getJsonValue("minimum", productData));
+        productNameBox.setText(generalFunc.getJsonValue("name", productDescriptionData));
         productDescriptionBox.setText(generalFunc.getJsonValue("description", productDescriptionData));
         metaTagTitleBox.setText(generalFunc.getJsonValue("meta_title", productDescriptionData));
         metaTagDescBox.setText(generalFunc.getJsonValue("meta_description", productDescriptionData));
         metaTagKeywordsBox.setText(generalFunc.getJsonValue("meta_keyword", productDescriptionData));
-        productTagsBox.setText(productTag);
+        productTagsBox.setText(generalFunc.getJsonValue("tag", productDescriptionData));
     }
 
     @Override
