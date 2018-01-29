@@ -196,7 +196,7 @@ public class ProductAddImagesFragment extends Fragment implements BlockingStep, 
     @Override
     public void onItemClickList(View v, int btn_type, int position) {
 
-        if (position == 1) {
+        if (btn_type == 1) {
             confirmDeleteProductImg(position);
         }
 
