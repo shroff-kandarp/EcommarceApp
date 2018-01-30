@@ -8,6 +8,180 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Manufacturer"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/manufacturerArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/manufacturerSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Categories"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/categoriesArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/categoriesSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Filter"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/filterArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/filterSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Stores"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/storeArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/storesSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Downloads"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/downloadsArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/downloadsSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
+
+        <com.view.MTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Related Products"
+            android:textColor="@color/appThemeColor_1"
+            android:textSize="@dimen/txt_size_16" />
+
+        <RelativeLayout
+            android:id="@+id/relatedProductArea"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/relatedProductsSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/ic_arrow_down" />
+
+        </RelativeLayout>
 
         <include
             android:id="@+id/productInfoAddBtn"

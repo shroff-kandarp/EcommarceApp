@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.utils.Utils;
 import com.view.GenerateAlertBox;
 import com.view.MButton;
 import com.view.MaterialRippleLayout;
+import com.view.editBox.MaterialEditText;
 
 import org.json.JSONObject;
 
@@ -38,6 +40,11 @@ public class ProductAddRewardPointsFragment extends Fragment implements Blocking
     GeneralFunctions generalFunc;
 
     MButton productInfoAddBtn;
+    MaterialEditText rewardPointBox;
+    MaterialEditText defaultRewardPointBox;
+    MaterialEditText femaleRewardPointBox;
+    MaterialEditText maleRewardPointBox;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,6 +53,10 @@ public class ProductAddRewardPointsFragment extends Fragment implements Blocking
         manageProductAct = (ManageStoreProductActivity) getActivity();
         generalFunc = manageProductAct.generalFunc;
         productInfoAddBtn = ((MaterialRippleLayout) view.findViewById(R.id.productInfoAddBtn)).getChildView();
+        rewardPointBox = (MaterialEditText) view.findViewById(R.id.rewardPointBox);
+        defaultRewardPointBox = (MaterialEditText) view.findViewById(R.id.defaultRewardPointBox);
+        femaleRewardPointBox = (MaterialEditText) view.findViewById(R.id.femaleRewardPointBox);
+        maleRewardPointBox = (MaterialEditText) view.findViewById(R.id.maleRewardPointBox);
 
         productInfoAddBtn.setOnClickListener(new setOnClickList());
         setLabels();
@@ -53,7 +64,22 @@ public class ProductAddRewardPointsFragment extends Fragment implements Blocking
     }
 
     public void setLabels() {
-        productInfoAddBtn.setText("Update Information");
+        productInfoAddBtn.setText("Update Reward Information");
+        rewardPointBox.setBothText("Reward points");
+        defaultRewardPointBox.setText("100");
+
+        defaultRewardPointBox.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        femaleRewardPointBox.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        maleRewardPointBox.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        defaultRewardPointBox.setHideUnderline(true);
+        femaleRewardPointBox.setHideUnderline(true);
+        maleRewardPointBox.setHideUnderline(true);
+
+        defaultRewardPointBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+        femaleRewardPointBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+        maleRewardPointBox.setInputType(InputType.TYPE_CLASS_NUMBER);
+
     }
 
     public void continueExecution() {

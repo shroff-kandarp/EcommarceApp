@@ -2,10 +2,12 @@ package com.fragment;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.utils.Utils;
+import com.view.CreateRoundedView;
 import com.view.GenerateAlertBox;
 import com.view.MButton;
 import com.view.MaterialRippleLayout;
@@ -37,8 +40,16 @@ public class ProductAddLinksFragment extends Fragment implements BlockingStep {
     ManageStoreProductActivity manageProductAct;
     GeneralFunctions generalFunc;
 
+    AppCompatSpinner manufacturerSpinner;
+    AppCompatSpinner categoriesSpinner;
+    AppCompatSpinner filterSpinner;
+    AppCompatSpinner storesSpinner;
+    AppCompatSpinner downloadsSpinner;
+    AppCompatSpinner relatedProductsSpinner;
+
     MButton productInfoAddBtn;
 
+    //    type = getGeneralDataRelatedToAddProduct
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,9 +59,28 @@ public class ProductAddLinksFragment extends Fragment implements BlockingStep {
         manageProductAct = (ManageStoreProductActivity) getActivity();
         generalFunc = manageProductAct.generalFunc;
         productInfoAddBtn = ((MaterialRippleLayout) view.findViewById(R.id.productInfoAddBtn)).getChildView();
+        manufacturerSpinner = (AppCompatSpinner) view.findViewById(R.id.manufacturerSpinner);
+        categoriesSpinner = (AppCompatSpinner) view.findViewById(R.id.categoriesSpinner);
+        filterSpinner = (AppCompatSpinner) view.findViewById(R.id.filterSpinner);
+        storesSpinner = (AppCompatSpinner) view.findViewById(R.id.storesSpinner);
+        downloadsSpinner = (AppCompatSpinner) view.findViewById(R.id.downloadsSpinner);
+        relatedProductsSpinner = (AppCompatSpinner) view.findViewById(R.id.relatedProductsSpinner);
 
         productInfoAddBtn.setOnClickListener(new setOnClickList());
         setLabels();
+
+
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), manufacturerSpinner);
+
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), categoriesSpinner);
+
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), filterSpinner);
+
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), storesSpinner);
+
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), downloadsSpinner);
+
+        new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), relatedProductsSpinner);
         return view;
     }
 

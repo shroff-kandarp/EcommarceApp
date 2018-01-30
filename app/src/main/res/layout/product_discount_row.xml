@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/productDiscountContainerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingEnd="15dp"
+    android:paddingStart="15dp"
+    android:paddingTop="5dp">
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Customer Group"
+        android:textColor="@color/appThemeColor_1"
+        android:textSize="@dimen/txt_size_16" />
+
+    <RelativeLayout
+        android:id="@+id/customerGroupArea"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="2dp">
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/customerGroupSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
+            android:src="@mipmap/ic_arrow_down" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:orientation="horizontal">
+
+        <include
+            android:id="@+id/quantityBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <include
+            android:id="@+id/priorityBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/priceBox"
+        layout="@layout/editbox_form_design"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1" />
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Date Start"
+        android:textColor="@color/appThemeColor_1"
+        android:textSize="@dimen/txt_size_16" />
+
+    <com.view.MTextView
+        android:id="@+id/startDateSelectTxtView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:drawableEnd="@mipmap/ic_calendar"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimen_10dp"
+        android:textColor="#272727"
+        android:textSize="@dimen/txt_size_16" />
+
+    <com.view.MTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Date End"
+        android:textColor="@color/appThemeColor_1"
+        android:textSize="@dimen/txt_size_16" />
+
+    <com.view.MTextView
+        android:id="@+id/endDateSelectTxtView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:drawableEnd="@mipmap/ic_calendar"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimen_10dp"
+        android:textColor="#272727"
+        android:textSize="@dimen/txt_size_16" />
+
+</LinearLayout>

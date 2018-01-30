@@ -14,12 +14,11 @@
 
     <ImageView
         android:id="@+id/deleteImgView"
-        android:layout_width="@dimen/dimen_40dp"
-        android:layout_height="@dimen/dimen_40dp"
+        android:layout_width="@dimen/dimen_70dp"
+        android:layout_height="@dimen/dimen_70dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="5dp"
-        android:src="@mipmap/ic_delete"
-        android:tint="@color/appThemeColor_1" />
+        android:layout_marginBottom="-5dp"
+        android:layout_marginEnd="-5dp"
+        android:src="@mipmap/ic_delete_img" />
 </RelativeLayout>
