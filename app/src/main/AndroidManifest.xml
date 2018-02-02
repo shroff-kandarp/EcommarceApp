@@ -76,7 +76,9 @@
         <activity android:name=".BecomeSellerActivity" />
         <activity android:name=".SelectStateActivity" />
         <activity android:name=".ManageStoreProductsListActivity" />
-        <activity android:name=".ManageStoreProductActivity"></activity>
+        <activity android:name=".ManageStoreProductActivity" />
+        <activity android:name=".RelatedProductsActivity" />
+        <activity android:name=".SelectAttributesActivity"></activity>
     </application>
 
 </manifest>

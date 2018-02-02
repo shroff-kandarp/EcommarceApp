@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.adapter.AllCategoriesAdapter;
@@ -74,6 +75,17 @@ public class AllCategoriesActivity extends AppCompatActivity implements OnTabSel
 
         bottomBar.setDefaultTab(R.id.tab_category);
         bottomBar.setOnTabSelectListener(this);
+
+
+        if (getCallingActivity() != null) {
+            (findViewById(R.id.searchImgView)).setVisibility(View.GONE);
+            (findViewById(R.id.listChangeImgView)).setVisibility(View.GONE);
+            (findViewById(R.id.cartArea)).setVisibility(View.GONE);
+            (findViewById(R.id.menuImgView)).setVisibility(View.GONE);
+            (findViewById(R.id.bottomBar)).setVisibility(View.GONE);
+            (findViewById(R.id.backImgView)).setVisibility(View.VISIBLE);
+            ((ImageView) findViewById(R.id.backImgView)).setOnClickListener(new setOnClickList());
+        }
     }
 
     @Override
@@ -94,7 +106,13 @@ public class AllCategoriesActivity extends AppCompatActivity implements OnTabSel
             Bundle bn = new Bundle();
             bn.putString("category_id", parentItem.getCategory_id());
             bn.putString("name", parentItem.getName());
-            (new StartActProcess(getActContext())).startActWithData(ListAllProductsActivity.class, bn);
+
+            if (getCallingActivity() != null) {
+                (new StartActProcess(getActContext())).setOkResult(bn);
+                AllCategoriesActivity.super.onBackPressed();
+            } else {
+                (new StartActProcess(getActContext())).startActWithData(ListAllProductsActivity.class, bn);
+            }
         }
         return false;
     }
@@ -103,10 +121,18 @@ public class AllCategoriesActivity extends AppCompatActivity implements OnTabSel
     public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
         AllCategoriesParentItem parentItem = dataList.get(groupPosition);
         HashMap<String, String> childItem = parentItem.getSubCategoryList().get(childPosition);
+
         Bundle bn = new Bundle();
         bn.putString("category_id", childItem.get("category_id"));
-        bn.putString("name", childItem.get("name"));
-        (new StartActProcess(getActContext())).startActWithData(ListAllProductsActivity.class, bn);
+
+        if (getCallingActivity() != null) {
+            bn.putString("name", parentItem.getName() + " > " + childItem.get("name"));
+            (new StartActProcess(getActContext())).setOkResult(bn);
+            AllCategoriesActivity.super.onBackPressed();
+        } else {
+            bn.putString("name", childItem.get("name"));
+            (new StartActProcess(getActContext())).startActWithData(ListAllProductsActivity.class, bn);
+        }
         return false;
     }
 

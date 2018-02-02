@@ -132,6 +132,7 @@ public class ProductAddDataFragment extends Fragment implements BlockingStep {
         productInfoAddBtn.setOnClickListener(new setOnClickList());
         dateSelectTxtView.setOnClickListener(new setOnClickList());
 
+        productInfoAddBtn.setId(Utils.generateViewId());
         new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), taxClassSpinner);
 
         new CreateRoundedView(Color.parseColor("#FFFFFF"), Utils.dipToPixels(getActContext(), 5), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), subtractStockSpinner);
@@ -259,6 +260,8 @@ public class ProductAddDataFragment extends Fragment implements BlockingStep {
         int length_class_id = 0;
         int weight_class_id = 0;
         if (taxDataArr != null) {
+            taxClassData.clear();
+            taxClassDataIds.clear();
             taxClassData.add("--- None ---");
             taxClassDataIds.add("0");
             for (int i = 0; i < taxDataArr.length(); i++) {
@@ -274,7 +277,8 @@ public class ProductAddDataFragment extends Fragment implements BlockingStep {
         }
 
         if (stockStatusData != null) {
-
+            outOfStockStatusData.clear();
+            outOfStockStatusDataIds.clear();
             for (int i = 0; i < stockStatusData.length(); i++) {
                 JSONObject obj_temp = generalFunc.getJsonObject(stockStatusData, i);
                 outOfStockStatusData.add(generalFunc.getJsonValue("name", obj_temp));
@@ -287,6 +291,8 @@ public class ProductAddDataFragment extends Fragment implements BlockingStep {
 
         if (lengthClassDataArr != null) {
 
+            lengthClassData.clear();
+            lengthClassDataIds.clear();
             for (int i = 0; i < lengthClassDataArr.length(); i++) {
                 JSONObject obj_temp = generalFunc.getJsonObject(lengthClassDataArr, i);
                 lengthClassData.add(generalFunc.getJsonValue("title", obj_temp));
@@ -295,12 +301,13 @@ public class ProductAddDataFragment extends Fragment implements BlockingStep {
                 if (generalFunc.getJsonValue("length_class_id", productData).equalsIgnoreCase(generalFunc.getJsonValue("length_class_id", obj_temp))) {
                     length_class_id = i;
                 }
-
             }
 
         }
         if (weightClassDataArr != null) {
 
+            weightClassData.clear();
+            weightClassDataIds.clear();
             for (int i = 0; i < weightClassDataArr.length(); i++) {
                 JSONObject obj_temp = generalFunc.getJsonObject(weightClassDataArr, i);
                 weightClassData.add(generalFunc.getJsonValue("title", obj_temp));
@@ -330,6 +337,10 @@ public class ProductAddDataFragment extends Fragment implements BlockingStep {
         lengthClassAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lengthClassSpinner.setAdapter(lengthClassAdapter);
         lengthClassSpinner.setSelection(length_class_id);
+
+
+        subtractStockData.clear();
+        statusData.clear();
 
         subtractStockData.add("Yes");
         subtractStockData.add("No");

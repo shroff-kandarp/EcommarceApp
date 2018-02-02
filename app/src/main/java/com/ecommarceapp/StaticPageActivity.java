@@ -126,7 +126,7 @@ public class StaticPageActivity extends AppCompatActivity {
 
         closeLoader();
 
-        generalFunc.generateErrorView(errorView, "LBL_ERROR_TXT", "Please check your internet connection OR try again later.");
+        generalFunc.generateErrorView(errorView, "", "Please check your internet connection OR try again later.");
 
         if (errorView.getVisibility() != View.VISIBLE) {
             errorView.setVisibility(View.VISIBLE);

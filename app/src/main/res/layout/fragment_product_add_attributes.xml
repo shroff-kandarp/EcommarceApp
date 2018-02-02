@@ -1,21 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/containerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
-        <include
-            android:id="@+id/productInfoAddBtn"
-            layout="@layout/btn_type_2"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/all_btn_height"
-            android:layout_gravity="bottom"
-            android:layout_marginEnd="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
-</ScrollView>
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/attributesContainerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+
+        <com.view.MTextView
+            android:id="@+id/noAttributesAvailTxtView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:text="No attributes found for your product."
+            android:textColor="#272727"
+            android:textSize="@dimen/txt_size_16" />
+
+        <com.view.MTextView
+            android:id="@+id/addMoreImgTxtView"
+            android:layout_width="@dimen/dimen_50dp"
+            android:layout_height="@dimen/dimen_50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/appThemeColor_1"
+            android:gravity="center"
+            android:text="+"
+            android:textColor="@color/appThemeColor_TXT_1"
+            android:textSize="@dimen/dimen_45dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
+    <include
+        android:id="@+id/productInfoAddBtn"
+        layout="@layout/btn_type_2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/all_btn_height"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="25dp"
+        android:visibility="gone"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp" />
+</LinearLayout>

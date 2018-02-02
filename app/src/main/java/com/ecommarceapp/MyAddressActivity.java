@@ -85,7 +85,6 @@ public class MyAddressActivity extends AppCompatActivity implements CustomerAddr
             (findViewById(R.id.menuImgView)).setVisibility(View.GONE);
             (findViewById(R.id.backImgView)).setVisibility(View.VISIBLE);
             ((ImageView) findViewById(R.id.backImgView)).setOnClickListener(new setOnClickList());
-
         }
     }
 

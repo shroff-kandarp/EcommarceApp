@@ -112,7 +112,6 @@ public class WishListActivity extends AppCompatActivity implements WishListRecyc
                         dataList.clear();
                         adapter.notifyDataSetChanged();
 
-
                         if (msgArr != null) {
 
                             for (int i = 0; i < msgArr.length(); i++) {
