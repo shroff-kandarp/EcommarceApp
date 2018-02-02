@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/topSeperatorView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="@dimen/dimen_5dp"
+        android:background="#cecece" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="@dimen/dimen_5dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#cecece" />
+
+        <com.view.MTextView
+            android:id="@+id/headerTxtView"
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:text="Male Customer" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#cecece" />
+
+
+        <include
+            android:id="@+id/valueInputBox"
+            layout="@layout/editbox_form_design"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#cecece" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/bottomSeperatorView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="@dimen/dimen_5dp"
+        android:background="#cecece" />
+</LinearLayout>
