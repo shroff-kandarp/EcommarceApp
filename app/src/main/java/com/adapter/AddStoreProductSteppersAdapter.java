@@ -33,7 +33,7 @@ public class AddStoreProductSteppersAdapter extends AbstractFragmentStepAdapter 
 
     @Override
     public int getCount() {
-        return 9;
+        return list_step_frag.size();
     }
 
     @NonNull

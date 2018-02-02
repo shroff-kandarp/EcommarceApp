@@ -15,7 +15,6 @@ import com.fragment.ProductAddDiscountsFragment;
 import com.fragment.ProductAddGeneralFragment;
 import com.fragment.ProductAddImagesFragment;
 import com.fragment.ProductAddLinksFragment;
-import com.fragment.ProductAddOptionsFragment;
 import com.fragment.ProductAddRewardPointsFragment;
 import com.fragment.ProductAddSpecialFragment;
 import com.general.files.GeneralFunctions;
@@ -61,7 +60,7 @@ public class ManageStoreProductActivity extends AppCompatActivity implements Ste
         step_list_frag.add(new ProductAddDataFragment());
         step_list_frag.add(new ProductAddLinksFragment());
         step_list_frag.add(new ProductAddAttributesFragment());
-        step_list_frag.add(new ProductAddOptionsFragment());
+//        step_list_frag.add(new ProductAddOptionsFragment());
         step_list_frag.add(new ProductAddDiscountsFragment());
         step_list_frag.add(new ProductAddSpecialFragment());
         step_list_frag.add(new ProductAddImagesFragment());
@@ -72,7 +71,7 @@ public class ManageStoreProductActivity extends AppCompatActivity implements Ste
         stepListTitle.add("Data");
         stepListTitle.add("Links");
         stepListTitle.add("Attribute");
-        stepListTitle.add("Option");
+//        stepListTitle.add("Option");
         stepListTitle.add("Discount");
         stepListTitle.add("Special");
         stepListTitle.add("Image");
@@ -134,19 +133,19 @@ public class ManageStoreProductActivity extends AppCompatActivity implements Ste
         if (newStepPosition == 3) {
             ((ProductAddAttributesFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
         }
+//        if (newStepPosition == 4) {
+//            ((ProductAddOptionsFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
+//        }
         if (newStepPosition == 4) {
-            ((ProductAddOptionsFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
-        }
-        if (newStepPosition == 5) {
             ((ProductAddDiscountsFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
         }
-        if (newStepPosition == 6) {
+        if (newStepPosition == 5) {
             ((ProductAddSpecialFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
         }
-        if (newStepPosition == 7) {
+        if (newStepPosition == 6) {
             ((ProductAddImagesFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
         }
-        if (newStepPosition == 8) {
+        if (newStepPosition == 7) {
             ((ProductAddRewardPointsFragment) adapter.list_step_frag.get(newStepPosition)).continueExecution();
         }
     }

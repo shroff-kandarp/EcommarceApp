@@ -77,6 +77,7 @@ public class Utils {
     public static final int ALL_CATEGORIES_REQ_CODE = 132;
     public static final int RELATED_PRODUCTS_REQ_CODE = 133;
     public static final int SELECT_ATTRIBUTES_REQ_CODE = 134;
+    public static final int ADD_DISCOUNT_REQ_CODE = 135;
 
     static MyProgressDialog myPDialog;
     //Single Instance object

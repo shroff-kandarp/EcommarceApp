@@ -126,7 +126,7 @@ public class ProductAddAttributesFragment extends Fragment implements BlockingSt
         attributesContainerView.setVisibility(View.GONE);
 
         JSONObject productData = generalFunc.getJsonObject("ProductData", responseString);
-        String productTag = generalFunc.getJsonValue("ProductTag", responseString);
+//        String productTag = generalFunc.getJsonValue("ProductTag", responseString);
         JSONObject productDescriptionData = generalFunc.getJsonObject("ProductDescriptionData", responseString);
         JSONArray productAttributeData = generalFunc.getJsonArray("ProductAttributeData", responseString);
 

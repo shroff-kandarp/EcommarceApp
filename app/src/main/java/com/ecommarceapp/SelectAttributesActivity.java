@@ -31,14 +31,13 @@ import java.util.HashMap;
 public class SelectAttributesActivity extends AppCompatActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
 
     MTextView titleTxt;
-    //    ImageView backImgView;
     MTextView noAttributesTxtView;
+    ImageView backImgView;
 
     GeneralFunctions generalFunc;
     ProgressBar loading;
     ErrorView errorView;
 
-    ImageView backImgView;
     ExpandableListView lvExp;
     AttributesRecyclerAdapter adapter;
 
@@ -67,15 +66,11 @@ public class SelectAttributesActivity extends AppCompatActivity implements Expan
         lvExp.setOnGroupClickListener(this);
         setLabels();
 
-
         loadAttributes();
-
     }
 
     public void setLabels() {
-
         titleTxt.setText("Related Products");
-
     }
 
     public void loadAttributes() {
