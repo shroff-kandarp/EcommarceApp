@@ -2,6 +2,8 @@ package com.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,17 +11,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.ecommarceapp.ManageStoreProductActivity;
+import com.ecommarceapp.ProductOptionAddActivity;
 import com.ecommarceapp.R;
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
+import com.general.files.StartActProcess;
 import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.utils.Utils;
+import com.view.CreateRoundedView;
 import com.view.GenerateAlertBox;
 import com.view.MButton;
+import com.view.MTextView;
 import com.view.MaterialRippleLayout;
 
 import org.json.JSONObject;
@@ -38,6 +45,10 @@ public class ProductAddOptionsFragment extends Fragment implements BlockingStep 
     GeneralFunctions generalFunc;
 
     MButton productInfoAddBtn;
+    LinearLayout optionsContainerView;
+    MTextView noOptionsAvailTxtView;
+    MTextView addMoreImgTxtView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,9 +57,17 @@ public class ProductAddOptionsFragment extends Fragment implements BlockingStep 
         manageProductAct = (ManageStoreProductActivity) getActivity();
         generalFunc = manageProductAct.generalFunc;
         productInfoAddBtn = ((MaterialRippleLayout) view.findViewById(R.id.productInfoAddBtn)).getChildView();
+        optionsContainerView = (LinearLayout) view.findViewById(R.id.optionsContainerView);
+        noOptionsAvailTxtView = (MTextView) view.findViewById(R.id.noOptionsAvailTxtView);
+        addMoreImgTxtView = (MTextView) view.findViewById(R.id.addMoreImgTxtView);
 
         productInfoAddBtn.setOnClickListener(new setOnClickList());
+        addMoreImgTxtView.setOnClickListener(new setOnClickList());
         setLabels();
+
+
+        new CreateRoundedView(getActContext().getResources().getColor(R.color.appThemeColor_1), Utils.dipToPixels(getActContext(), 25), Utils.dipToPixels(getActContext(), 0), Color.parseColor("#DEDEDE"), addMoreImgTxtView);
+
         return view;
     }
 
@@ -139,6 +158,11 @@ public class ProductAddOptionsFragment extends Fragment implements BlockingStep 
             if (view.getId() == productInfoAddBtn.getId()) {
                 checkData();
             }
+            if (view.getId() == addMoreImgTxtView.getId()) {
+                Bundle bn = new Bundle();
+                bn.putString("product_id", manageProductAct.product_id);
+                (new StartActProcess(getActContext())).startActForResult(getCurrentFragment(), ProductOptionAddActivity.class, Utils.ADD_OPTION_REQ_CODE, bn);
+            }
         }
     }
 
@@ -175,5 +199,14 @@ public class ProductAddOptionsFragment extends Fragment implements BlockingStep 
     @Override
     public void onError(@NonNull VerificationError error) {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Utils.ADD_OPTION_REQ_CODE && resultCode == manageProductAct.RESULT_OK) {
+            getProductDetails();
+        }
     }
 }

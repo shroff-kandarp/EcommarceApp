@@ -79,7 +79,8 @@
         <activity android:name=".ManageStoreProductActivity" />
         <activity android:name=".RelatedProductsActivity" />
         <activity android:name=".SelectAttributesActivity" />
-        <activity android:name=".ProductDiscountAddActivity"></activity>
+        <activity android:name=".ProductDiscountAddActivity" />
+        <activity android:name=".ProductOptionAddActivity"></activity>
     </application>
 
 </manifest>
