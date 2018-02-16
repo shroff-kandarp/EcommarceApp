@@ -52,9 +52,9 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/requiredArea"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/requiredArea"
                 android:orientation="vertical">
 
                 <com.view.MTextView
@@ -115,10 +115,260 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/timeArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.view.MTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Option Value"
+                    android:textColor="@color/appThemeColor_1"
+                    android:textSize="@dimen/txt_size_16" />
+
+                <com.view.MTextView
+                    android:id="@+id/timeSelectTxtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:drawableEnd="@mipmap/ic_calendar"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/dimen_10dp"
+                    android:text="Option Value"
+                    android:textColor="#272727"
+                    android:textSize="@dimen/txt_size_16" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/textArea"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <include
+                    android:id="@+id/textBox"
+                    layout="@layout/editbox_form_design"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/radioArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/radioOptionValueArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.view.MTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Option Value"
+                        android:textColor="@color/appThemeColor_1"
+                        android:textSize="@dimen/txt_size_16" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp">
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/radioOptionValueSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="5dp"
+                            android:src="@mipmap/ic_arrow_down" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <include
+                    android:id="@+id/quantityBox"
+                    layout="@layout/editbox_form_design"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp" />
+
+                <LinearLayout
+                    android:id="@+id/subtractStockArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.view.MTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Subtract Stock"
+                        android:textColor="@color/appThemeColor_1"
+                        android:textSize="@dimen/txt_size_16" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp">
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/subtractStockSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="5dp"
+                            android:src="@mipmap/ic_arrow_down" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.view.MTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Price"
+                        android:textColor="@color/appThemeColor_1"
+                        android:textSize="@dimen/txt_size_16" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp">
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/priceSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="5dp"
+                            android:src="@mipmap/ic_arrow_down" />
+
+                    </RelativeLayout>
+
+
+                    <include
+                        android:id="@+id/priceBox"
+                        layout="@layout/editbox_form_design"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.view.MTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Points"
+                        android:textColor="@color/appThemeColor_1"
+                        android:textSize="@dimen/txt_size_16" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp">
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/pointSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="5dp"
+                            android:src="@mipmap/ic_arrow_down" />
+
+                    </RelativeLayout>
+
+
+                    <include
+                        android:id="@+id/pointsBox"
+                        layout="@layout/editbox_form_design"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.view.MTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Points"
+                        android:textColor="@color/appThemeColor_1"
+                        android:textSize="@dimen/txt_size_16" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp">
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/weightSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="5dp"
+                            android:src="@mipmap/ic_arrow_down" />
+
+                    </RelativeLayout>
+
+
+                    <include
+                        android:id="@+id/weightBox"
+                        layout="@layout/editbox_form_design"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp" />
+                </LinearLayout>
+            </LinearLayout>
 
             <include
                 android:id="@+id/productInfoAddBtn"
