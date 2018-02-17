@@ -139,13 +139,13 @@ public class ProductAddGeneralFragment extends Fragment implements BlockingStep 
 
         boolean productMinQuantityEntered = Utils.checkText(minQTYBox) ? true : Utils.setErrorFields(productDescriptionBox, "Required");
 
-        boolean metaTagTitleDescriptionEntered = Utils.checkText(metaTagTitleBox) ? true : Utils.setErrorFields(metaTagTitleBox, "Required");
-        boolean metaTagDescriptionEntered = Utils.checkText(metaTagDescBox) ? true : Utils.setErrorFields(metaTagDescBox, "Required");
-        boolean metaTagKeywordsEntered = Utils.checkText(metaTagKeywordsBox) ? true : Utils.setErrorFields(metaTagKeywordsBox, "Required");
-        boolean productTagsEntered = Utils.checkText(productTagsBox) ? true : Utils.setErrorFields(productTagsBox, "Required");
+//        boolean metaTagTitleDescriptionEntered = Utils.checkText(metaTagTitleBox) ? true : Utils.setErrorFields(metaTagTitleBox, "Required");
+//        boolean metaTagDescriptionEntered = Utils.checkText(metaTagDescBox) ? true : Utils.setErrorFields(metaTagDescBox, "Required");
+//        boolean metaTagKeywordsEntered = Utils.checkText(metaTagKeywordsBox) ? true : Utils.setErrorFields(metaTagKeywordsBox, "Required");
+//        boolean productTagsEntered = Utils.checkText(productTagsBox) ? true : Utils.setErrorFields(productTagsBox, "Required");
 
-        if (productNameEntered == false || productModelEntered == false || productDescriptionEntered == false || productPriceEntered == false || productQuantityEntered == false || productMinQuantityEntered == false || metaTagTitleDescriptionEntered == false
-                || metaTagDescriptionEntered == false || metaTagKeywordsEntered == false || productTagsEntered == false) {
+        if (productNameEntered == false || productModelEntered == false || productDescriptionEntered == false || productPriceEntered == false || productQuantityEntered == false || productMinQuantityEntered == false/* || metaTagTitleDescriptionEntered == false
+                || metaTagDescriptionEntered == false || metaTagKeywordsEntered == false || productTagsEntered == false*/) {
             return;
         }
 

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.general.files.ExecuteWebServerUrl;
 import com.general.files.GeneralFunctions;
+import com.general.files.StartActProcess;
 import com.utils.Utils;
 import com.view.CreateRoundedView;
 import com.view.GenerateAlertBox;
@@ -21,6 +22,7 @@ import com.view.MTextView;
 import com.view.MaterialRippleLayout;
 import com.view.editBox.MaterialEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -109,6 +111,7 @@ public class ProductOptionAddActivity extends AppCompatActivity {
         weightBox = (MaterialEditText) findViewById(R.id.weightBox);
 
         dateSelectTxtView.setOnClickListener(new setOnClickList());
+        timeSelectTxtView.setOnClickListener(new setOnClickList());
         productInfoAddBtn.setOnClickListener(new setOnClickList());
         productInfoAddBtn.setId(Utils.generateViewId());
         backImgView.setOnClickListener(new setOnClickList());
@@ -159,6 +162,7 @@ public class ProductOptionAddActivity extends AppCompatActivity {
     public void getProductDetails() {
         requiredArea.setVisibility(View.GONE);
         containerView.setVisibility(View.GONE);
+        productInfoAddBtn.setVisibility(View.GONE);
         HashMap<String, String> parameters = new HashMap<String, String>();
         parameters.put("type", "getStoreProductInfo");
         parameters.put("customer_id", generalFunc.getMemberId());
@@ -319,6 +323,7 @@ public class ProductOptionAddActivity extends AppCompatActivity {
                     currentSelectedName = name;
                     currentSelectedOptionId = optionDataID.get(position);
                     requiredArea.setVisibility(View.VISIBLE);
+                    productInfoAddBtn.setVisibility(View.VISIBLE);
                 } else {
                     currentSelectedName = "";
                     currentSelectedOptionId = "";
@@ -327,6 +332,7 @@ public class ProductOptionAddActivity extends AppCompatActivity {
                     timeArea.setVisibility(View.GONE);
                     radioArea.setVisibility(View.GONE);
                     requiredArea.setVisibility(View.GONE);
+                    productInfoAddBtn.setVisibility(View.GONE);
                 }
             }
 
@@ -404,6 +410,8 @@ public class ProductOptionAddActivity extends AppCompatActivity {
 
                     if (isDataAvail == true) {
 
+                        (new StartActProcess(getActContext())).setOkResult();
+                        backImgView.performClick();
                     } else {
                         generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
                     }
@@ -427,7 +435,11 @@ public class ProductOptionAddActivity extends AppCompatActivity {
                         String day = dayOfMonth < 10 ? ("0" + dayOfMonth) : ("" + dayOfMonth);
                         String month = monthOfYear < 10 ? ("0" + monthOfYear) : ("" + monthOfYear);
 
-                        dateSelectTxtView.setText("" + year + "-" + month + "-" + day);
+                        if (currentSelectedName.equalsIgnoreCase("Date & Time") || currentSelectedName.equalsIgnoreCase("time")) {
+                            chooseTime("" + year + "-" + month + "-" + day);
+                        } else {
+                            dateSelectTxtView.setText("" + year + "-" + month + "-" + day);
+                        }
                     }
                 },
                 now.get(Calendar.YEAR),
@@ -436,6 +448,36 @@ public class ProductOptionAddActivity extends AppCompatActivity {
         );
         dpd.setTitle("Select Date");
         dpd.show(getFragmentManager(), "Datepickerdialog");
+    }
+
+    public void chooseTime(final String date) {
+
+        Calendar now = Calendar.getInstance();
+        TimePickerDialog tpd = TimePickerDialog.newInstance(
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+                        String hourString = hourOfDay < 10 ? "0" + hourOfDay : "" + hourOfDay;
+                        String minuteString = minute < 10 ? "0" + minute : "" + minute;
+                        String secondString = second < 10 ? "0" + second : "" + second;
+                        String time = hourString + ":" + minuteString + ":" + secondString;
+                        Utils.printLog("Time", ":" + time);
+
+                        if (date.equals("")) {
+                            timeSelectTxtView.setText("" + time);
+
+                        } else {
+                            dateSelectTxtView.setText("" + date + " " + time);
+                        }
+
+                    }
+                },
+                now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE),
+                true
+        );
+        tpd.setTitle("From Time");
+        tpd.show(getFragmentManager(), "Timepickerdialog");
     }
 
     public Context getActContext() {
@@ -452,6 +494,8 @@ public class ProductOptionAddActivity extends AppCompatActivity {
 
             } else if (i == dateSelectTxtView.getId()) {
                 chooseDate();
+            } else if (i == timeSelectTxtView.getId()) {
+                chooseTime("");
             } else if (i == productInfoAddBtn.getId()) {
                 updateData();
             }

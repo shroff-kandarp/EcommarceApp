@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ecommarceapp.ManageStoreProductActivity;
@@ -29,6 +30,7 @@ import com.view.MButton;
 import com.view.MTextView;
 import com.view.MaterialRippleLayout;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -82,8 +84,11 @@ public class ProductAddOptionsFragment extends Fragment implements BlockingStep 
     }
 
     public void getProductDetails() {
+        noOptionsAvailTxtView.setVisibility(View.GONE);
+        optionsContainerView.removeAllViews();
+
         HashMap<String, String> parameters = new HashMap<String, String>();
-        parameters.put("type", "getStoreProductInfo");
+        parameters.put("type", "getProductOptions");
         parameters.put("customer_id", generalFunc.getMemberId());
         parameters.put("product_id", manageProductAct.product_id);
 
@@ -98,10 +103,24 @@ public class ProductAddOptionsFragment extends Fragment implements BlockingStep 
                     boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
 
                     if (isDataAvail == true) {
-                        displayInformation(responseString);
+                        JSONArray optionDataArr = generalFunc.getJsonArray(Utils.message_str, responseString);
+
+                        if (optionDataArr != null) {
+                            for (int i = 0; i < optionDataArr.length(); i++) {
+                                JSONObject obj_temp = generalFunc.getJsonObject(optionDataArr, i);
+
+                                addOptionView(obj_temp);
+                            }
+                        } else {
+                            noOptionsAvailTxtView.setText(generalFunc.getJsonValue(Utils.message_str, responseString));
+                            noOptionsAvailTxtView.setVisibility(View.VISIBLE);
+                            optionsContainerView.setVisibility(View.GONE);
+                        }
                     } else {
-                        generatePageError();
-//                        generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                        noOptionsAvailTxtView.setText(generalFunc.getJsonValue(Utils.message_str, responseString));
+                        noOptionsAvailTxtView.setVisibility(View.VISIBLE);
+                        optionsContainerView.setVisibility(View.GONE);
+
                     }
 
                 } else {
@@ -112,16 +131,90 @@ public class ProductAddOptionsFragment extends Fragment implements BlockingStep 
         exeWebServer.execute();
     }
 
-    public void displayInformation(String responseString) {
+    public void addOptionView(final JSONObject obj_temp) {
 
-        JSONObject productData = generalFunc.getJsonObject("ProductData", responseString);
-        String productTag = generalFunc.getJsonValue("ProductTag", responseString);
-        JSONObject productDescriptionData = generalFunc.getJsonObject("ProductDescriptionData", responseString);
+        LayoutInflater inflater = (LayoutInflater) getActContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View categoryView = inflater.inflate(R.layout.item_option_design, null);
 
-        if (productData == null || productDescriptionData == null) {
-            generatePageError();
-            return;
+        MTextView headerTxtView = (MTextView) categoryView.findViewById(R.id.headerTxtView);
+        MTextView dataTxtView = (MTextView) categoryView.findViewById(R.id.dataTxtView);
+        headerTxtView.setText("Option: " + generalFunc.getJsonValue("option_name", obj_temp));
+
+        String required = generalFunc.getJsonValue("required", obj_temp);
+        if (required.equalsIgnoreCase("yes")) {
+            headerTxtView.setText(headerTxtView.getText().toString() + " (Required)");
         }
+
+        headerTxtView.setText(Utils.html2text(headerTxtView.getText().toString()));
+
+        final String option_value_id = generalFunc.getJsonValue("option_value_id", obj_temp);
+        if (!option_value_id.trim().equals("")) {
+            dataTxtView.setText("Option Value: " + generalFunc.getJsonValue("option_value_name", obj_temp) + "\n" + "Quantity: " + generalFunc.getJsonValue("quantity", obj_temp) + "\n" + "Subtract Stock: " + generalFunc.getJsonValue("subtract", obj_temp) + "\n" + "Price: (" + generalFunc.getJsonValue("price_prefix", obj_temp) + ") " + generalFunc.getJsonValue("price", obj_temp) + "\n" + "Points: (" + generalFunc.getJsonValue("points_prefix", obj_temp) + ") " + generalFunc.getJsonValue("points", obj_temp) + "\n" + "Weight: (" + generalFunc.getJsonValue("weight_prefix", obj_temp) + ") " + generalFunc.getJsonValue("weight", obj_temp));
+        } else {
+            dataTxtView.setText(generalFunc.getJsonValue("value", obj_temp));
+        }
+
+        ImageView removeImgView = (ImageView) categoryView.findViewById(R.id.removeImgView);
+        removeImgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmDeleteOption(generalFunc.getJsonValue("product_option_id", obj_temp), option_value_id);
+            }
+        });
+
+        new CreateRoundedView(Color.parseColor("#F2F2F2"), Utils.dipToPixels(getActContext(), 8), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), categoryView);
+        optionsContainerView.addView(categoryView);
+        optionsContainerView.setVisibility(View.VISIBLE);
+    }
+
+    public void confirmDeleteOption(final String product_option_id, final String option_value_id) {
+        final GenerateAlertBox generateAlert = new GenerateAlertBox(getActContext());
+        generateAlert.setCancelable(false);
+        generateAlert.setBtnClickList(new GenerateAlertBox.HandleAlertBtnClick() {
+            @Override
+            public void handleBtnClick(int btn_id) {
+                generateAlert.closeAlertBox();
+
+                if (btn_id == 1) {
+                    deleteOption(product_option_id, option_value_id);
+                }
+            }
+        });
+        generateAlert.setContentMessage("", "Are you sure, you want to delete?");
+        generateAlert.setPositiveBtn("OK");
+        generateAlert.setNegativeBtn("Cancel");
+
+        generateAlert.showAlertBox();
+    }
+
+    public void deleteOption(String product_option_id, String option_value_id) {
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("type", "deleteProductOption");
+        parameters.put("customer_id", generalFunc.getMemberId());
+        parameters.put("product_id", manageProductAct.product_id);
+        parameters.put("product_option_id", product_option_id);
+        parameters.put("option_value_id", option_value_id);
+
+        ExecuteWebServerUrl exeWebServer = new ExecuteWebServerUrl(parameters);
+        exeWebServer.setLoaderConfig(getActContext(), true, generalFunc);
+        exeWebServer.setDataResponseListener(new ExecuteWebServerUrl.SetDataResponse() {
+            @Override
+            public void setResponse(String responseString) {
+
+                if (responseString != null && !responseString.equals("")) {
+
+                    boolean isDataAvail = GeneralFunctions.checkDataAvail(Utils.action_str, responseString);
+
+                    if (isDataAvail == true) {
+                        getProductDetails();
+                    }
+                    generalFunc.showGeneralMessage("", generalFunc.getJsonValue(Utils.message_str, responseString));
+                } else {
+                    generalFunc.showError();
+                }
+            }
+        });
+        exeWebServer.execute();
     }
 
     public void generatePageError() {
