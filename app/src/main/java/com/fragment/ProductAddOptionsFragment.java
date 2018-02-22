@@ -162,7 +162,22 @@ public class ProductAddOptionsFragment extends Fragment implements BlockingStep 
             }
         });
 
-        new CreateRoundedView(Color.parseColor("#F2F2F2"), Utils.dipToPixels(getActContext(), 8), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), categoryView);
+        categoryView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bn = new Bundle();
+                bn.putString("product_id", manageProductAct.product_id);
+                bn.putString("product_option_id", generalFunc.getJsonValue("product_option_id", obj_temp));
+                bn.putString("option_id", generalFunc.getJsonValue("option_id", obj_temp));
+                bn.putString("option_value_id", generalFunc.getJsonValue("option_value_id", obj_temp));
+                bn.putString("product_option_value_id", generalFunc.getJsonValue("product_option_value_id", obj_temp));
+                (new StartActProcess(getActContext())).startActForResult(getCurrentFragment(), ProductOptionAddActivity.class, Utils.ADD_OPTION_REQ_CODE, bn);
+
+
+            }
+        });
+
+//        new CreateRoundedView(Color.parseColor("#F2F2F2"), Utils.dipToPixels(getActContext(), 8), Utils.dipToPixels(getActContext(), 1), Color.parseColor("#DEDEDE"), categoryView);
         optionsContainerView.addView(categoryView);
         optionsContainerView.setVisibility(View.VISIBLE);
     }

@@ -80,7 +80,9 @@
         <activity android:name=".RelatedProductsActivity" />
         <activity android:name=".SelectAttributesActivity" />
         <activity android:name=".ProductDiscountAddActivity" />
-        <activity android:name=".ProductOptionAddActivity"></activity>
+        <activity android:name=".ProductOptionAddActivity" />
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".ChangePasswordActivity"></activity>
     </application>
 
 </manifest>

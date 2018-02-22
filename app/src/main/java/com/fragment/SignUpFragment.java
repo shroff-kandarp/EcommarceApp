@@ -173,6 +173,8 @@ public class SignUpFragment extends Fragment {
 
                     if (isDataAvail) {
 
+                        generalFunc.storedata("COUNTRY_ID", iCountryId);
+                        generalFunc.storedata("COUNTRY_NAME", Utils.getText(countryBox));
                         generalFunc.storeUserData(generalFunc.getJsonValue(Utils.message_str, responseString));
                         (new StartActProcess(getActContext())).startAct(MainActivity.class);
                         ActivityCompat.finishAffinity((Activity) getActContext());

@@ -115,6 +115,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                     confirmSignOut();
                     break;
                 case R.id.loginSecurityArea:
+                    (new StartActProcess(getActContext())).startAct(ChangePasswordActivity.class);
                     break;
                 case R.id.addressBookArea:
                     (new StartActProcess(getActContext())).startAct(MyAddressActivity.class);
@@ -125,6 +126,7 @@ public class MyAccountActivity extends AppCompatActivity implements OnTabSelectL
                     addDrawer.openWishList();
                     break;
                 case R.id.profileArea:
+                    (new StartActProcess(getActContext())).startAct(EditProfileActivity.class);
                     break;
                 case R.id.yourOrdersArea:
                     (new StartActProcess(getActContext())).startAct(OrdersListActivity.class);
